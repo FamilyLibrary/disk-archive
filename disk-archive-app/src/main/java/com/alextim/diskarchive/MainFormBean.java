@@ -26,4 +26,8 @@ public class MainFormBean {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	public String toString() {
+		return String.format("%s %s (%s)", shortName, fullName, version); 
+	}
 }

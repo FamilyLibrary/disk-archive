@@ -2,9 +2,9 @@ package com.alextim.diskarchive;
 
 public class MainFormBean {
 	public String fullName = "Aleksey Timofeev";
+
 	public String shortName = "ALEXEY.T";
-	public String version = "1.2.2";
-	
+	public String version = "1.2.3";
 	
 	public String getFullName() {
 		return fullName;

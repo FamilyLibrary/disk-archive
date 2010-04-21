@@ -2,8 +2,8 @@ package com.alextim.diskarchive;
 
 public class MainFormBean {
 	public String fullName = "Aleksey Timofeev";
-	public String shortName = "A.T";
-	public String version = "1.2.1";
+	public String shortName = "ALEXEY.T";
+	public String version = "1.2.2";
 	
 	
 	public String getFullName() {
@@ -28,6 +28,6 @@ public class MainFormBean {
 	}
 	
 	public String toString() {
-		return String.format("%s %s (%s)", shortName, fullName, version); 
+		return String.format("%s %s (%s)", new Object[]{shortName, fullName, version}); 
 	}
 }

@@ -4,6 +4,9 @@ public class LoggingBean {
 	public LoggingBean(String userName) {
 		this.userName = userName;
 	}
+	public LoggingBean() {
+		this("");
+	}
 	
 	private String userName;
 	private String password;

@@ -4,7 +4,7 @@
   <groupId>com.alextim.diskarchive</groupId>
   <artifactId>disk-archive</artifactId>
   <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>  
   <name>disk-archive</name>
   <url>http://maven.apache.org</url>
   <dependencies>
@@ -23,6 +23,11 @@
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-core</artifactId>
 	    <version>3.3.2.GA</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-annotations</artifactId>
+	    <version>3.4.0.GA</version>
 	</dependency>
 	<dependency>
 	    <groupId>springframework</groupId>

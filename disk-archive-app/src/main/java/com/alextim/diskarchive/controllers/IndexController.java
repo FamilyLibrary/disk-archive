@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 public class IndexController extends MultiActionController{
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView mv = new ModelAndView("jsp/index.jsp");
+		ModelAndView mv = new ModelAndView("/jsp/index.jsp");
 		return mv;
 	}
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {

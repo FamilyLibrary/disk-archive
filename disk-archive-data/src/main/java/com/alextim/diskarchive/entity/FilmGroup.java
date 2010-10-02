@@ -1,8 +1,9 @@
 package com.alextim.diskarchive.entity;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Entity;
 
 @Entity
 @Table(name="film_groups")

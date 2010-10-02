@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
-	<bean id="logging" class="com.alextim.diskarchive.LoggingBean"/>
-	
+
+	<bean id="logging" class="com.alextim.diskarchive.LoggingBean" />
+
 	<!-- controllers -->
-	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
 				<prop key="index.html">indexController</prop>
@@ -13,12 +15,48 @@
 			</props>
 		</property>
 	</bean>
-	
-	<bean id="internalPathMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver">
-		<property name="prefix" value=""/>
+
+	<bean id="internalPathMethodNameResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver">
+		<property name="prefix" value="" />
 	</bean>
 
 	<bean id="indexController" class="com.alextim.diskarchive.controllers.IndexController">
-		<property name="methodNameResolver" ref="internalPathMethodNameResolver"/>
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
 	</bean>
+
+
+	<!--
+	Hibernate support
+	-->
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="dataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
+		<property name="url" value="jdbc:mysql://localhost/disk_archive" />
+		<property name="user" value="root" />
+		<property name="password" value="alextimus" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.alextim.diskarchive.entity.Film</value>
+				<value>com.alextim.diskarchive.entity.FilmGroup</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!--
+	Hibernate support
+	-->
+
 </beans>

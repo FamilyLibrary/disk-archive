@@ -21,6 +21,11 @@
 			<version>2.5.6</version>
 		</dependency>
 		<dependency>
+			<groupId>acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.3.2.GA</version>

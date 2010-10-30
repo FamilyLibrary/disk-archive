@@ -50,14 +50,15 @@
 	           {name: 'lastChange', type: 'date', dateFormat: 'n/j h:ia'}
 	        ]
 	    });
+	    store.loadData(myData);
 		
 	    var gridPanel = new Ext.grid.GridPanel({
 	        store: store,
 	        columns: [
 	            {id:'company',header: 'Company', width: 160, sortable: true, dataIndex: 'company'},
-	            {header: 'Price', width: 75, sortable: true, renderer: 'usMoney', dataIndex: 'price'},
-	            {header: 'Change', width: 75, sortable: true, renderer: change, dataIndex: 'change'},
-	            {header: '% Change', width: 75, sortable: true, renderer: pctChange, dataIndex: 'pctChange'},
+	            {header: 'Price', width: 75, sortable: true, dataIndex: 'price'},
+	            {header: 'Change', width: 75, sortable: true, dataIndex: 'change'},
+	            {header: '% Change', width: 75, sortable: true, renderer: 'change', dataIndex: 'pctChange'},
 	            {header: 'Last Updated', width: 85, sortable: true, renderer: Ext.util.Format.dateRenderer('m/d/Y'), dataIndex: 'lastChange'}
 	        ],
 	        stripeRows: true,
@@ -68,17 +69,17 @@
 	        stateful: true,
 	        stateId: 'grid'        
 	    });
+	    
 		return {
 			getPanel: function() {
 				return gridPanel; 
 			}
-		}
-	};
-	
-	Ext.onReady(){
-		alert('here');
+		};
+	}();
+
+	Ext.onReady(function(){
 		page.getPanel().render('grid-data');
-	};
+	});
 </script>
 
 <div id="grid-data"></div>

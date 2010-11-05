@@ -8,6 +8,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             WEB-INF/web-application-config.xml
+            WEB-INF/hibernate.xml
+            WEB-INF/security.xml
         </param-value>
     </context-param>
 

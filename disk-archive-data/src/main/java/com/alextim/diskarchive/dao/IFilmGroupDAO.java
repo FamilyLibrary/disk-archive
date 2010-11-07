@@ -1,5 +1,8 @@
 package com.alextim.diskarchive.dao;
 
-public interface IFilmGroupDAO {
+import com.alextim.diskarchive.entity.FilmGroup;
+
+
+public interface IFilmGroupDAO extends IBasicDAO<FilmGroup>{
 
 }

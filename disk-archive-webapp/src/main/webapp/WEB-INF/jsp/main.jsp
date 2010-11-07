@@ -1,76 +1,120 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <head>
 	<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
 	
 	<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
 	<script type="text/javascript" src="ext/ext-all-debug.js"></script>
+	
+	<title>${title}</title>
 </head>
 
 <body>
 <script type="text/javascript">
 
 	var page = function() {
-	    var myData = [
-                  ['3m Co',71.72,0.02,0.03,'9/1 12:00am'],
-                  ['Alcoa Inc',29.01,0.42,1.47,'9/1 12:00am'],
-                  ['Altria Group Inc',83.81,0.28,0.34,'9/1 12:00am'],
-                  ['American Express Company',52.55,0.01,0.02,'9/1 12:00am'],
-                  ['American International Group, Inc.',64.13,0.31,0.49,'9/1 12:00am'],
-                  ['AT&T Inc.',31.61,-0.48,-1.54,'9/1 12:00am'],
-                  ['Boeing Co.',75.43,0.53,0.71,'9/1 12:00am'],
-                  ['Caterpillar Inc.',67.27,0.92,1.39,'9/1 12:00am'],
-                  ['Citigroup, Inc.',49.37,0.02,0.04,'9/1 12:00am'],
-                  ['E.I. du Pont de Nemours and Company',40.48,0.51,1.28,'9/1 12:00am'],
-                  ['Exxon Mobil Corp',68.1,-0.43,-0.64,'9/1 12:00am'],
-                  ['General Electric Company',34.14,-0.08,-0.23,'9/1 12:00am'],
-                  ['General Motors Corporation',30.27,1.09,3.74,'9/1 12:00am'],
-                  ['Hewlett-Packard Co.',36.53,-0.03,-0.08,'9/1 12:00am'],
-                  ['Honeywell Intl Inc',38.77,0.05,0.13,'9/1 12:00am'],
-                  ['Intel Corporation',19.88,0.31,1.58,'9/1 12:00am'],
-                  ['International Business Machines',81.41,0.44,0.54,'9/1 12:00am'],
-                  ['Johnson & Johnson',64.72,0.06,0.09,'9/1 12:00am'],
-                  ['JP Morgan & Chase & Co',45.73,0.07,0.15,'9/1 12:00am'],
-                  ['McDonald\'s Corporation',36.76,0.86,2.40,'9/1 12:00am'],
-                  ['Merck & Co., Inc.',40.96,0.41,1.01,'9/1 12:00am'],
-                  ['Microsoft Corporation',25.84,0.14,0.54,'9/1 12:00am'],
-                  ['Pfizer Inc',27.96,0.4,1.45,'9/1 12:00am'],
-                  ['The Coca-Cola Company',45.07,0.26,0.58,'9/1 12:00am'],
-                  ['The Home Depot, Inc.',34.64,0.35,1.02,'9/1 12:00am'],
-                  ['The Procter & Gamble Company',61.91,0.01,0.02,'9/1 12:00am'],
-                  ['United Technologies Corporation',63.26,0.55,0.88,'9/1 12:00am'],
-                  ['Verizon Communications',35.57,0.39,1.11,'9/1 12:00am'],            
-                  ['Wal-Mart Stores, Inc.',45.45,0.73,1.63,'9/1 12:00am']
-	    ];
-		
-	    var store = new Ext.data.ArrayStore({
-	        fields: [
-	           {name: 'company'},
-	           {name: 'price', type: 'float'},
-	           {name: 'change', type: 'float'},
-	           {name: 'pctChange', type: 'float'},
-	           {name: 'lastChange', type: 'date', dateFormat: 'n/j h:ia'}
-	        ]
-	    });
-	    store.loadData(myData);
-		
-	    var gridPanel = new Ext.grid.GridPanel({
-	        store: store,
+
+		var store = new Ext.data.JsonStore({
+    		root: "rows",
+    		id: "name",
+    		data: { rows: ${rows} },
+            autoLoad: true,
+            fields:[
+                'id', 
+                'filmName', 
+                'filmGroupId', 
+                'description'
+            ]
+        })
+
+	    var textEditor = new Ext.form.TextField();
+
+		Ext.util.Format.comboRenderer = function(combo){
+		    return function(value){
+		        var record = combo.findRecord(combo.valueField, value);
+		        return record ? record.get(combo.displayField) : combo.valueNotFoundText;
+		    }
+		};
+
+		var comoboxEditor = new Ext.form.ComboBox({
+			typeAhead: true,
+			triggerAction: 'all',
+			mode: 'local',
+	    	store: (function() {
+				var store = new Ext.data.ArrayStore({
+					id: 0,
+					fields: [
+						'id', 'name', 'description'
+					],
+					data: [
+						[-1, 'Выбирите категорию'],
+						<c:forEach var="group" items="${filmGroups}" varStatus="status">
+							[${group.id}, '${group.name}', '${group.description}']<c:if test="${not status.last}">,</c:if>
+		            	</c:forEach>
+					]
+				});
+				return store;
+	    	})(),
+			displayField:'name',
+			valueField: 'id',
+	    	tpl: '<tpl for="."><div ext:qtip="{description}" class="x-combo-list-item">{name}</div></tpl>'
+		});
+
+	    var gridPanel = new Ext.grid.EditorGridPanel({
 	        columns: [
-	            {id:'company',header: 'Company', width: 160, sortable: true, dataIndex: 'company'},
-	            {header: 'Price', width: 75, sortable: true, dataIndex: 'price'},
-	            {header: 'Change', width: 75, sortable: true, dataIndex: 'change'},
-	            {header: '% Change', width: 75, sortable: true, renderer: 'change', dataIndex: 'pctChange'},
-	            {header: 'Last Updated', width: 85, sortable: true, renderer: Ext.util.Format.dateRenderer('m/d/Y'), dataIndex: 'lastChange'}
+  	            {header: 'Группа', width: 140, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
+	            {header: 'Фильм', width: 280, sortable: true, dataIndex: 'filmName', editor: textEditor},
+	            {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor}/*,
+	            {
+	                xtype: 'actioncolumn',
+	                width: 50,
+	                items: [{
+	                    icon   : '../shared/icons/fam/delete.gif',  // Use a URL in the icon config
+	                    tooltip: 'Sell stock',
+	                    handler: function(grid, rowIndex, colIndex) {
+	                        var rec = store.getAt(rowIndex);
+	                        alert("Sell " + rec.get('company'));
+	                    }
+	                }, {
+	                    getClass: function(v, meta, rec) {          // Or return a class from a function
+	                        if (rec.get('change') < 0) {
+	                            this.items[1].tooltip = 'Do not buy!';
+	                            return 'alert-col';
+	                        } else {
+	                            this.items[1].tooltip = 'Buy stock';
+	                            return 'buy-col';
+	                        }
+	                    },
+	                    handler: function(grid, rowIndex, colIndex) {
+	                        var rec = store.getAt(rowIndex);
+	                        alert("Buy " + rec.get('company'));
+	                    }
+	                }]
+	            }*/
 	        ],
 	        stripeRows: true,
-	        autoExpandColumn: 'company',
-	        height: 350,
-	        width: 600,
-	        title: 'Array Grid',
-	        stateful: true,
-	        stateId: 'grid'        
+	        frame:true,
+	        title: 'Фильмы',
+	        height:500,
+	        width:717,
+	        clickstoEdit: 1,
+	        store: store,
+	        tbar: [
+	   	        {text: 'Добавить',
+   	        	 icon: 'images/add.gif',
+   	        	 cls: 'x-btn-text-icon'},
+ 			    {text: 'Save',
+			     icon: 'images/save.gif',
+			     handler: this.onSave,
+			     scope: this},
+	        	{text: 'Удалить',
+      	         icon: 'images/delete.gif',
+      	         cls: 'x-btn-text-icon'}
+	       	]
 	    });
-	    
-		return {
+
+	    return {
 			getPanel: function() {
 				return gridPanel; 
 			}
@@ -78,9 +122,21 @@
 	}();
 
 	Ext.onReady(function(){
+		Ext.QuickTips.init();
 		page.getPanel().render('grid-data');
 	});
 </script>
-
-<div id="grid-data"></div>
+<table border="0" style="width:100%; height: 100%;">
+	<tr>
+		<td style="width: 30%;">
+			&nbsp;
+		</td>
+		<td valign="middle"  style="width: 40%;">
+			<div id="grid-data"></div>
+		</td>
+		<td style="width: 30%;">
+			&nbsp;
+		</td>
+	</tr>
+</table>
 </body>

@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+<!--
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+-->	
 	<bean id="dataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
 		<property name="url" value="jdbc:mysql://localhost/disk_archive" />
 		<property name="user" value="root" />
@@ -20,6 +20,7 @@
 			<list>
 				<value>com.alextim.diskarchive.entity.Film</value>
 				<value>com.alextim.diskarchive.entity.FilmGroup</value>
+				<value>com.alextim.diskarchive.entity.Series</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -30,15 +31,19 @@
 	</bean>
 
 	<bean id="filmDAO" class="com.alextim.diskarchive.dao.impl.FilmDAO">
-		<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="filmGroupDAO" class="com.alextim.diskarchive.dao.impl.FilmGroupDAO">
-		<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="seriesDAO" class="com.alextim.diskarchive.dao.impl.SeriesDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
 	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.CoreDAOFactory">
 		<property name="filmDAO" ref="filmDAO"/>
 		<property name="filmGroupDAO" ref="filmGroupDAO"/>
+		<property name="seriesDAO" ref="seriesDAO"/>
 	</bean>
 	
 </beans>

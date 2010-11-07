@@ -1,9 +1,8 @@
 package com.alextim.diskarchive.dao.impl;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
+import com.alextim.diskarchive.entity.FilmGroup;
 
-public class FilmGroupDAO extends HibernateDaoSupport implements IFilmGroupDAO{
+public class FilmGroupDAO extends BasicDAO<FilmGroup> implements IFilmGroupDAO{
 
 }

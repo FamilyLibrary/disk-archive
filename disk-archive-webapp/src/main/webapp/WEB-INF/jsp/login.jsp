@@ -5,10 +5,12 @@
 	
 	<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
 	<script type="text/javascript" src="ext/ext-all-debug.js"></script>
+
+	<title>${title}</title>
 </head>
 <script type="text/javascript">
 	Ext.onReady(function(){
-		
+		Ext.QuickTips.init();	
 	});
 </script>
 

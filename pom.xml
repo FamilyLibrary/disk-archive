@@ -66,6 +66,12 @@
 			<artifactId>javassist</artifactId>
 			<version>3.13.0-GA</version>
 		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
+        </dependency>
 	</dependencies>
 	<modules>
 		<module>disk-archive-app</module>

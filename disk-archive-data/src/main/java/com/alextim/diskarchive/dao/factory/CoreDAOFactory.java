@@ -2,12 +2,12 @@ package com.alextim.diskarchive.dao.factory;
 
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
+import com.alextim.diskarchive.dao.ISeriesDAO;
 
 public class CoreDAOFactory {
-	private static CoreDAOFactory factory;
-	
 	private IFilmGroupDAO filmGroupDAO;
 	private IFilmDAO filmDAO;
+	private ISeriesDAO seriesDAO;
 
 	public IFilmGroupDAO getFilmGroupDAO() {
 		return filmGroupDAO;
@@ -23,10 +23,10 @@ public class CoreDAOFactory {
 		this.filmDAO = filmDAO;
 	}
 
-	public static CoreDAOFactory getInstance() {
-		if (factory == null) {
-			factory = new CoreDAOFactory();
-		}
-		return factory;
+	public ISeriesDAO getSeriesDAO() {
+		return seriesDAO;
+	}
+	public void setSeriesDAO(ISeriesDAO seriesDAO) {
+		this.seriesDAO = seriesDAO;
 	}
 }

@@ -2,14 +2,18 @@ package com.alextim.diskarchive.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@Table(name="film_groups")
-public class FilmGroup{
+public class Series {
 	@Id
 	private Long id;
 	
+	@OneToOne
+	@PrimaryKeyJoinColumn
+	private Film film;
+
 	private String name;
 	private String description;
 	
@@ -20,6 +24,13 @@ public class FilmGroup{
 		this.id = id;
 	}
 	
+	public Film getFilm() {
+		return film;
+	}
+	public void setFilm(Film film) {
+		this.film = film;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -28,7 +39,7 @@ public class FilmGroup{
 	}
 	
 	public String getDescription() {
-		return description == null ? "" : description;
+		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;

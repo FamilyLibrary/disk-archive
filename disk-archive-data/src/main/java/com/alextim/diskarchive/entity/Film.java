@@ -1,9 +1,11 @@
 package com.alextim.diskarchive.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +17,12 @@ public class Film {
 	private String name;
 	private String description;
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="group_id")
 	private FilmGroup filmGroup;
+	
+	@OneToOne(mappedBy="film")
+	private Author author;
 	
 	public FilmGroup getFilmGroup() {
 		return filmGroup;
@@ -45,5 +50,12 @@ public class Film {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+	public void setAuthor(Author author) {
+		this.author = author;
 	}
 }

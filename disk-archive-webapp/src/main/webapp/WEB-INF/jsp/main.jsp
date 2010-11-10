@@ -26,7 +26,7 @@
                 'filmGroupId', 
                 'description'
             ]
-        })
+        });
 
 	    var textEditor = new Ext.form.TextField();
 
@@ -61,45 +61,39 @@
 	    	tpl: '<tpl for="."><div ext:qtip="{description}" class="x-combo-list-item">{name}</div></tpl>'
 		});
 
+		var sm = new Ext.grid.RowSelectionModel({singleSelect: true});
+		var panelHeight = 500;
+		
 	    var gridPanel = new Ext.grid.EditorGridPanel({
 	        columns: [
   	            {header: 'Группа', width: 140, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
 	            {header: 'Фильм', width: 280, sortable: true, dataIndex: 'filmName', editor: textEditor},
-	            {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor}/*,
+	            {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor},
 	            {
 	                xtype: 'actioncolumn',
+	                sortable: false,
 	                width: 50,
 	                items: [{
-	                    icon   : '../shared/icons/fam/delete.gif',  // Use a URL in the icon config
-	                    tooltip: 'Sell stock',
+	                    icon   : 'images/delete.gif',  // Use a URL in the icon config
+	                    tooltip: 'Удалить',
 	                    handler: function(grid, rowIndex, colIndex) {
 	                        var rec = store.getAt(rowIndex);
-	                        alert("Sell " + rec.get('company'));
-	                    }
-	                }, {
-	                    getClass: function(v, meta, rec) {          // Or return a class from a function
-	                        if (rec.get('change') < 0) {
-	                            this.items[1].tooltip = 'Do not buy!';
-	                            return 'alert-col';
-	                        } else {
-	                            this.items[1].tooltip = 'Buy stock';
-	                            return 'buy-col';
-	                        }
-	                    },
-	                    handler: function(grid, rowIndex, colIndex) {
-	                        var rec = store.getAt(rowIndex);
-	                        alert("Buy " + rec.get('company'));
+	                        //alert("Sell " + rec.get('company'));
 	                    }
 	                }]
-	            }*/
+	            }
 	        ],
 	        stripeRows: true,
-	        frame:true,
-	        title: 'Фильмы',
-	        height:500,
+	        height: panelHeight / 2,
 	        width:717,
 	        clickstoEdit: 1,
 	        store: store,
+	        sm: sm,
+	        split: true,
+			region: 'north',
+			viewConfig: {
+				forceFit: true
+			},
 	        tbar: [
 	   	        {text: 'Добавить',
    	        	 icon: 'images/add.gif',
@@ -107,16 +101,47 @@
  			    {text: 'Save',
 			     icon: 'images/save.gif',
 			     handler: this.onSave,
-			     scope: this},
-	        	{text: 'Удалить',
-      	         icon: 'images/delete.gif',
-      	         cls: 'x-btn-text-icon'}
+			     scope: this}
 	       	]
 	    });
 
+	 	// define a template to use for the detail view
+		var bookTplMarkup = [
+			'Title: <a href="{DetailPageURL}" target="_blank">{filmName}</a><br/>',
+			'Author: {Author}<br/>',
+			'Actors: {Manufacturer}<br/>',
+			'Number of series: {NuumberOfSeries}<br/>'
+		];
+		var bookTpl = new Ext.Template(bookTplMarkup);
+
+		var ct = new Ext.Panel({
+			frame: true,
+			title: 'Фильмы',
+			width: 540,
+			height: panelHeight,
+			layout: 'border',
+			items: [
+				gridPanel,
+				{
+					id: 'detailPanel',
+					region: 'center',
+					bodyStyle: {
+						background: '#ffffff',
+						padding: '7px'
+					},
+					html: 'Выбирите фильм чтобы увидить описание.'
+				}
+			]
+		})
+		gridPanel.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
+			var detailPanel = Ext.getCmp('detailPanel');
+			bookTpl.overwrite(detailPanel.body, r.data);
+		});
+
+
 	    return {
 			getPanel: function() {
-				return gridPanel; 
+				return ct; 
 			}
 		};
 	}();

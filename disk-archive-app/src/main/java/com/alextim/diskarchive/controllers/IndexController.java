@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
+import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 
@@ -35,6 +36,7 @@ public class IndexController extends MultiActionController{
 		
 		Collection<FilmGroup> filmGroups = filmGroupDAO.findAll();
 		Collection<Film> films = filmDAO.findAll();
+		Collection<Author> author = coreDAOFactory.getAuthorDAO().findAll();
 
 		String rows = "[";
 		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext(); ) {

@@ -12,7 +12,7 @@ public class FilmGroup{
 	
 	private String name;
 	private String description;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -33,4 +33,5 @@ public class FilmGroup{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 }

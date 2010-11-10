@@ -1,17 +1,18 @@
 package com.alextim.diskarchive.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Series {
 	@Id
 	private Long id;
-	
-	@OneToOne
-	@PrimaryKeyJoinColumn
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="film_id")
 	private Film film;
 
 	private String name;

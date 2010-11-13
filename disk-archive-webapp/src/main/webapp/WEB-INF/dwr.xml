@@ -3,7 +3,6 @@
 "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
 <dwr>
 	<allow>
-		<convert converter="bean" match="com.roadrantz.traffic.TrafficInfo" />
 		<create creator="spring" javascript="FilmService">
 			<param name="beanName" value="filmRemoteService" />
 		</create>

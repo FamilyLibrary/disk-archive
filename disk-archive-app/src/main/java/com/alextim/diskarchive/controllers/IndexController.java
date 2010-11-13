@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.view.json.JsonView;
 
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
@@ -18,6 +19,7 @@ import com.alextim.diskarchive.entity.FilmGroup;
 
 public class IndexController extends MultiActionController{
 	private final CoreDAOFactory coreDAOFactory;
+	private JsonView jsonView;
 	
 	public IndexController(CoreDAOFactory coreDAOFactory) {
 		this.coreDAOFactory = coreDAOFactory;
@@ -38,6 +40,9 @@ public class IndexController extends MultiActionController{
 		Collection<Film> films = filmDAO.findAll();
 		Collection<Author> author = coreDAOFactory.getAuthorDAO().findAll();
 
+		//JSONArray so = JSONArray.fromObject(author);
+		//so.toString();
+		
 		String rows = "[";
 		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext(); ) {
 			Film film = iterator.next();
@@ -68,4 +73,12 @@ public class IndexController extends MultiActionController{
 		
 		return mv;
 	}
+
+	public JsonView getJsonView() {
+		return jsonView;
+	}
+	public void setJsonView(JsonView jsonView) {
+		this.jsonView = jsonView;
+	}
+	
 }

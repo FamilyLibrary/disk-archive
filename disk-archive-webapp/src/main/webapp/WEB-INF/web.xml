@@ -14,6 +14,15 @@
     </context-param>
 
 	<servlet>
+		<servlet-name>dwr</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
 		<servlet-name>dispacher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -31,7 +40,12 @@
 		<servlet-name>dispacher</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
- 	
+	
+	<servlet-mapping>
+		<servlet-name>dwr</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	
 	<filter>
 		<filter-name>Acegi Authentication Processing Filter</filter-name>
 		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>

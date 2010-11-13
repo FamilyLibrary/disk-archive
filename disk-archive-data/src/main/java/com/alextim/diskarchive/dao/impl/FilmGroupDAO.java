@@ -5,4 +5,5 @@ import com.alextim.diskarchive.entity.FilmGroup;
 
 public class FilmGroupDAO extends BasicDAO<FilmGroup> implements IFilmGroupDAO{
 
+
 }

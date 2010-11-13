@@ -7,6 +7,9 @@
 	<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
 	<script type="text/javascript" src="ext/ext-all-debug.js"></script>
 	
+	<script type='text/javascript' src='dwr/engine.js'></script>
+	<script type='text/javascript' src='dwr/interface/FilmService.js'></script>
+	
 	<title>${title}</title>
 </head>
 
@@ -78,7 +81,9 @@
 	                    tooltip: 'Удалить',
 	                    handler: function(grid, rowIndex, colIndex) {
 	                        var rec = store.getAt(rowIndex);
-	                        //alert("Sell " + rec.get('company'));
+	                        var id = rec.get('id');
+
+	                        FilmService.deleteFilm(id);
 	                    }
 	                }]
 	            }
@@ -95,13 +100,23 @@
 				forceFit: true
 			},
 	        tbar: [
-	   	        {text: 'Добавить',
-   	        	 icon: 'images/add.gif',
-   	        	 cls: 'x-btn-text-icon'},
- 			    {text: 'Save',
-			     icon: 'images/save.gif',
-			     handler: this.onSave,
-			     scope: this}
+	   	        {
+		   	        text: 'Добавить',
+   	        	 	icon: 'images/add.gif',
+   	        	 	cls: 'x-btn-text-icon',
+   	        	 	handler: function(){
+	   	        		FilmService.addFilm();	
+	   	        	}
+   	        	}, {
+   	 			    text: 'Save',
+			     	icon: 'images/save.gif',
+			     	handler: function() {
+	                    /*var rec = store.getAt(rowIndex);
+	                    var id = rec.get('id');
+	
+	                    FilmService.save(id);*/
+   	        		}
+			    }
 	       	]
 	    });
 

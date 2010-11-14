@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"	
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.directwebremoting.org/schema/spring-dwr
+						http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd">
+
+	<bean id="filmRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
+		<dwr:remote javascript="FilmService">
+			<dwr:include method="addFilm"/>
+			<dwr:include method="deleteFilm"/>
+			<dwr:include method="save"/>
+		</dwr:remote>
+		<constructor-arg index="0" ref="coreDAOFactory" />
+	</bean>
+
+</beans>

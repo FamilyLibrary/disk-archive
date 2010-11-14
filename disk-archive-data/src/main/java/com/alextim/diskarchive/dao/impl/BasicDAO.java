@@ -58,7 +58,7 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 			@SuppressWarnings("unchecked")
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException,	SQLException {
-				Query query = session.createQuery("from FilmGroup order by id");
+				Query query = session.createQuery("from " + persistentClass.getSimpleName() + " order by id");
 				List<T> groups = query.list();
 				T result = null;
 				if (groups.size() > 0) {

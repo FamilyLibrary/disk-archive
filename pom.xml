@@ -83,7 +83,6 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>disk-archive-app</module>
 		<module>disk-archive-data</module>
 		<module>disk-archive-webapp</module>
 	</modules>

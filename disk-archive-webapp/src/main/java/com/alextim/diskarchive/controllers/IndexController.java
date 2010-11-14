@@ -6,6 +6,11 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.json.JsonView;
@@ -38,12 +43,26 @@ public class IndexController extends MultiActionController{
 		
 		Collection<FilmGroup> filmGroups = filmGroupDAO.findAll();
 		Collection<Film> films = filmDAO.findAll();
-		Collection<Author> author = coreDAOFactory.getAuthorDAO().findAll();
+		//Collection<Author> author = coreDAOFactory.getAuthorDAO().findAll();
 
-		//JSONArray so = JSONArray.fromObject(author);
-		//so.toString();
+		JsonConfig config = new JsonConfig();
+		config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
 		
 		String rows = "[";
+		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext(); ) {
+			Film film = iterator.next();
+			
+			JSONObject obj = (JSONObject)JSONSerializer.toJSON(film, config);
+			String row = obj.toString();
+			
+			if (iterator.hasNext()) {
+				row+=",";
+			}
+			rows+=row;
+		}
+		rows+="]";
+		
+		/*String rows = "[";
 		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext(); ) {
 			Film film = iterator.next();
 			
@@ -64,7 +83,7 @@ public class IndexController extends MultiActionController{
 			}
 			rows+=row;
 		}
-		rows+="]";
+		rows+="]";*/
 		
 		mv.addObject("title", "Films");
 		mv.addObject("filmGroups", filmGroups);

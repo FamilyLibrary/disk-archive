@@ -22,13 +22,13 @@ public class FilmRemoteService implements IFilmRemoteService{
 	
 	@Override
 	public void addFilm() {
-		FilmGroup filmGroup = coreDAOFactory.getFilmGroupDAO().getFirst();
+		//FilmGroup filmGroup = coreDAOFactory.getFilmGroupDAO().getFirst();
 		//Author author = coreDAOFactory.getAuthorDAO().getFirst();
 		
 		Film film = new Film();
 		
 		film.setDescription("");
-		film.setFilmGroup(filmGroup);
+		//film.setFilmGroup(filmGroup);
 		film.setName("");
 		//film.setAuthor(author);
 	

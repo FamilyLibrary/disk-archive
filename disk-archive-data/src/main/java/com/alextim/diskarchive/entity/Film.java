@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="films")
@@ -28,6 +27,14 @@ public class Film {
 	private Author author;
 	
 	public FilmGroup getFilmGroup() {
+		if (filmGroup == null) {
+			FilmGroup defaultGroup = new FilmGroup();
+			defaultGroup.setId(-1L);
+			defaultGroup.setName("");
+			defaultGroup.setDescription("");
+			
+			return defaultGroup; 
+		}
 		return filmGroup;
 	}
 	public void setFilmGroup(FilmGroup filmGroup) {
@@ -56,6 +63,14 @@ public class Film {
 	}
 
 	public Author getAuthor() {
+		if (author == null) {
+			Author defaultAuthor = new Author();
+			defaultAuthor.setId(-1L);
+			defaultAuthor.setName("");
+			defaultAuthor.setFilm(this);
+			
+			return defaultAuthor; 
+		}
 		return author;
 	}
 	public void setAuthor(Author author) {

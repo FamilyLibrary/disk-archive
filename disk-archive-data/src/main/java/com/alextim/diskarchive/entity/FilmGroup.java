@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="film_groups")
-public class FilmGroup{
+public class FilmGroup  implements IEntity{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	

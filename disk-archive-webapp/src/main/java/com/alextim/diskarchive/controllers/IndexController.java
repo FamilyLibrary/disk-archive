@@ -1,7 +1,11 @@
 package com.alextim.diskarchive.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +22,6 @@ import org.springframework.web.servlet.view.json.JsonView;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 
@@ -41,10 +44,25 @@ public class IndexController extends MultiActionController{
 		IFilmGroupDAO filmGroupDAO = coreDAOFactory.getFilmGroupDAO();
 		IFilmDAO filmDAO = coreDAOFactory.getFilmDAO();
 		
-		Collection<FilmGroup> filmGroups = filmGroupDAO.findAll();
+		List<FilmGroup> filmGroups = new ArrayList<FilmGroup>(filmGroupDAO.findAll());
 		Collection<Film> films = filmDAO.findAll();
-		//Collection<Author> author = coreDAOFactory.getAuthorDAO().findAll();
 
+		Collections.sort(filmGroups, new Comparator<FilmGroup>() {
+			@Override
+			public int compare(FilmGroup filmGroup1, FilmGroup filmGroup2) {
+				String name1 = filmGroup1.getName();
+				String name2 = filmGroup2.getName();
+				
+				int result = 0;
+				if (name1 != null) {
+					result = name1.compareTo(name2);
+				} else if (name2 != null) {
+					result = name2.compareTo(name1);
+				}
+				return result;
+			}
+		});
+		
 		JsonConfig config = new JsonConfig();
 		config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
 		
@@ -61,29 +79,6 @@ public class IndexController extends MultiActionController{
 			rows+=row;
 		}
 		rows+="]";
-		
-		/*String rows = "[";
-		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext(); ) {
-			Film film = iterator.next();
-			
-			Long id = film.getId();
-			String filmName = film.getName();
-			FilmGroup filmGroup = film.getFilmGroup();
-			String description = film.getDescription();
-			
-			String row = "{";
-			row+="id: " + id;
-			row+=",filmName: '" + filmName + "'";
-			row+=",filmGroupId: " + (filmGroup == null ? -1L : filmGroup.getId());
-			row+=",description: '" + description + "'";
-			row+="}";
-
-			if (iterator.hasNext()) {
-				row+=",";
-			}
-			rows+=row;
-		}
-		rows+="]";*/
 		
 		mv.addObject("title", "Films");
 		mv.addObject("filmGroups", filmGroups);

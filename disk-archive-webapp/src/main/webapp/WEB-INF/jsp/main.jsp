@@ -71,7 +71,7 @@
 			
 		    var gridPanel = new Ext.grid.EditorGridPanel({
 		        columns: [
-	  	            {header: 'Группа', width: 140, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
+	  	            {header: 'Группа', width: 210, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
 		            {header: 'Фильм', width: 280, sortable: true, dataIndex: 'name', editor: textEditor},
 		            {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor},
 		            {
@@ -104,7 +104,7 @@
 		        ],
 		        stripeRows: true,
 		        height: panelHeight / 2,
-		        width:717,
+		        width:800,
 		        clickstoEdit: 1,
 		        store: store,
 		        sm: sm,
@@ -165,8 +165,12 @@
 				]
 			})
 			gridPanel.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
-				var detailPanel = Ext.getCmp('detailPanel');
-				bookTpl.overwrite(detailPanel.body, r.data);
+                var id = r.get('id');
+
+				FilmService.filmInfo(id, function() {
+					var detailPanel = Ext.getCmp('detailPanel');
+					bookTpl.overwrite(detailPanel.body, r.data);
+       			});
 			});
 	
 	

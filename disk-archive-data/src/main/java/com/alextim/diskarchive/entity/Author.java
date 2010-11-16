@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="film_authors")
-public class Author{
+public class Author implements IEntity{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	

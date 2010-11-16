@@ -1,19 +1,21 @@
 package com.alextim.diskarchive.dwr.services.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.alextim.diskarchive.FilmInfoWrapper;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
 import com.alextim.diskarchive.dwr.services.IFilmRemoteService;
-import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
-import com.alextim.diskarchive.entity.FilmGroup;
+import com.alextim.diskarchive.entity.IEntity;
 
 public class FilmRemoteService implements IFilmRemoteService{
 
+	private static final String IDENTIFIER = "id";
 	private CoreDAOFactory coreDAOFactory;
 
 	public FilmRemoteService(CoreDAOFactory coreDAOFactory) {
@@ -22,15 +24,10 @@ public class FilmRemoteService implements IFilmRemoteService{
 	
 	@Override
 	public void addFilm() {
-		//FilmGroup filmGroup = coreDAOFactory.getFilmGroupDAO().getFirst();
-		//Author author = coreDAOFactory.getAuthorDAO().getFirst();
-		
 		Film film = new Film();
 		
 		film.setDescription("");
-		//film.setFilmGroup(filmGroup);
 		film.setName("");
-		//film.setAuthor(author);
 	
 		coreDAOFactory.getFilmDAO().saveOrUpdate(film);
 	}
@@ -41,28 +38,69 @@ public class FilmRemoteService implements IFilmRemoteService{
 		coreDAOFactory.getFilmDAO().delete(film);
 	}
 
+	public FilmInfoWrapper filmInfo(Long id) {
+		Film film = coreDAOFactory.getFilmDAO().getById(id);
+		
+		FilmInfoWrapper wrapper = new FilmInfoWrapper();
+		
+		wrapper.setDescription(film.getDescription());
+		
+		String author = "";
+		if (film.getAuthor() != null) {
+			author = film.getAuthor().getName();
+		}
+		wrapper.setAuthor(author);
+		
+		return wrapper;
+	}
+	
 	@Override
 	public void save(String jsonResult) {
 		JSONObject array = (JSONObject)JSONSerializer.toJSON(jsonResult);
 
-		Map<Long, JSONObject> result = new HashMap<Long, JSONObject>();
 		for (Object keyObj : array.keySet()) {
 			String key = keyObj.toString();
-			String[] parts = key.split("_");
-			
-			Long id = Long.parseLong(parts[1]);
 			JSONObject changes = (JSONObject)array.get(key);
-
-			result.put(id, changes);
 			
-			Film film = coreDAOFactory.getFilmDAO().getById(id);
+			Long filmId = changes.getLong(IDENTIFIER);
+			Film film = coreDAOFactory.getFilmDAO().getById(filmId);
+
+			for (Object changeKeyObj : changes.keySet()) {
+				String name = changeKeyObj.toString();
+				if (IDENTIFIER.equals(name)) {
+					continue;
+				}
+				Object value = changes.getString(name); //12
+				
+				try {
+					String[] nameParts = name.split("\\.");
+					String lastPart = nameParts[nameParts.length - 1];
+					
+					if (nameParts.length > 1 && IDENTIFIER.equals(lastPart)) {
+						String entityName = name.substring(0, name.lastIndexOf("."));
+						
+						Object bean = PropertyUtils.getProperty(film, entityName);
+						Long entityId = Long.parseLong(value.toString());
+						
+						if (bean instanceof IEntity){
+							value = coreDAOFactory.getGenericDAO().getById(((IEntity)bean).getClass(), entityId);
+							name = entityName;
+						}
+					}  
+
+					PropertyUtils.setProperty(film, name, value);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			coreDAOFactory.getFilmDAO().saveOrUpdate(film);
+			
 		}
-		
-		/*
-		Object jObj = JSONSerializer.toJava(changes);
-		jObj.
-		
-		*/
 	}
 	
 

@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Series {
+public class Series  implements IEntity{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 

@@ -3,6 +3,7 @@ package com.alextim.diskarchive.dao.factory;
 import com.alextim.diskarchive.dao.IAuthorDAO;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
+import com.alextim.diskarchive.dao.IGenericDAO;
 import com.alextim.diskarchive.dao.ISeriesDAO;
 
 public class CoreDAOFactory {
@@ -10,6 +11,7 @@ public class CoreDAOFactory {
 	private IFilmDAO filmDAO;
 	private ISeriesDAO seriesDAO;
 	private IAuthorDAO authorDAO;
+	private IGenericDAO genericDAO;
 
 	public IFilmGroupDAO getFilmGroupDAO() {
 		return filmGroupDAO;
@@ -37,5 +39,12 @@ public class CoreDAOFactory {
 	}
 	public void setAuthorDAO(IAuthorDAO authorDAO) {
 		this.authorDAO = authorDAO;
+	}
+	
+	public IGenericDAO getGenericDAO() {
+		return genericDAO;
+	}
+	public void setGenericDAO(IGenericDAO genericDAO) {
+		this.genericDAO = genericDAO;
 	}
 }

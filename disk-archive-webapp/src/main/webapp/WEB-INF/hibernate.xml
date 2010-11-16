@@ -11,6 +11,7 @@
 		<property name="url" value="jdbc:mysql://localhost/disk_archive" />
 		<property name="user" value="root" />
 		<property name="password" value="alextimus" />
+		<property name="encoding" value="utf-8" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -43,12 +44,16 @@
 	<bean id="authorDAO" class="com.alextim.diskarchive.dao.impl.AuthorDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="genericDAO" class="com.alextim.diskarchive.dao.impl.GenericDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 
 	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.CoreDAOFactory">
 		<property name="filmDAO" ref="filmDAO"/>
 		<property name="filmGroupDAO" ref="filmGroupDAO"/>
 		<property name="seriesDAO" ref="seriesDAO"/>
 		<property name="authorDAO" ref="authorDAO"/>
+		<property name="genericDAO" ref="genericDAO"/>
 	</bean>
 	
 </beans>

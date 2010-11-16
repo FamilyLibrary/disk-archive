@@ -9,10 +9,33 @@ var DataGrid = function() {
 						jsonResult += ",";
 					}
 					var id = record.get("id");
+					
+					var obj = {};
+					//var meta = {};
+					
+					obj["id"] = id;
+					//meta["id"] = id;
 
-					var changes = record.getChanges();
-					var jsonRec = Ext.util.JSON.encode(changes);
+					record.fields.each(function(field) {
+						var name = field.name;
+						if (record.modified[name] != undefined) {
+							var value = record.get(name);
+							
+							if (field.mapping != null) {
+								name = field.mapping;
+							}
+							var type = typeof value;
+
+							obj[name] = value;
+							//meta["type"] = type;
+						}
+					});
+
+					var jsonRec = Ext.util.JSON.encode(obj);
+					//var metaRec = Ext.util.JSON.encode(meta);
+					
 					jsonResult += '"changes_' + id + '":' + jsonRec;
+					//jsonResult += ',"meta":' + metaRec;
 				}
 			});
 			

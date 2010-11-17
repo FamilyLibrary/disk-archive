@@ -8,9 +8,11 @@
 
 	<bean id="filmRemoteService"
 		class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
+		<!-- 
 		<dwr:configuration>
 			<dwr:convert type="bean" class="com.alextim.diskarchive.FilmInfoWrapper" />
 		</dwr:configuration>
+		-->
 		<dwr:remote javascript="FilmService">
 			<dwr:include method="addFilm" />
 			<dwr:include method="deleteFilm" />

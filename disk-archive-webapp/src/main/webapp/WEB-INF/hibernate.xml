@@ -23,6 +23,7 @@
 				<value>com.alextim.diskarchive.entity.FilmGroup</value>
 				<value>com.alextim.diskarchive.entity.Series</value>
 				<value>com.alextim.diskarchive.entity.Author</value>
+				<value>com.alextim.diskarchive.entity.Actor</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

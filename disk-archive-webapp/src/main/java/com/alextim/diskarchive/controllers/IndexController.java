@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.view.json.JsonView;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
+import com.alextim.diskarchive.entity.Actor;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 
@@ -46,6 +48,13 @@ public class IndexController extends MultiActionController{
 		
 		List<FilmGroup> filmGroups = new ArrayList<FilmGroup>(filmGroupDAO.findAll());
 		Collection<Film> films = filmDAO.findAll();
+		
+		/*for (Film film : films) {
+			Set<Actor> actors = film.getActors();
+			if (actors!=null) {
+				
+			}
+		}*/
 
 		Collections.sort(filmGroups, new Comparator<FilmGroup>() {
 			@Override

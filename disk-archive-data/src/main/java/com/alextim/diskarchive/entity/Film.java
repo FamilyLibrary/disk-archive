@@ -1,5 +1,7 @@
 package com.alextim.diskarchive.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,6 +28,11 @@ public class Film  implements IEntity{
 	
 	@OneToOne(mappedBy="film")
 	private Author author;
+	
+	//@OneToMany(fetch=FetchType.EAGER, mappedBy="film")
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="film_id", insertable=false, updatable=false)
+	private Set<Actor> actors;
 	
 	public FilmGroup getFilmGroup() {
 		if (filmGroup == null) {
@@ -75,5 +83,12 @@ public class Film  implements IEntity{
 	}
 	public void setAuthor(Author author) {
 		this.author = author;
+	}
+	
+	public Set<Actor> getActors() {
+		return actors;
+	}
+	public void setActors(Set<Actor> actors) {
+		this.actors = actors;
 	}
 }

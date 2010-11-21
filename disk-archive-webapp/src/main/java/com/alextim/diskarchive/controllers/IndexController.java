@@ -3,6 +3,7 @@ package com.alextim.diskarchive.controllers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,6 +49,21 @@ public class IndexController extends MultiActionController{
 		
 		Film film = coreDAOFactory.getFilmDAO().getById(filmId);
 		byte[] imageArray = film.getImage();
+
+		/*if (film.getId().equals(16L)) {
+			File file = new File("D:/Projects/disk-archive/disk-archive-webapp/src/main/webapp/images/history.jpg");
+			try {
+				FileInputStream fs = new FileInputStream(file);
+				imageArray = new byte[fs.available()];
+				fs.read(imageArray);
+				
+				film.setImage(imageArray);
+				coreDAOFactory.getFilmDAO().saveOrUpdate(film);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}*/
 		
 		if (imageArray != null) {
 			try {

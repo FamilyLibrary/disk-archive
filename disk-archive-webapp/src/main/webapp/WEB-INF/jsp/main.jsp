@@ -15,6 +15,12 @@
 	<script type='text/javascript' src='js/dataGrid.js'></script>
 	
 	<title>${title}</title>
+
+	<style>
+		.descr_cell {
+			font:11px tahoma,arial,helvetica,sans-serif;
+		}
+	</style>
 	
 	<script type="text/javascript">
 		function openWindow(filmId) {
@@ -141,15 +147,16 @@
 	
 		 	// define a template to use for the detail view
 			var bookTplMarkup = [
-			    '<table>',
-			    '<tr><td><a href=\'javascript:openWindow({filmId})\'>',
-			    '<img width="100" height="100" src="{imageUrl}"></img>',
-			    '</a></td><td>',
+			    '<table style="width:100%">',
+			    '<tr><td style="width:110px;" valign="top">',
+			    '<a href=\'javascript:openWindow({filmId})\'>',
+			    '<img style="width:100px;height:100px;" src="{imageUrl}"></img>',
+			    '</a></td><td class="descr_cell" valign="top"><div>',
 				'Author: {author}<br/>',
 				'Number of series: {numberOfSeries}<br/>',
 				'Actors: {actors}<br/>',
 				'Description:<br/>{description}',
-				'</td></tr>',
+				'</div></td></tr>',
 				'</table>'
 			];
 			var bookTpl = new Ext.Template(bookTplMarkup);

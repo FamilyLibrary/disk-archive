@@ -1,22 +1,40 @@
 package com.alextim.diskarchive;
 
+import com.alextim.diskarchive.entity.Film;
+
 
 public class FilmInfoWrapper {
-	String author;
-	String description;
+	private static final String FILM_PARAM = "filmId";
 
-	public String getAuthor() {
-		return author;
+	private static String baseImageURL = "renderGeneralImage.html";
+	
+	private transient Film film;
+
+	public FilmInfoWrapper(Film film) {
+		this.film = film;
 	}
-	public void setAuthor(String author) {
-		this.author = author;
+	
+	public Long getFilmId() {
+		return film.getId();
+	}
+	
+	public String getAuthor() {
+		String author = "";
+		if (film.getAuthor() != null) {
+			author = film.getAuthor().getName();
+		}
+		return author;
 	}
 
 	public String getDescription() {
-		return description;
+		return film.getDescription();
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	
+	public int getNumberOfSeries() {
+		return 0;
 	}
-
+	
+	public String getImageUrl() {
+		return baseImageURL + "?" + FILM_PARAM + "=" + film.getId();
+	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,10 +30,12 @@ public class Film  implements IEntity{
 	@OneToOne(mappedBy="film")
 	private Author author;
 	
-	//@OneToMany(fetch=FetchType.EAGER, mappedBy="film")
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="film_id", insertable=false, updatable=false)
 	private Set<Actor> actors;
+
+	@Lob
+	private byte[] image;
 	
 	public FilmGroup getFilmGroup() {
 		if (filmGroup == null) {
@@ -91,4 +94,12 @@ public class Film  implements IEntity{
 	public void setActors(Set<Actor> actors) {
 		this.actors = actors;
 	}
+	
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
 }

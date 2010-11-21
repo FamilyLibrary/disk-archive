@@ -40,17 +40,7 @@ public class FilmRemoteService implements IFilmRemoteService{
 
 	public FilmInfoWrapper filmInfo(Long id) {
 		Film film = coreDAOFactory.getFilmDAO().getById(id);
-		
-		FilmInfoWrapper wrapper = new FilmInfoWrapper();
-		
-		wrapper.setDescription(film.getDescription());
-		
-		String author = "";
-		if (film.getAuthor() != null) {
-			author = film.getAuthor().getName();
-		}
-		wrapper.setAuthor(author);
-		
+		FilmInfoWrapper wrapper = new FilmInfoWrapper(film);
 		return wrapper;
 	}
 	

@@ -17,6 +17,9 @@
 	<title>${title}</title>
 	
 	<script type="text/javascript">
+		function openWindow(filmId) {
+			window.open("upload.html?filmId=" + filmId,"mywindow", "width=350,height=250");
+		};
 		var page = function() {
 	
 			var store = new Ext.data.JsonStore({
@@ -138,10 +141,16 @@
 	
 		 	// define a template to use for the detail view
 			var bookTplMarkup = [
+			    '<table>',
+			    '<tr><td><a href=\'javascript:openWindow({filmId})\'>',
+			    '<img width="100" height="100" src="{imageUrl}"></img>',
+			    '</a></td><td>',
 				'Author: {author}<br/>',
-				'Actors: {Manufacturer}<br/>',
 				'Number of series: {numberOfSeries}<br/>',
-				'Description:<br/>{description}'
+				'Actors: {actors}<br/>',
+				'Description:<br/>{description}',
+				'</td></tr>',
+				'</table>'
 			];
 			var bookTpl = new Ext.Template(bookTplMarkup);
 	
@@ -167,9 +176,9 @@
 			gridPanel.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
                 var id = r.get('id');
 
-				FilmService.filmInfo(id, function() {
+				FilmService.filmInfo(id, function(fileInfo) {
 					var detailPanel = Ext.getCmp('detailPanel');
-					bookTpl.overwrite(detailPanel.body, r.data);
+					bookTpl.overwrite(detailPanel.body, fileInfo);
        			});
 			});
 	

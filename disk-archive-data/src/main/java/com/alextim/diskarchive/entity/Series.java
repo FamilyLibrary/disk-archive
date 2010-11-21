@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -19,6 +20,9 @@ public class Series  implements IEntity{
 
 	private String name;
 	private String description;
+	
+	@Lob
+	private Byte[] image;
 	
 	public Long getId() {
 		return id;
@@ -46,5 +50,12 @@ public class Series  implements IEntity{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Byte[] getImage() {
+		return image;
+	}
+	public void setImage(Byte[] image) {
+		this.image = image;
 	}
 }

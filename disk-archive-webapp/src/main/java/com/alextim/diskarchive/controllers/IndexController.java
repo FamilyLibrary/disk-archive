@@ -1,12 +1,15 @@
 package com.alextim.diskarchive.controllers;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +26,6 @@ import org.springframework.web.servlet.view.json.JsonView;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.entity.Actor;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 
@@ -40,6 +42,26 @@ public class IndexController extends MultiActionController{
 		mv.addObject("title", "Login");
 		return mv;
 	}
+	public ModelAndView renderGeneralImage(HttpServletRequest request, HttpServletResponse response) {
+		String filmIdParam = request.getParameter("filmId");
+		Long filmId = Long.parseLong(filmIdParam);
+		
+		Film film = coreDAOFactory.getFilmDAO().getById(filmId);
+		byte[] imageArray = film.getImage();
+		
+		if (imageArray != null) {
+			try {
+				response.getOutputStream().write(imageArray);
+				response.setContentType("application/octet-stream"); 
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {response.getOutputStream().close();} catch (IOException e) {}
+			}
+		}
+		return null;
+	}
+	
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/main.jsp");
 	

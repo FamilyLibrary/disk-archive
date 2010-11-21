@@ -6,13 +6,12 @@
 						http://www.directwebremoting.org/schema/spring-dwr
 						http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd">
 
+	<dwr:configuration>
+		<dwr:convert type="bean" class="com.alextim.diskarchive.FilmInfoWrapper" />
+	</dwr:configuration>
+
 	<bean id="filmRemoteService"
 		class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
-		<!-- 
-		<dwr:configuration>
-			<dwr:convert type="bean" class="com.alextim.diskarchive.FilmInfoWrapper" />
-		</dwr:configuration>
-		-->
 		<dwr:remote javascript="FilmService">
 			<dwr:include method="addFilm" />
 			<dwr:include method="deleteFilm" />
@@ -21,5 +20,5 @@
 		</dwr:remote>
 		<constructor-arg index="0" ref="coreDAOFactory" />
 	</bean>
-
+	
 </beans>

@@ -24,7 +24,7 @@
 	
 	<script type="text/javascript">
 		function openWindow(filmId) {
-			window.open("upload.html?filmId=" + filmId,"mywindow", "width=350,height=250");
+			window.open("uploadFile.html?filmId=" + filmId,"mywindow", "width=732,height=250");
 		};
 		var page = function() {
 	
@@ -179,7 +179,7 @@
 						html: 'Выбирите фильм чтобы увидить описание.'
 					}
 				]
-			})
+			});
 			gridPanel.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
                 var id = r.get('id');
 

@@ -1,9 +1,5 @@
 package com.alextim.diskarchive.controllers;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,6 +74,20 @@ public class IndexController extends MultiActionController{
 		return null;
 	}
 	
+	public ModelAndView uploadFile(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mv = new ModelAndView("WEB-INF/jsp/uploadFile.jsp");
+		
+		String filmIdParam = request.getParameter("filmId");
+		String uploadParam = request.getParameter("upload");
+		
+		if (uploadParam!=null) {
+			System.out.println("uploading");
+		}
+		mv.addObject("filmId", Long.parseLong(filmIdParam));
+
+		return mv;
+	}
+	
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/main.jsp");
 	
@@ -86,13 +96,6 @@ public class IndexController extends MultiActionController{
 		
 		List<FilmGroup> filmGroups = new ArrayList<FilmGroup>(filmGroupDAO.findAll());
 		Collection<Film> films = filmDAO.findAll();
-		
-		/*for (Film film : films) {
-			Set<Actor> actors = film.getActors();
-			if (actors!=null) {
-				
-			}
-		}*/
 
 		Collections.sort(filmGroups, new Comparator<FilmGroup>() {
 			@Override

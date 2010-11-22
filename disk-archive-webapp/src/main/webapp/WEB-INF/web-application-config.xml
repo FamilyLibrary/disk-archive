@@ -11,6 +11,7 @@
 				<prop key="login.html">indexController</prop>
 				<prop key="main.html">indexController</prop>
 				<prop key="renderGeneralImage.html">indexController</prop>
+				<prop key="uploadFile.html">indexController</prop>
 			</props>
 		</property>
 	</bean>

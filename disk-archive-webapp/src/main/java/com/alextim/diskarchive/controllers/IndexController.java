@@ -108,7 +108,7 @@ public class IndexController extends MultiActionController {
 		JsonConfig config = new JsonConfig();
 		config.setJsonPropertyFilter(new PropertyFilter() {
 			public boolean apply(Object source, String name, Object value) {
-				if (value != null && Lob.class.isAssignableFrom(value.getClass())) {
+				if (source instanceof Film && "image".equals(name)) {
 					return true;
 				}
 				return false;

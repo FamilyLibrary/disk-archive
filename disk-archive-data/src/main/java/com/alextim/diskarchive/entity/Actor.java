@@ -1,11 +1,15 @@
 package com.alextim.diskarchive.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +19,13 @@ public class Actor {
 	private Long id;
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name="film_id")
-	private Film film;
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="films_actors",
+		joinColumns=@JoinColumn(name="actor_id"),
+		inverseJoinColumns=@JoinColumn(name="film_id")
+	)
+	private Set<Film> films;
 	
 	public Long getId() {
 		return id;
@@ -33,10 +41,10 @@ public class Actor {
 		this.name = name;
 	}
 	
-	public Film getFilm() {
-		return film;
+	public Set<Film> getFilms() {
+		return films;
 	}
-	public void setFilm(Film film) {
-		this.film = film;
+	public void setFilms(Set<Film> films) {
+		this.films = films;
 	}
 }

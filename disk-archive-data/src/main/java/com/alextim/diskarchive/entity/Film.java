@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,11 +28,16 @@ public class Film  implements IEntity{
 	@JoinColumn(name="group_id")
 	private FilmGroup filmGroup;
 	
-	@OneToOne(mappedBy="film")
+	@OneToOne
+	@JoinColumn(name="author_id")
 	private Author author;
 	
 	@OneToMany(fetch=FetchType.EAGER)
-	@JoinColumn(name="film_id", insertable=false, updatable=false)
+	@JoinTable(
+		name="films_actors",
+		joinColumns=@JoinColumn(name="film_id"),
+		inverseJoinColumns=@JoinColumn(name="actor_id")
+	)
 	private Set<Actor> actors;
 
 	@Lob

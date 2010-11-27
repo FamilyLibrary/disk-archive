@@ -10,6 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="ext/ux/fileuploadfield/css/fileuploadfield.css">
 	
 	<script type="text/javascript">
+	window.onbeforeonload = function() {
+		if (opener.shouldReload) {
+			opener.location.reload();
+		}
+	};
 	var page = function() {
 		var msg = function(title, msg){
 	        Ext.Msg.show({
@@ -42,9 +47,10 @@
                 handler: function(){
                     if(panel.getForm().isValid()){
                     	panel.getForm().submit({
-    	                    url: 'uploadFile.html?filmId=${filmId}&upload',
+    	                    url: 'uploadFile.html?filmId=${filmId}',
     	                    waitMsg: 'Uploading file...',
     	                    success: function(fp, o){
+    	                    	opener.shouldReload = true;
     	                        msg('Success', 'Processed file "'+o.result.file+'" on the server');
     	                    }
     	                });

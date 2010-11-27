@@ -11,7 +11,7 @@
 				<prop key="login.html">indexController</prop>
 				<prop key="main.html">indexController</prop>
 				<prop key="renderGeneralImage.html">indexController</prop>
-				<prop key="uploadFile.html">indexController</prop>
+				<prop key="uploadFile.html">fileUploadController</prop>
 			</props>
 		</property>
 	</bean>
@@ -23,9 +23,18 @@
 
 	<bean id="indexController" class="com.alextim.diskarchive.controllers.IndexController">
 		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
-		<property name="jsonView" ref="jsonView"/>
-		
+		<property name="jsonView" ref="jsonView" />
+
 		<constructor-arg index="0" ref="coreDAOFactory" />
+	</bean>
+
+	<bean id="fileUploadController" class="com.alextim.diskarchive.controllers.FileUploadController">
+		<constructor-arg index="0" ref="coreDAOFactory" />
+		<property name="formView" value="WEB-INF/jsp/uploadFile.jsp"/> 
+	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="1000000"/>
 	</bean>
 
 	<bean name="jsonView" class="org.springframework.web.servlet.view.json.JsonView">
@@ -34,5 +43,6 @@
 		</property>
 	</bean>
 
-	<bean name="jsonlibJsonWriter" class="org.springframework.web.servlet.view.json.writer.jsonlib.JsonlibJsonStringWriter" />
+	<bean name="jsonlibJsonWriter"
+		class="org.springframework.web.servlet.view.json.writer.jsonlib.JsonlibJsonStringWriter" />
 </beans>

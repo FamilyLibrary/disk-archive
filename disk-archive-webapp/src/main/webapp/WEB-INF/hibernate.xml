@@ -49,12 +49,11 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
-	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.CoreDAOFactory">
-		<property name="filmDAO" ref="filmDAO"/>
-		<property name="filmGroupDAO" ref="filmGroupDAO"/>
-		<property name="seriesDAO" ref="seriesDAO"/>
-		<property name="authorDAO" ref="authorDAO"/>
-		<property name="genericDAO" ref="genericDAO"/>
-	</bean>
-	
+    <bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.CoreDAOFactory">
+        <property name="filmDAO" ref="filmDAO"/>
+        <property name="filmGroupDAO" ref="filmGroupDAO"/>
+        <property name="seriesDAO" ref="seriesDAO"/>
+        <property name="authorDAO" ref="authorDAO"/>
+        <property name="genericDAO" ref="genericDAO"/>
+    </bean>
 </beans>

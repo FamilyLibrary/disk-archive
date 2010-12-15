@@ -7,10 +7,10 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            WEB-INF/web-application-config.xml
             WEB-INF/hibernate.xml
             WEB-INF/security.xml
             WEB-INF/dwr-config.xml
+            WEB-INF/web-application-config.xml
         </param-value>
     </context-param>
 

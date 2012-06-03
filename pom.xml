@@ -40,7 +40,6 @@
 			<artifactId>sojo</artifactId>
 			<version>1.0.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>

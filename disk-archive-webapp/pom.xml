@@ -15,8 +15,6 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>disk-archive-webapp Maven Webapp</name>
-
 	<build>
 		<plugins>
 			<plugin>

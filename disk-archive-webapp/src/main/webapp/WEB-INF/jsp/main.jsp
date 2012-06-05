@@ -1,33 +1,49 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
-	
-	<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
-	<script type="text/javascript" src="ext/ext-all-debug.js"></script>
-	
-	<script type='text/javascript' src='ext/ext-core/util/JSON.js'></script>
-	
-	<script type='text/javascript' src='dwr/engine.js'></script>
-	<script type='text/javascript' src='dwr/interface/FilmService.js'></script>
-	
-	<script type='text/javascript' src='js/dataGrid.js'></script>
-	
-	<title>${title}</title>
+<link rel="stylesheet" type="text/css"
+	href="ext/resources/css/ext-all.css">
 
-	<style>
-		.descr_cell {
-			font:11px tahoma,arial,helvetica,sans-serif;
-		}
-	</style>
-	
-	<script type="text/javascript">
+<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="ext/ext-all-debug.js"></script>
+
+<script type='text/javascript' src='ext/ext-core/util/JSON.js'></script>
+
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/FilmService.js'></script>
+
+<script type='text/javascript' src='js/dataGrid.js'></script>
+
+<script type="text/javascript" src="ext/ux/grid/GridFilters.js"></script>
+
+<title>${title}</title>
+
+<style>
+.descr_cell {
+	font: 11px tahoma, arial, helvetica, sans-serif;
+}
+</style>
+
+<script type="text/javascript">
 		function openWindow(filmId) {
 			window.open("uploadFile.html?filmId=" + filmId,"mywindow", "width=732,height=250");
 		};
 		var page = function() {
-	
+			var filters = new Ext.ux.grid.GridFilters({
+				autoReload: false,
+			    local: true,
+
+		        filters: [{
+		            type: 'string',
+		            dataIndex: 'name'
+		        }, {
+		            type: 'string',
+		            dataIndex: 'description'
+		        }]
+			 });
+			
 			var store = new Ext.data.JsonStore({
 	    		root: "rows",
 	    		id: "id",
@@ -122,6 +138,7 @@
 				viewConfig: {
 					forceFit: true
 				},
+				plugins: [filters],
 		        tbar: [
 		   	        {
 			   	        text: 'Добавить',
@@ -204,17 +221,13 @@
 	</script>
 </head>
 <body>
-<table border="0" style="width:100%; height: 100%;">
-	<tr>
-		<td style="width: 30%;">
-			&nbsp;
-		</td>
-		<td valign="middle"  style="width: 40%;">
-			<div id="grid-data"></div>
-		</td>
-		<td style="width: 30%;">
-			&nbsp;
-		</td>
-	</tr>
-</table>
+	<table border="0" style="width: 100%; height: 100%;">
+		<tr>
+			<td style="width: 30%;">&nbsp;</td>
+			<td valign="middle" style="width: 40%;">
+				<div id="grid-data"></div>
+			</td>
+			<td style="width: 30%;">&nbsp;</td>
+		</tr>
+	</table>
 </body>

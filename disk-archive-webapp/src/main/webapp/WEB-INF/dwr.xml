@@ -6,5 +6,8 @@
 		<create creator="spring" javascript="FilmService">
 			<param name="beanName" value="filmRemoteService" />
 		</create>
+		<create creator="spring" javascript="FilmGroupService">
+			<param name="beanName" value="filmGroupRemoteService" />
+		</create>
 	</allow>
 </dwr>

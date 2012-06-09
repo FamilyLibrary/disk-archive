@@ -9,15 +9,21 @@
 		<dwr:convert type="bean" class="com.alextim.diskarchive.FilmInfoWrapper" />
 	</dwr:configuration>
 
-	<bean id="filmRemoteService"
-		class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
+	<bean id="filmRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
 		<dwr:remote javascript="FilmService">
 			<dwr:include method="addFilm" />
 			<dwr:include method="deleteFilm" />
 			<dwr:include method="filmInfo" />
 			<dwr:include method="save" />
 		</dwr:remote>
-		<constructor-arg index="0" ref="coreDAOFactory" />
+		<property name="filmService" ref="filmService" />
+	</bean>
+	
+	<bean id="filmGroupRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmGroupRemoteService">
+		<dwr:remote javascript="FilmGroupService">
+			<dwr:include method="addGroup" />
+		</dwr:remote>
+		<property name="filmGroupService" ref="filmGroupService" />
 	</bean>
 	
 </beans>

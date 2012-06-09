@@ -2,65 +2,44 @@ package com.alextim.diskarchive.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Lob;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import net.sf.json.JsonConfig;
-import net.sf.json.util.CycleDetectionStrategy;
-import net.sf.json.util.PropertyFilter;
-
+import org.apache.commons.logging.Log;
+import org.directwebremoting.util.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.servlet.view.json.JsonView;
 
-import com.alextim.diskarchive.dao.IFilmDAO;
-import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
+import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.diskarchive.services.IFilmGroupService;
+import com.alextim.diskarchive.services.IFilmService;
+import com.alextim.diskarchive.utils.JSONHelper;
 
 public class IndexController extends MultiActionController {
-	private final CoreDAOFactory coreDAOFactory;
-	private JsonView jsonView;
+	private final Logger log = Logger.getLogger(IndexController.class);
+	
+	private IFilmService filmService;
+	private IFilmGroupService filmGroupService;
 
-	public IndexController(CoreDAOFactory coreDAOFactory) {
-		this.coreDAOFactory = coreDAOFactory;
-	}
-
-	public ModelAndView login(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/login.jsp");
 		mv.addObject("title", "Login");
 		return mv;
 	}
 
-	public ModelAndView renderGeneralImage(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView renderGeneralImage(HttpServletRequest request, HttpServletResponse response) {
 		String filmIdParam = request.getParameter("filmId");
 		Long filmId = Long.parseLong(filmIdParam);
 
-		Film film = coreDAOFactory.getFilmDAO().getById(filmId);
+		Film film = filmService.getById(filmId);
 		byte[] imageArray = film.getImage();
-
-		/*
-		 * if (film.getId().equals(16L)) { File file = newFile(
-		 * "D:/Projects/disk-archive/disk-archive-webapp/src/main/webapp/images/history.jpg"
-		 * ); try { FileInputStream fs = new FileInputStream(file); imageArray =
-		 * new byte[fs.available()]; fs.read(imageArray);
-		 * 
-		 * film.setImage(imageArray);
-		 * coreDAOFactory.getFilmDAO().saveOrUpdate(film); } catch (IOException
-		 * e) { // TODO Auto-generated catch block e.printStackTrace(); } }
-		 */
 
 		if (imageArray != null) {
 			try {
@@ -78,16 +57,12 @@ public class IndexController extends MultiActionController {
 		return null;
 	}
 
-	public ModelAndView main(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/main.jsp");
+		log.info("Start uploading main page...");
 
-		IFilmGroupDAO filmGroupDAO = coreDAOFactory.getFilmGroupDAO();
-		IFilmDAO filmDAO = coreDAOFactory.getFilmDAO();
-
-		List<FilmGroup> filmGroups = new ArrayList<FilmGroup>(filmGroupDAO
-				.findAll());
-		Collection<Film> films = filmDAO.findAll();
+		List<FilmGroup> filmGroups = filmGroupService.getFilmGroups();
+		List<? extends IEntity> films = filmService.getFilms();
 
 		Collections.sort(filmGroups, new Comparator<FilmGroup>() {
 			@Override
@@ -105,45 +80,29 @@ public class IndexController extends MultiActionController {
 			}
 		});
 
-		JsonConfig config = new JsonConfig();
-		config.setJsonPropertyFilter(new PropertyFilter() {
-			public boolean apply(Object source, String name, Object value) {
-				if (source instanceof Film && "image".equals(name)) {
-					return true;
-				}
-				return false;
-			}
-		});
-
-		config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
-		String rows = "[";
-		for (Iterator<Film> iterator = films.iterator(); iterator.hasNext();) {
-			Film film = iterator.next();
-
-			JSONObject obj = (JSONObject) JSONSerializer.toJSON(film, config);
-			String row = obj.toString();
-
-			if (iterator.hasNext()) {
-				row += ",";
-			}
-			rows += row;
-		}
-		rows += "]";
-
+		String rows = JSONHelper.convertToJSON(films);
+		
 		mv.addObject("title", "Films");
 		mv.addObject("filmGroups", filmGroups);
 		mv.addObject("films", films);
 		mv.addObject("rows", rows);
 
+		log.info("Uploaded main page...");
 		return mv;
 	}
 
-	public JsonView getJsonView() {
-		return jsonView;
+	public IFilmService getFilmService() {
+		return filmService;
+	}
+	public void setFilmService(IFilmService filmService) {
+		this.filmService = filmService;
 	}
 
-	public void setJsonView(JsonView jsonView) {
-		this.jsonView = jsonView;
+	public IFilmGroupService getFilmGroupService() {
+		return filmGroupService;
+	}
+	public void setFilmGroupService(IFilmGroupService filmGroupService) {
+		this.filmGroupService = filmGroupService;
 	}
 
 }

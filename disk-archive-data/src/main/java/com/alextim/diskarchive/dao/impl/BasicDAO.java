@@ -10,9 +10,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.IBasicDAO;
 
+@Transactional
 public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 
 	private Class<T> persistentClass;

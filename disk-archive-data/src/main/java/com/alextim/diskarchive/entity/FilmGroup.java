@@ -9,6 +9,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="film_groups")
 public class FilmGroup  implements IEntity{
+	public final static String NEW_NAME = "new group name";
+	public final static String NEW_DESCRIPTION = "new group description";
+	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	

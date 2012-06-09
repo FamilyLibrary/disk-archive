@@ -12,6 +12,7 @@
 				<prop key="main.html">indexController</prop>
 				<prop key="renderGeneralImage.html">indexController</prop>
 				<prop key="uploadFile.html">fileUploadController</prop>
+				<prop key="filmGroup.html">filmGroupController</prop>
 			</props>
 		</property>
 	</bean>
@@ -23,9 +24,20 @@
 
 	<bean id="indexController" class="com.alextim.diskarchive.controllers.IndexController">
 		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
-		<property name="jsonView" ref="jsonView" />
-
+		
+		<property name="filmService" ref="filmService" />
+		<property name="filmGroupService" ref="filmGroupService" />
+	</bean>
+	
+	<bean id="filmService" class="com.alextim.diskarchive.services.impl.FilmServiceImpl">
 		<constructor-arg index="0" ref="coreDAOFactory" />
+	</bean>
+	<bean id="filmGroupService" class="com.alextim.diskarchive.services.impl.FilmGroupServiceImpl">
+		<constructor-arg index="0" ref="coreDAOFactory" />
+	</bean>
+
+	<bean id="filmGroupController" class="com.alextim.diskarchive.controllers.FilmGroupController">
+		<property name="filmGroupService" ref="filmGroupService" />
 	</bean>
 
 	<bean id="fileUploadController" class="com.alextim.diskarchive.controllers.FileUploadController">

@@ -7,6 +7,8 @@
 
 	<dwr:configuration>
 		<dwr:convert type="bean" class="com.alextim.diskarchive.FilmInfoWrapper" />
+        <dwr:convert type="bean" class="java.lang.Throwable"/>
+        <dwr:convert type="bean" class="java.lang.StackTraceElement"/>
 	</dwr:configuration>
 
 	<bean id="filmRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmRemoteService">
@@ -16,14 +18,18 @@
 			<dwr:include method="filmInfo" />
 			<dwr:include method="save" />
 		</dwr:remote>
-		<property name="filmService" ref="filmService" />
+	    <property name="filmService">
+	        <ref bean="filmService"/>
+	    </property>
 	</bean>
-	
+
 	<bean id="filmGroupRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmGroupRemoteService">
 		<dwr:remote javascript="FilmGroupService">
 			<dwr:include method="addGroup" />
 		</dwr:remote>
-		<property name="filmGroupService" ref="filmGroupService" />
+	    <property name="filmGroupService">
+	        <ref bean="filmGroupService"/>
+	    </property>
 	</bean>
 	
 </beans>

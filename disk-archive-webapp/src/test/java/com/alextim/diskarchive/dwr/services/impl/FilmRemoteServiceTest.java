@@ -17,8 +17,8 @@ import com.alextim.diskarchive.services.IFilmService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
-		"file:C:/Projects/disk-archive/disk-archive-webapp/src/main/webapp/WEB-INF/hibernate.xml",
-		"file:C:/Projects/disk-archive/disk-archive-webapp/src/main/webapp/WEB-INF/web-application-config.xml"}, 
+		"file:src/main/webapp/WEB-INF/hibernate.xml",
+		"file:src/main/webapp/WEB-INF/web-application-config.xml"}, 
 		inheritLocations = true)
 public class FilmRemoteServiceTest{
 	public static final Logger log = Logger.getLogger(FilmRemoteServiceTest.class);
@@ -46,7 +46,7 @@ public class FilmRemoteServiceTest{
 		filmRemoteService.addFilm();
 		
 		films = filmRemoteService.getFilmService().getFilms();
-		Assert.assertEquals(0, films.size());
+		Assert.assertEquals(1, films.size());
 		
 		//context.assertIsSatisfied();
 	}

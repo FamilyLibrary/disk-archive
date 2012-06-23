@@ -14,7 +14,6 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import com.alextim.diskarchive.FileUploadBean;
 import com.alextim.diskarchive.FilmFileUploadBean;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
 import com.alextim.diskarchive.entity.Film;

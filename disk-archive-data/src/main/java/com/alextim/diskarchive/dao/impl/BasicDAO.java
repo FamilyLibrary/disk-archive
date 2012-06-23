@@ -57,7 +57,6 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 	@Override
 	public T getFirst() {
 		return (T)getHibernateTemplate().execute(new HibernateCallback() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException,	SQLException {
 				Query query = session.createQuery("from " + persistentClass.getSimpleName() + " order by id");

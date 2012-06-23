@@ -26,6 +26,7 @@
 	<bean id="filmGroupRemoteService" class="com.alextim.diskarchive.dwr.services.impl.FilmGroupRemoteService">
 		<dwr:remote javascript="FilmGroupService">
 			<dwr:include method="addGroup" />
+            <dwr:include method="save" />
 		</dwr:remote>
 	    <property name="filmGroupService">
 	        <ref bean="filmGroupService"/>

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.services.IFilmGroupService;
-import com.alextim.diskarchive.utils.JSONHelper;
+import com.alextim.diskarchive.services.impl.FilmGroupServiceImpl;
 
 public class FilmGroupController extends MultiActionController {
 	IFilmGroupService filmGroupService;
@@ -19,8 +19,8 @@ public class FilmGroupController extends MultiActionController {
 	public ModelAndView filmGroup(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/filmGroup.jsp");
 
-		List<FilmGroup> groups = filmGroupService.getFilmGroups();
-		String rows = JSONHelper.convertToJSON(groups);
+		List<FilmGroup> groups = filmGroupService.getFilmGroups(FilmGroupServiceImpl.BY_GROUPNAME);
+		String rows = filmGroupService.convertToJSON(groups);
 		
 		mv.addObject("title", "Film Groups");
 		mv.addObject("rows", rows);

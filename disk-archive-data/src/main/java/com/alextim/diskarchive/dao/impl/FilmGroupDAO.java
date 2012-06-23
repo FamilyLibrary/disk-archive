@@ -23,5 +23,4 @@ public class FilmGroupDAO extends BasicDAO<FilmGroup> implements IFilmGroupDAO{
 		addGroup(group);
 	}
 
-
 }

@@ -6,6 +6,8 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/interface/FilmService.js'></script>
 
+<script type='text/javascript' src='js/dataGrid.js'></script>
+
 <jsp:include page="header.jsp"/>
 <jsp:include page="grid-filtering/header.jsp"/>
 
@@ -21,11 +23,6 @@
 function openWindow(filmId) {
 	window.open("uploadFile.html?filmId=" + filmId,"mywindow", "width=732,height=250");
 };
-
-var groups = [];
-<c:forEach var="group" items="${filmGroups}" varStatus="status">
-	groups.push({groupId: ${group.id}, groupName: '${group.name}', groupDescription: '${group.description}');
-</c:forEach>
 
 var page = function() {
 	var filters = new Ext.ux.grid.GridFilters({
@@ -82,7 +79,10 @@ var page = function() {
 				],
 				data: [
 					[-1, 'Выберите категорию'],
-					groups
+					<c:forEach var="group" items="${filmGroups}" varStatus="status">
+				        [${group.id}, '${group.name}', '${group.description}']
+				        <c:if test="${!status.last}">,</c:if>
+				    </c:forEach>
 				]
 			});
 			return store;
@@ -142,28 +142,31 @@ var page = function() {
 		plugins: [filters],
         tbar: [
             {
-	   	        text: 'Группы фильмов',
-  	        	 	icon: 'images/add.gif',
-  	        	 	cls: 'x-btn-text-icon',
-  	        	 	handler: function(){document.location = 'filmGroup.html';}
-            }, {
-	   	        text: 'Добавить',
-  	        	 	icon: 'images/add.gif',
-  	        	 	cls: 'x-btn-text-icon',
-  	        	 	handler: function(){
+                text: 'Добавить',
+  	         	icon: 'images/add.gif',
+  	        	cls: 'x-btn-text-icon',
+  	        	handler: function(){
    	        		FilmService.addFilm(function() {
 	   	        		document.location.reload();
-   	        		});	
+	   	        	});	
    	        	}
-  	        	}, {
-  	 			    text: 'Save',
+            }, {
+  	 			text: 'Сохранить',
 		     	icon: 'images/save.gif',
+		     	cls: 'x-btn-text-icon',
 		     	handler: function() {
-  	        			jsonResult = DataGrid.save(store);
-  	        			FilmService.save(jsonResult, function() {
-  	        				store.commitChanges();
-  	        			});
-  	        		}
+        	     	    jsonResult = DataGrid.save(store);
+                		FilmService.save(jsonResult, function() {
+                		store.commitChanges();
+  	        	    });
+ 	        	}
+		    }, {
+                text: 'Группы фильмов',
+                icon: 'images/groups.gif',
+                cls: 'x-btn-text-icon',
+                handler: function(){
+                    document.location = 'filmGroup.html';
+                }
 		    }
        	]
     });

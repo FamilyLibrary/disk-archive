@@ -7,6 +7,8 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/interface/FilmGroupService.js'></script>
 
+<script type='text/javascript' src='js/dataGrid.js'></script>
+
 <script type="text/javascript">
 var page = function(){
 		var panelHeight = 500;
@@ -60,9 +62,18 @@ var page = function(){
    	 			    text: 'Сохранить',
 			     	icon: 'images/save.gif',
 			     	handler: function() {
-			     		
+                        jsonResult = DataGrid.save(store);
+                        FilmGroupService.save(jsonResult, function() {
+                            store.commitChanges();
+                        });
    	        		}
-			    }
+			    }, {
+                    text: 'Фильмы',
+                    icon: 'images/films.gif',
+                    handler: function() {
+                        document.location = 'main.html';
+                    }
+                }
 	       	]
 	    });
 

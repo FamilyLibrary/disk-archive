@@ -16,4 +16,6 @@ public interface IFilmService {
 	void save(String jsonResult);
 	
 	FilmInfoWrapper filmInfo(Long id);
+
+	String convertToJSON(List<Film> films);
 }

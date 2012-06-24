@@ -8,15 +8,14 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
-import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.dao.impl.BasicDAO;
+import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.services.IFilmGroupService;
 import com.alextim.diskarchive.utils.JSONHelper;
 
 @Transactional
 public class FilmGroupServiceImpl implements IFilmGroupService {
-	private CoreDAOFactory coreDAOFactory;
+	private ICoreDAOFactory coreDAOFactory;
 	private JSONHelper jsonHelper;
 
     public static Comparator<FilmGroup> BY_GROUPNAME = new Comparator<FilmGroup>() {
@@ -36,7 +35,7 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
     };
 
 	
-    public FilmGroupServiceImpl(CoreDAOFactory coreDAOFactory) {
+    public FilmGroupServiceImpl(ICoreDAOFactory coreDAOFactory) {
 		this.coreDAOFactory = coreDAOFactory;
 	}
 	

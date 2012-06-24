@@ -1,12 +1,13 @@
-package com.alextim.diskarchive.dao.factory;
+package com.alextim.diskarchive.dao.factory.impl;
 
 import com.alextim.diskarchive.dao.IAuthorDAO;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.dao.IGenericDAO;
 import com.alextim.diskarchive.dao.ISeriesDAO;
+import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 
-public class CoreDAOFactory {
+public class CoreDAOFactory implements ICoreDAOFactory{
 	private IFilmGroupDAO filmGroupDAO;
 	private IFilmDAO filmDAO;
 	private ISeriesDAO seriesDAO;

@@ -3,22 +3,25 @@ package com.alextim.diskarchive.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
+import net.sf.json.util.PropertyFilter;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.FilmInfoWrapper;
 import com.alextim.diskarchive.dao.IFilmDAO;
-import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.dao.impl.BasicDAO;
+import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.services.IFilmService;
 import com.alextim.diskarchive.utils.JSONHelper;
 
 @Transactional
 public class FilmServiceImpl implements IFilmService {
-    private CoreDAOFactory coreDAOFactory;
+    private ICoreDAOFactory coreDAOFactory;
     private JSONHelper jsonHelper;
 
-    public FilmServiceImpl(CoreDAOFactory coreDAOFactory) {
+    public FilmServiceImpl(ICoreDAOFactory coreDAOFactory) {
         this.coreDAOFactory = coreDAOFactory;
     }
 

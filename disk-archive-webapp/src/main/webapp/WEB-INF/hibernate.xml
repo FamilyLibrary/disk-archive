@@ -58,7 +58,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.CoreDAOFactory">
+	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.impl.CoreDAOFactory">
 		<property name="filmDAO" ref="filmDAO" />
 		<property name="filmGroupDAO" ref="filmGroupDAO" />
 		<property name="seriesDAO" ref="seriesDAO" />

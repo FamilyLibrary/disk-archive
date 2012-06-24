@@ -15,13 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import com.alextim.diskarchive.FilmFileUploadBean;
-import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
+import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.Film;
 
 public class FileUploadController extends SimpleFormController {
-	private CoreDAOFactory coreDAOFactory;
+	private ICoreDAOFactory coreDAOFactory;
 
-	public FileUploadController(CoreDAOFactory coreDAOFactory) {
+	public FileUploadController(ICoreDAOFactory coreDAOFactory) {
 		this.coreDAOFactory = coreDAOFactory;
 	}
 

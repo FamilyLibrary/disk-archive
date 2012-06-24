@@ -4,16 +4,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.CycleDetectionStrategy;
 import net.sf.json.util.PropertyFilter;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.alextim.diskarchive.dao.IBasicDAO;
 import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.dao.impl.BasicDAO;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.IEntity;
 import com.alextim.diskarchive.utils.JSONHelper;
@@ -23,7 +23,7 @@ public class JSONHelperImpl implements JSONHelper {
     private CoreDAOFactory coreDAOFactory;
 
     @Override
-    public <T extends IEntity> T unjson(BasicDAO<T> dao, String jsonString) {
+    public <T extends IEntity> T unjson(IBasicDAO<T> dao, String jsonString) {
         JSONObject array = (JSONObject) JSONSerializer.toJSON(jsonString);
 
         T object = null;

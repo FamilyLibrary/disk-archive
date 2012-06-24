@@ -58,11 +58,10 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
 		dao.addGroup();
 	}
 
-    @SuppressWarnings("unchecked")
     @Override
     public void save(String jsonResult) {
         IFilmGroupDAO dao = this.coreDAOFactory.getFilmGroupDAO();
-        FilmGroup entity = jsonHelper.unjson((BasicDAO<FilmGroup>) dao, jsonResult);
+        FilmGroup entity = jsonHelper.unjson(dao, jsonResult);
         coreDAOFactory.getFilmGroupDAO().saveOrUpdate(entity);
     }
     

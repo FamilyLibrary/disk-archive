@@ -56,12 +56,10 @@ public class FilmServiceImpl implements IFilmService {
         return jsonHelper.json(films);
     }
 
-    //TODO: Remove suppress warning. Check if possible to remove convert of dao to BasicDAO.
-    @SuppressWarnings("unchecked")
     @Override
     public void save(String jsonResult) {
         IFilmDAO dao = this.coreDAOFactory.getFilmDAO();
-        Film film = jsonHelper.unjson((BasicDAO<Film>) dao, jsonResult);
+        Film film = jsonHelper.unjson(dao, jsonResult);
         
         coreDAOFactory.getFilmDAO().saveOrUpdate(film);
     }

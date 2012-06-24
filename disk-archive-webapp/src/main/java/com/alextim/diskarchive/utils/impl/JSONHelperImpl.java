@@ -13,14 +13,13 @@ import net.sf.json.util.PropertyFilter;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.alextim.diskarchive.dao.IBasicDAO;
-import com.alextim.diskarchive.dao.factory.CoreDAOFactory;
-import com.alextim.diskarchive.entity.Film;
+import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.IEntity;
 import com.alextim.diskarchive.utils.JSONHelper;
 
 public class JSONHelperImpl implements JSONHelper {
 
-    private CoreDAOFactory coreDAOFactory;
+    private ICoreDAOFactory coreDAOFactory;
 
     @Override
     public <T extends IEntity> T unjson(IBasicDAO<T> dao, String jsonString) {
@@ -74,19 +73,15 @@ public class JSONHelperImpl implements JSONHelper {
     }
 
     @Override
-    public String json(List<? extends IEntity> entities) {
+    public String json(List<? extends IEntity> entities, PropertyFilter filter) {
         JsonConfig config = new JsonConfig();
-        config.setJsonPropertyFilter(new PropertyFilter() {
-            public boolean apply(Object source, String name, Object value) {
-                if (source instanceof Film && "image".equals(name)) {
-                    return true;
-                }
-                return false;
-            }
-        });
-
         config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
-        String rows = "[";
+        
+        if (filter != null) {
+        	config.setJsonPropertyFilter(filter);
+        }
+
+    	String rows = "[";
         for (Iterator<? extends IEntity> iterator = entities.iterator(); iterator.hasNext();) {
             IEntity entity = iterator.next();
 
@@ -103,10 +98,16 @@ public class JSONHelperImpl implements JSONHelper {
         return rows;
     }
 
-    public CoreDAOFactory getCoreDAOFactory() {
+	@Override
+	public String json(List<? extends IEntity> entities) {
+		return json(entities, null);
+	}
+    
+    public ICoreDAOFactory getCoreDAOFactory() {
         return coreDAOFactory;
     }
-    public void setCoreDAOFactory(CoreDAOFactory coreDAOFactory) {
+    public void setCoreDAOFactory(ICoreDAOFactory coreDAOFactory) {
         this.coreDAOFactory = coreDAOFactory;
     }
+
 }

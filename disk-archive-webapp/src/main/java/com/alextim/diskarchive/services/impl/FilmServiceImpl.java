@@ -56,7 +56,15 @@ public class FilmServiceImpl implements IFilmService {
 
     @Override
     public String convertToJSON(List<Film> films) {
-        return jsonHelper.json(films);
+        PropertyFilter filter = new PropertyFilter() {
+            public boolean apply(Object source, String name, Object value) {
+                if (source instanceof Film && "image".equals(name)) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        return jsonHelper.json(films, filter);
     }
 
     @Override

@@ -23,14 +23,13 @@ var page = function(){
 	           fields:[
 	   	        "id",
 	   	        "name",
-	               {name:"name", mapping: "name"}, 
-	               {name:"description", mapping: "description"}, 
+	            "description", 
 	           ]
 	    });
 		
 	    var gridPanel = new Ext.grid.EditorGridPanel({
 	        columns: [
-  	            {header: 'Группа', width: 210, sortable: true, dataIndex: 'filmGroupId', editor: textEditor},
+  	            {header: 'Группа', width: 210, sortable: true, dataIndex: 'name', editor: textEditor},
 	            {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor},
 	            {
 	                xtype: 'actioncolumn',

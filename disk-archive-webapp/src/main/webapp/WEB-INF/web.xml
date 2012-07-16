@@ -7,7 +7,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            WEB-INF/hibernate.xml
+            classpath:hibernate.xml
             WEB-INF/security.xml
             WEB-INF/dwr-config.xml
             WEB-INF/web-application-config.xml

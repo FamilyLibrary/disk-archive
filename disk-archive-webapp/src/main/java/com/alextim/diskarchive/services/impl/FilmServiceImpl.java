@@ -3,8 +3,6 @@ package com.alextim.diskarchive.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JsonConfig;
-import net.sf.json.util.CycleDetectionStrategy;
 import net.sf.json.util.PropertyFilter;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +70,7 @@ public class FilmServiceImpl implements IFilmService {
         IFilmDAO dao = this.coreDAOFactory.getFilmDAO();
         Film film = jsonHelper.unjson(dao, jsonResult);
         
-        coreDAOFactory.getFilmDAO().saveOrUpdate(film);
+        coreDAOFactory.getFilmDAO().addFilm(film);
     }
 
     public JSONHelper getJsonHelper() {

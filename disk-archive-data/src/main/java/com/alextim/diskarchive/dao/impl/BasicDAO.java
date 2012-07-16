@@ -36,8 +36,7 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 		return entities;
 	}
 
-	@Override
-	public void saveOrUpdate(T object) {
+	protected void saveOrUpdate(T object) {
 		getHibernateTemplate().saveOrUpdate(object);
 	}
 

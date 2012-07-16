@@ -17,7 +17,7 @@ import com.alextim.diskarchive.services.IFilmService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
-		"file:src/main/webapp/WEB-INF/hibernate.xml",
+		"classpath:hibernate.xml",
 		"file:src/main/webapp/WEB-INF/web-application-config.xml"}, 
 		inheritLocations = true)
 public class FilmRemoteServiceTest{

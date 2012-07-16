@@ -7,7 +7,6 @@ public interface IBasicDAO<T> {
 	
 	public T getById(Long id);
 	public void delete(T object);
-	public void saveOrUpdate(T object);
 	
 	public T getFirst();
 }

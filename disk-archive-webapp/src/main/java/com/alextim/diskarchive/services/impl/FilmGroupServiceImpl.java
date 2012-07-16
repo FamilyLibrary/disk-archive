@@ -61,7 +61,7 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
     public void save(String jsonResult) {
         IFilmGroupDAO dao = this.coreDAOFactory.getFilmGroupDAO();
         FilmGroup entity = jsonHelper.unjson(dao, jsonResult);
-        coreDAOFactory.getFilmGroupDAO().saveOrUpdate(entity);
+        coreDAOFactory.getFilmGroupDAO().addGroup(entity);
     }
     
     @Override

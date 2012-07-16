@@ -45,7 +45,7 @@ public class FileUploadController extends SimpleFormController {
 
 				film.setImage(imageArray);
 			}
-			coreDAOFactory.getFilmDAO().saveOrUpdate(film);
+			coreDAOFactory.getFilmDAO().addFilm(film);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

@@ -30,23 +30,28 @@ var page = function() {
     	groups.push([${group.id}, '${group.name}', '${group.description}']);
 	</c:forEach>
 	
-	var filters = new Ext.ux.grid.GridFilters({
+	var filters = [];
+	if (groups.length > 0){
+		filters.push({
+			type: 'list',
+        	dataIndex: 'filmGroupId',
+        	options: groups
+		});
+	}
+	filters.push({
+        type: 'string',
+        dataIndex: 'name'
+    });
+	filters.push({
+        type: 'string',
+        dataIndex: 'description'
+    });
+	
+	var gridFilters = new Ext.ux.grid.GridFilters({
 		autoReload: false,
 	    local: true,
 
-        filters: 
-        [
-        {
-        	type: 'list',
-        	dataIndex: 'filmGroupId',
-        	options: groups
-        }, {
-            type: 'string',
-            dataIndex: 'name'
-        }, {
-            type: 'string',
-            dataIndex: 'description'
-        }]
+        filters: filters
 	 });
 	
 	var store = new Ext.data.JsonStore({
@@ -146,7 +151,7 @@ var page = function() {
 		viewConfig: {
 			forceFit: true
 		},
-		plugins: [filters],
+		plugins: [gridFilters],
         tbar: [
             {
                 text: 'Добавить',

@@ -25,6 +25,11 @@ function openWindow(filmId) {
 };
 
 var page = function() {
+	var groups = [];
+	<c:forEach var="group" items="${filmGroups}">
+    	groups.push([${group.id}, '${group.name}', '${group.description}']);
+	</c:forEach>
+	
 	var filters = new Ext.ux.grid.GridFilters({
 		autoReload: false,
 	    local: true,
@@ -34,7 +39,7 @@ var page = function() {
         {
         	type: 'list',
         	dataIndex: 'filmGroupId',
-        	options: ['extra small', 'small', 'medium', 'large', 'extra large']
+        	options: groups
         }, {
             type: 'string',
             dataIndex: 'name'
@@ -76,15 +81,17 @@ var page = function() {
 				id: 0,
 				fields: [
 					'id', 'name', 'description'
-				],
-				data: [
-					[-1, 'Выберите категорию'],
-					<c:forEach var="group" items="${filmGroups}" varStatus="status">
-				        [${group.id}, '${group.name}', '${group.description}']
-				        <c:if test="${!status.last}">,</c:if>
-				    </c:forEach>
 				]
 			});
+			
+			var data = [];
+			data.push([-1, 'Выберите категорию']);
+
+			for (var i = 0; i < groups.length; i++){
+				data.push(groups[i]);
+			}
+			
+			store.loadData(data, false);
 			return store;
     	})(),
 		displayField:'name',
@@ -97,7 +104,7 @@ var page = function() {
 	
     var gridPanel = new Ext.grid.EditorGridPanel({
         columns: [
- 	            {header: 'Группа', width: 210, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
+ 	        {header: 'Группа', width: 210, sortable: true, dataIndex: 'filmGroupId', editor: comoboxEditor, renderer: Ext.util.Format.comboRenderer(comoboxEditor)},
             {header: 'Фильм', width: 280, sortable: true, dataIndex: 'name', editor: textEditor},
             {header: 'Описание', width: 280, sortable: true, dataIndex: 'description', editor: textEditor},
             {

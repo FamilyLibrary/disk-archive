@@ -58,6 +58,25 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+    
+    <organization>
+        <name>Aleksey Timofeev</name>
+    </organization>
+    
+    <developers>
+        <developer>
+            <id>timoale</id>
+            <name>Aleksey Timofeev</name>
+            <email>alextim@list.ru</email>
+            <organization>Aleksey Timofeev</organization>
+            <roles>
+                <role>
+                    developer
+                </role>
+                <timezone>-2</timezone>
+            </roles>        
+        </developer>
+    </developers>
 
 	<properties>
 		<spring-version>2.5.6</spring-version>

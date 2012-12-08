@@ -73,8 +73,8 @@
                 <role>
                     developer
                 </role>
-                <timezone>-2</timezone>
             </roles>        
+            <timezone>-2</timezone>
         </developer>
     </developers>
 

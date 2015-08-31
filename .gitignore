@@ -1,5 +1,10 @@
-*/target/
+.classpath
+.project
 target/
 bin/
+.metadata
 .settings/*
+*/target/
 */.settings/*
+*/.classpath
+*/.project

@@ -10,9 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.alextim.diskarchive</groupId>
     <artifactId>disk-archive-data</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>disk-archive-data</name>
 
     <dependencies>

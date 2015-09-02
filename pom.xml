@@ -79,14 +79,21 @@
     </developers>
 
 	<properties>
-		<spring-version>2.5.6</spring-version>
+		<spring-core-version>2.5.6.SEC03</spring-core-version>
+		<spring-version>4.2.0.RELEASE</spring-version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
+			<version>${spring-core-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 			<version>${spring-version}</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

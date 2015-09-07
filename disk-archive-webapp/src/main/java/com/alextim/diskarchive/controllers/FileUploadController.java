@@ -4,34 +4,36 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
-import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import com.alextim.diskarchive.FilmFileUploadBean;
 import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.Film;
 
-public class FileUploadController extends SimpleFormController {
+@Controller
+@RequestMapping("/uploadFile.html")
+public class FileUploadController {
 	private ICoreDAOFactory coreDAOFactory;
 
 	public FileUploadController(ICoreDAOFactory coreDAOFactory) {
 		this.coreDAOFactory = coreDAOFactory;
 	}
 
-	@Override
-	protected ModelAndView onSubmit(HttpServletRequest request,
-			HttpServletResponse response, Object command, BindException errors)
+	@RequestMapping(method=RequestMethod.POST)
+	protected ModelAndView onSubmit(@ModelAttribute("command") FilmFileUploadBean bean, BindException errors)
 			throws Exception {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/uploadFile.jsp");
-
-		FilmFileUploadBean bean = (FilmFileUploadBean) command;
 
 		Film film = bean.getFilm();
 		MultipartFile file = bean.getFile();
@@ -56,30 +58,29 @@ public class FileUploadController extends SimpleFormController {
 		return mv;
 	}
 
-	@Override
-	protected void initBinder(HttpServletRequest request,
-			ServletRequestDataBinder binder) throws ServletException {
+	@RequestMapping(method=RequestMethod.GET)
+    protected Object initForm(ModelMap model)
+            throws Exception {
+        FilmFileUploadBean bean = new FilmFileUploadBean();
+
+        String filmIdParam = (String)model.get("filmId");
+        try {
+            Long filmId = Long.parseLong(filmIdParam);
+
+            Film film = coreDAOFactory.getFilmDAO().getById(filmId);
+            bean.setFilm(film);
+
+            model.addAttribute("filmId", film.getId());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return bean;
+    }
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) throws ServletException {
 		binder.registerCustomEditor(byte[].class,
 				new ByteArrayMultipartFileEditor());
-	}
-
-	@Override
-	protected Object formBackingObject(HttpServletRequest request)
-			throws Exception {
-		FilmFileUploadBean bean = new FilmFileUploadBean();
-
-		String filmIdParam = request.getParameter("filmId");
-		try {
-			Long filmId = Long.parseLong(filmIdParam);
-
-			Film film = coreDAOFactory.getFilmDAO().getById(filmId);
-			bean.setFilm(film);
-			
-			request.setAttribute("filmId", film.getId());
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
-
-		return bean;
 	}
 }

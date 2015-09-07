@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 @Configuration
 @EnableTransactionManagement
-public class TransactionManagerConfiguration {
+public class TransactionManagerConfiguration implements TransactionManagementConfigurer{
 	@Autowired
 	private DataSource dataSource;
 	@Autowired
@@ -25,4 +26,9 @@ public class TransactionManagerConfiguration {
 		tm.setSessionFactory(sessionFactory);
 		return tm;
 	}
+
+    @Override
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return transactionManager();
+    }
 }

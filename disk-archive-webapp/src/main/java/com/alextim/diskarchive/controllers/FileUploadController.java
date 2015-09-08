@@ -26,6 +26,9 @@ import com.alextim.diskarchive.entity.Film;
 public class FileUploadController {
 	private ICoreDAOFactory coreDAOFactory;
 
+	public FileUploadController() {
+		
+	}
 	public FileUploadController(ICoreDAOFactory coreDAOFactory) {
 		this.coreDAOFactory = coreDAOFactory;
 	}

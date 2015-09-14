@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,7 @@ import javax.persistence.TemporalType;
 import com.alextim.diskarchive.entity.IEntity;
 
 @Entity
-@Table(name="PERSON")
+@Table(name="PEOPLE")
 public class Person implements IEntity {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -24,6 +26,10 @@ public class Person implements IEntity {
 
     @Column(name="lastName")
     private String lastName;
+
+    @Column(name="gener")
+    @Enumerated(value=EnumType.STRING)
+    private Gender gender;
 
     @Column(name="birthdayDate")
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,5 +61,12 @@ public class Person implements IEntity {
     }
     public void setBirthdayDate(Calendar birthdayDate) {
         this.birthdayDate = birthdayDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

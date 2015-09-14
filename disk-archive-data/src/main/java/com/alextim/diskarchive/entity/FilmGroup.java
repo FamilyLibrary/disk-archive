@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.alextim.general.entity.Group;
 
 @Entity
-@Table(name="FILM_GROUP")
+@Table(name="FILM_GROUPS")
 @Inheritance(strategy=InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="ID")
 public class FilmGroup extends Group {

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.alextim.diskarchive.entity.IEntity;
 
 @Entity
-@Table(name="GROUP_")
+@Table(name="GROUPS")
 public class Group implements IEntity {
 	public final static String NEW_NAME = "new group name";
 	public final static String NEW_DESCRIPTION = "new group description";

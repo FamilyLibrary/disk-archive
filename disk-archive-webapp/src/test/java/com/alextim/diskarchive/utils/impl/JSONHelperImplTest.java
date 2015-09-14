@@ -26,6 +26,7 @@ import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.entity.IEntity;
 import com.alextim.general.dao.IBasicDAO;
+import com.alextim.general.entity.Gender;
 
 public class JSONHelperImplTest {
     private Mockery context;
@@ -93,6 +94,7 @@ public class JSONHelperImplTest {
 		author.setFilm(film);
 		author.setFirstName("firstName");
 		author.setLastName("lastName");
+		author.setGender(Gender.MALE);
 		
 		/*final ZonedDateTime zdt = ZonedDateTime.of(1819, 10, 12, 4, 0, 0, 0, ZoneId.of("UTC"));
 		final Calendar cal = GregorianCalendar.from(zdt);
@@ -127,6 +129,7 @@ public class JSONHelperImplTest {
 					 "\"film\":null," +
                      "\"films\":[]," +
                      "\"firstName\":\"firstName\"," +
+                     "\"gender\":\"" + Gender.MALE.toString() + "\"," +
                      "\"id\":1," +
                      "\"lastName\":\"lastName\"" +
 					 "}," +

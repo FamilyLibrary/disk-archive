@@ -83,7 +83,8 @@ public class Film  implements IEntity{
 		if (author == null) {
 			Author defaultAuthor = new Author();
 			defaultAuthor.setId(-1L);
-			defaultAuthor.setName("");
+			defaultAuthor.setFirstName("");
+			defaultAuthor.setLastName("");
 			defaultAuthor.setFilm(this);
 			
 			return defaultAuthor; 

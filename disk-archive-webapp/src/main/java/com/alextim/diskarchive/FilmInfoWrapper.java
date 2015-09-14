@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.alextim.diskarchive.entity.Actor;
 import com.alextim.diskarchive.entity.Film;
 
@@ -28,7 +30,9 @@ public class FilmInfoWrapper {
 	public String getAuthor() {
 		String author = "";
 		if (film.getAuthor() != null) {
-			author = film.getAuthor().getName();
+			author = StringUtils.join(new String[] {
+			        film.getAuthor().getFirstName(), 
+			        film.getAuthor().getLastName()}, " ");
 		}
 		return author;
 	}

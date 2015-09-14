@@ -2,26 +2,26 @@ package com.alextim.diskarchive.entity;
 
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.alextim.general.entity.Person;
 
 @Entity
 @Table(name="authors")
-public class Author implements IEntity{
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@OneToOne(mappedBy="author")
+@Inheritance(strategy=InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name="ID")
+public class Author extends Person {
+    @OneToOne(mappedBy="author")
 	private Film film;
 	
 	@OneToMany(fetch=FetchType.EAGER)
@@ -32,28 +32,11 @@ public class Author implements IEntity{
 	)
 	private Set<Film> films;
 
-	@Column(name="author")
-	private String name;
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public Set<Film> getFilms() {
 		return films;
 	}
 	public void setFilms(Set<Film> films) {
 		this.films = films;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public Film getFilm() {

@@ -1,7 +1,15 @@
 package com.alextim.diskarchive.utils.impl;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import junit.framework.Assert;
 import net.sf.json.util.PropertyFilter;
@@ -83,7 +91,12 @@ public class JSONHelperImplTest {
 		final Author author = new Author();
 		author.setId(1L);
 		author.setFilm(film);
-		author.setName("author1");
+		author.setFirstName("firstName");
+		author.setLastName("lastName");
+		
+		/*final ZonedDateTime zdt = ZonedDateTime.of(1819, 10, 12, 4, 0, 0, 0, ZoneId.of("UTC"));
+		final Calendar cal = GregorianCalendar.from(zdt);
+		author.setBirthdayDate(cal);*/
 		
 		film.setAuthor(author);
     	
@@ -110,10 +123,12 @@ public class JSONHelperImplTest {
 					"{" +
 					 "\"actors\":[]," +
 					 "\"author\":{" +
+                     "\"birthdayDate\":null," +
 					 "\"film\":null," +
-					 "\"films\":[]," +
-					 "\"id\":1," +
-					 "\"name\":\"author1\"" +
+                     "\"films\":[]," +
+                     "\"firstName\":\"firstName\"," +
+                     "\"id\":1," +
+                     "\"lastName\":\"lastName\"" +
 					 "}," +
 					 "\"description\":\"film description1\"," +
 					 "\"filmGroup\":{" +

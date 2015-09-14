@@ -22,13 +22,15 @@ import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.entity.Series;
+import com.alextim.general.entity.Group;
+import com.alextim.general.entity.Person;
 
 @Configuration
 @EnableTransactionManagement
 public class ApplicationConfiguration {
     private static final Class<?>[] ANNOTATED_CLASSES = new Class[] {
             Film.class, FilmGroup.class, Series.class, Author.class,
-            Actor.class, Book.class, BookGroup.class };
+            Actor.class, Book.class, BookGroup.class, Group.class, Person.class };
 
     @Autowired
     private DataSource dataSource;

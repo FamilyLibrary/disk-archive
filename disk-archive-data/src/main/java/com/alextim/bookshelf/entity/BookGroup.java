@@ -1,4 +1,4 @@
-package com.alextim.diskarchive.entity;
+package com.alextim.bookshelf.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -9,9 +9,9 @@ import javax.persistence.Table;
 import com.alextim.general.entity.Group;
 
 @Entity
-@Table(name="FILM_GROUP")
+@Table(name="BOOK_GROUP")
 @Inheritance(strategy=InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="ID")
-public class FilmGroup extends Group {
+public class BookGroup extends Group {
 
 }

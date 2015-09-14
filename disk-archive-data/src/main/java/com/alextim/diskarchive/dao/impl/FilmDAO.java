@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.entity.Film;
+import com.alextim.general.dao.impl.BasicDAO;
 
 @Transactional
 public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {

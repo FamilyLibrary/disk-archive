@@ -1,4 +1,4 @@
-package com.alextim.diskarchive.dao.impl;
+package com.alextim.general.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alextim.diskarchive.dao.IBasicDAO;
+import com.alextim.general.dao.IBasicDAO;
 
 @Transactional
 public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
@@ -21,6 +21,7 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 
 	@SuppressWarnings("unchecked")
 	public BasicDAO(){
+	    //TODO Remove or replace persistentClass field to something
 		this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	

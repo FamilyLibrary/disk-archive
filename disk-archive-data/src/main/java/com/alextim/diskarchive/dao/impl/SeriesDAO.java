@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.ISeriesDAO;
 import com.alextim.diskarchive.entity.Series;
+import com.alextim.general.dao.impl.BasicDAO;
 
 @Transactional
 public class SeriesDAO extends BasicDAO<Series> implements ISeriesDAO{

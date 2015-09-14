@@ -1,41 +1,30 @@
-package com.alextim.diskarchive.entity;
+package com.alextim.general.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.alextim.diskarchive.entity.IEntity;
 
 @Entity
-public class Series implements IEntity {
+@Table(name="GROUP")
+public class Group implements IEntity {
+	public final static String NEW_NAME = "new group name";
+	public final static String NEW_DESCRIPTION = "new group description";
+
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="film_id")
-	private Film film;
-
+	
 	private String name;
 	private String description;
-	
-	@Lob
-	private Byte[] image;
-	
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public Film getFilm() {
-		return film;
-	}
-	public void setFilm(Film film) {
-		this.film = film;
 	}
 	
 	public String getName() {
@@ -46,16 +35,10 @@ public class Series implements IEntity {
 	}
 	
 	public String getDescription() {
-		return description;
+		return description == null ? "" : description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public Byte[] getImage() {
-		return image;
-	}
-	public void setImage(Byte[] image) {
-		this.image = image;
-	}
+	
 }

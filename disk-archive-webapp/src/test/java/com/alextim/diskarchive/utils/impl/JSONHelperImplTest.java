@@ -11,13 +11,13 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alextim.diskarchive.dao.IBasicDAO;
 import com.alextim.diskarchive.dao.IGenericDAO;
 import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.general.dao.IBasicDAO;
 
 public class JSONHelperImplTest {
     private Mockery context;

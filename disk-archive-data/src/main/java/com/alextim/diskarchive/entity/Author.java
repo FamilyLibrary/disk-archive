@@ -31,8 +31,7 @@ public class Author implements IEntity{
 		inverseJoinColumns=@JoinColumn(name="film_id")
 	)
 	private Set<Film> films;
-	
-	@Basic
+
 	@Column(name="author")
 	private String name;
 	

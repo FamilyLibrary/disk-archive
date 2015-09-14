@@ -1,4 +1,4 @@
-package com.alextim.diskarchive.dao;
+package com.alextim.general.dao;
 
 import java.util.Collection;
 

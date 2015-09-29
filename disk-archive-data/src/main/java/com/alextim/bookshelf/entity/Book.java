@@ -27,7 +27,7 @@ public class Book {
 
     @OneToMany
     @JoinColumn(name="AUTHOR_ID")
-    private Set<Author> authors;
+    private Set<BookAuthor> authors;
 
     @OneToOne
     @JoinColumn(name="GROUP_ID")
@@ -57,10 +57,10 @@ public class Book {
         this.yearOfPublication = yearOfPublication;
     }
 
-    public Set<Author> getAuthors() {
+    public Set<BookAuthor> getAuthors() {
         return authors;
     }
-    public void setAuthors(Set<Author> authors) {
+    public void setAuthors(Set<BookAuthor> authors) {
         this.authors = authors;
     }
 }

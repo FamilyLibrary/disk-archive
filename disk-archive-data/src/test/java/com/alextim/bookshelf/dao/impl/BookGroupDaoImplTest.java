@@ -63,8 +63,8 @@ public class BookGroupDaoImplTest {
 
     @Test(expected=HibernateException.class)
     public void testThrowsHibernateExceptionIfValueIsNull() {
-        doThrow(new HibernateException("Test Exception")).
-            when(hibernateTemplate).saveOrUpdate(null);
+        doThrow(new HibernateException("Test Exception"))
+            .when(hibernateTemplate).saveOrUpdate(null);
         dao.addGroup(null);
     }
 }

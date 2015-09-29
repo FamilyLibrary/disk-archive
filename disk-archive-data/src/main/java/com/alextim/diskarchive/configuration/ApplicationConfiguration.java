@@ -16,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alextim.bookshelf.entity.Book;
+import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.BookGroup;
 import com.alextim.diskarchive.entity.Actor;
 import com.alextim.diskarchive.entity.Author;
@@ -29,8 +30,8 @@ import com.alextim.general.entity.Person;
 @EnableTransactionManagement
 public class ApplicationConfiguration {
     private static final Class<?>[] ANNOTATED_CLASSES = new Class[] {
-            Film.class, FilmGroup.class, Series.class, Author.class,
-            Actor.class, Book.class, BookGroup.class, Group.class, Person.class };
+            Film.class, FilmGroup.class, Series.class, Author.class, 
+            BookAuthor.class, Actor.class, Book.class, BookGroup.class, Group.class, Person.class };
 
     @Autowired
     private DataSource dataSource;

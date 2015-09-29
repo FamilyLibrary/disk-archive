@@ -1,8 +1,8 @@
 package com.alextim.bookshelf.dao;
 
-import com.alextim.bookshelf.entity.Author;
+import com.alextim.bookshelf.entity.BookAuthor;
 
 public interface IAuthorDao {
-    Author addAuthor(Author author);
-    Author addAuthor();
+    BookAuthor addAuthor(BookAuthor author);
+    BookAuthor addAuthor();
 }

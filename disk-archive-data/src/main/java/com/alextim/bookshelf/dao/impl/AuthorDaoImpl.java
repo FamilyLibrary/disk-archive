@@ -1,33 +1,32 @@
 package com.alextim.bookshelf.dao.impl;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
-import com.alextim.bookshelf.entity.Author;
+import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.general.dao.impl.BasicDAO;
 
-public class AuthorDaoImpl extends BasicDAO<Author> implements IAuthorDao {
+public class AuthorDaoImpl extends BasicDAO<BookAuthor> implements IAuthorDao {
 
     @Override
-    public Author addAuthor(final Author author) {
+    public BookAuthor addAuthor(final BookAuthor author) {
         saveOrUpdate(author);
         return author;
     }
 
     @Override
-    public Author addAuthor() {
-        final Author author = createAuthorEntity();
+    public BookAuthor addAuthor() {
+        final BookAuthor author = createAuthorEntity();
 
-        author.setGender(Author.NEW_GENDER);
-        author.setFirstName(Author.NEW_FIRST_NAME);
-        author.setLastName(Author.NEW_LAST_NAME);
+        author.setGender(BookAuthor.NEW_GENDER);
+        author.setFirstName(BookAuthor.NEW_FIRST_NAME);
+        author.setLastName(BookAuthor.NEW_LAST_NAME);
 
         addAuthor(author);
 
         return author;
     }
 
-    private Author createAuthorEntity() {
-        final Author author = new Author();
+    private BookAuthor createAuthorEntity() {
+        final BookAuthor author = new BookAuthor();
         return author;
     }
-
 }

@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
-import com.alextim.bookshelf.entity.Author;
+import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.general.entity.Gender;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +37,7 @@ public class AuthorDaoImplTest {
     @Mock
     private HibernateTemplate hibernateTemplate;
     @Mock
-    private Author author;
+    private BookAuthor author;
 
     @InjectMocks
     private IAuthorDao dao = new AuthorDaoImpl();
@@ -53,19 +53,19 @@ public class AuthorDaoImplTest {
     
     @Test
     public void testAddAuthorWithDefaultValues() {
-        final Author resultAuthor = dao.addAuthor();
+        final BookAuthor resultAuthor = dao.addAuthor();
 
         verify(hibernateTemplate).saveOrUpdate(resultAuthor);
 
-        assertEquals(resultAuthor.getFirstName(), Author.NEW_FIRST_NAME);
-        assertEquals(resultAuthor.getLastName(), Author.NEW_LAST_NAME);
-        assertEquals(resultAuthor.getGender(), Author.NEW_GENDER);
+        assertEquals(resultAuthor.getFirstName(), BookAuthor.NEW_FIRST_NAME);
+        assertEquals(resultAuthor.getLastName(), BookAuthor.NEW_LAST_NAME);
+        assertEquals(resultAuthor.getGender(), BookAuthor.NEW_GENDER);
         assertNull(resultAuthor.getBirthdayDate());
     }
 
     @Test
     public void testAddAuthorWithPredefinedValues() {
-        final Author resultAuthor = dao.addAuthor(author);
+        final BookAuthor resultAuthor = dao.addAuthor(author);
 
         verify(hibernateTemplate).saveOrUpdate(author);
 
@@ -78,8 +78,8 @@ public class AuthorDaoImplTest {
 
     @Test(expected=HibernateException.class)
     public void testThrowsHibernateExceptionIfValueIsNull() {
-        doThrow(new HibernateException("Test Exception")).
-            when(hibernateTemplate).saveOrUpdate(null);
+        doThrow(new HibernateException("Test Exception"))
+            .when(hibernateTemplate).saveOrUpdate(null);
         dao.addAuthor(null);
     }
 }

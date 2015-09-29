@@ -15,6 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="BOOKS")
 public class Book {
+    public final static String NEW_NAME = "new name";
+    public final static String NEW_DESCRIPTION = "new description";
+
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="ID")
     private Long id;
@@ -50,11 +53,25 @@ public class Book {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Integer getYearOfPublication() {
         return yearOfPublication;
     }
     public void setYearOfPublication(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public BookGroup getBookGroup() {
+        return bookGroup;
+    }
+    public void setBookGroup(BookGroup bookGroup) {
+        this.bookGroup = bookGroup;
     }
 
     public Set<BookAuthor> getAuthors() {

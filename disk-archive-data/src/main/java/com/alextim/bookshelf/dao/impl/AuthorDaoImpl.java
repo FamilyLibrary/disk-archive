@@ -20,9 +20,7 @@ public class AuthorDaoImpl extends BasicDAO<BookAuthor> implements IAuthorDao {
         author.setFirstName(BookAuthor.NEW_FIRST_NAME);
         author.setLastName(BookAuthor.NEW_LAST_NAME);
 
-        addAuthor(author);
-
-        return author;
+        return addAuthor(author);
     }
 
     private BookAuthor createAuthorEntity() {

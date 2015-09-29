@@ -1,15 +1,7 @@
 package com.alextim.diskarchive.utils.impl;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import junit.framework.Assert;
 import net.sf.json.util.PropertyFilter;
@@ -25,8 +17,8 @@ import com.alextim.diskarchive.entity.Author;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.general.Gender;
 import com.alextim.general.dao.IBasicDAO;
-import com.alextim.general.entity.Gender;
 
 public class JSONHelperImplTest {
     private Mockery context;
@@ -62,7 +54,14 @@ public class JSONHelperImplTest {
 		jsonHelper.setCoreDAOFactory(factory);
 		
 		final String result = 
-				"{changes: {id: 1, name: 'film2', description: 'film description2', filmGroup.id: '1', filmGroup.name: 'group2', filmGroup.description: 'group description2'}}";
+				"{changes: {"
+				+ " id: 1, "
+				+ " name: 'film2', "
+				+ " description: 'film description2', "
+				+ " filmGroup.id: '1', "
+				+ " filmGroup.name: 'group2', "
+				+ " filmGroup.description: 'group description2'"
+				+ "}}";
 		context.checking(new Expectations() {{
 			oneOf(daoMock).getById(1L);
 			will(returnValue(film));

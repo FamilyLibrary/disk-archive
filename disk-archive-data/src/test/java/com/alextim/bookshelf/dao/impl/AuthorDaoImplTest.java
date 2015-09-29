@@ -23,7 +23,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.general.entity.Gender;
+import com.alextim.general.Gender;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorDaoImplTest {

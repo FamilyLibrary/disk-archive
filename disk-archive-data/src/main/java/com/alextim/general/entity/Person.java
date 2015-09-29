@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.general.Gender;
 
 @Entity
 @Table(name="PEOPLE")

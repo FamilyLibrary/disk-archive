@@ -1,4 +1,4 @@
-package com.alextim.general.entity;
+package com.alextim.general;
 
 public enum Gender {
     NOT_KOWN(0),

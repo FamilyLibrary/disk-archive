@@ -18,6 +18,10 @@ import com.alextim.diskarchive.entity.IEntity;
 @Entity
 @Table(name="PEOPLE")
 public class Person implements IEntity {
+    public final static String NEW_FIRST_NAME = "new first name";
+    public final static String NEW_LAST_NAME = "new last name";
+    public final static Gender NEW_GENDER = Gender.NOT_KOWN;
+
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 

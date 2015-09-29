@@ -1,6 +1,7 @@
 package com.alextim.bookshelf.dao.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -63,7 +63,7 @@ public class BookGroupDaoImplTest {
 
     @Test(expected=HibernateException.class)
     public void testThrowsHibernateExceptionIfValueIsNull() {
-        Mockito.doThrow(new HibernateException("Test Exception")).
+        doThrow(new HibernateException("Test Exception")).
             when(hibernateTemplate).saveOrUpdate(null);
         dao.addGroup(null);
     }

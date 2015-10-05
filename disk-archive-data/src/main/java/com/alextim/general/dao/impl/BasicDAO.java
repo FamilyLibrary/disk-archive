@@ -1,15 +1,14 @@
 package com.alextim.general.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.general.dao.IBasicDAO;
@@ -27,12 +26,12 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 	
 	@SuppressWarnings("unchecked")
 	public Collection<T> findAll() {
-		Collection<T> entities = getHibernateTemplate().executeFind(new HibernateCallback() {
-			@Override
-			public Collection<T> doInHibernate(Session session) throws HibernateException,	SQLException {
-				Query query = session.createQuery("from " + persistentClass.getSimpleName()); 
-				return query.list();
-			}
+		Collection<T> entities = getHibernateTemplate().execute(new HibernateCallback<Collection<T>>() {
+            @Override
+            public Collection<T> doInHibernate(Session session) throws HibernateException {
+                Query query = session.createQuery("from " + persistentClass.getSimpleName()); 
+                return query.list();
+            }
 		});
 		return entities;
 	}
@@ -46,19 +45,18 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 		getHibernateTemplate().delete(object);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T getById(Long id) {
-		T object = (T)getHibernateTemplate().get(this.persistentClass, id);
+		T object = getHibernateTemplate().get(this.persistentClass, id);
 		return object;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getFirst() {
-		return (T)getHibernateTemplate().execute(new HibernateCallback() {
+		return getHibernateTemplate().execute(new HibernateCallback<T>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException,	SQLException {
+			public T doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery("from " + persistentClass.getSimpleName() + " order by id");
 				List<T> groups = query.list();
 				T result = null;

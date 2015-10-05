@@ -17,9 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.BookGroup;
@@ -43,7 +42,7 @@ public class BookDaoImplTest {
     private BookAuthor bookAuthor;
 
     @InjectMocks
-    private IBookDao dao = new BookDaoImpl();
+    private BookDaoImpl dao = new BookDaoImpl();
 
     @Before
     public void setUp() {
@@ -55,6 +54,7 @@ public class BookDaoImplTest {
         when(book.getAuthors()).thenReturn(
                 new HashSet<BookAuthor>(Arrays.asList(bookAuthor))
         );
+        dao.setHibernateTemplate(hibernateTemplate);
     }
 
     @Test

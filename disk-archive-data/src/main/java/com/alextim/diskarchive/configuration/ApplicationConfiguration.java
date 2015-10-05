@@ -10,28 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.alextim.bookshelf.entity.Book;
-import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.bookshelf.entity.BookGroup;
-import com.alextim.diskarchive.entity.Actor;
-import com.alextim.diskarchive.entity.Author;
-import com.alextim.diskarchive.entity.Film;
-import com.alextim.diskarchive.entity.FilmGroup;
-import com.alextim.diskarchive.entity.Series;
-import com.alextim.general.entity.Group;
-import com.alextim.general.entity.Person;
 
 @Configuration
 @EnableTransactionManagement
 public class ApplicationConfiguration {
-    private static final Class<?>[] ANNOTATED_CLASSES = new Class[] {
-            Film.class, FilmGroup.class, Series.class, Author.class, 
-            BookAuthor.class, Actor.class, Book.class, BookGroup.class, Group.class, Person.class };
+    private static final String DISK_ARCHIVE_ANNOTATED_PACKAGES = "com.alextim.diskarchive.entity";
+    private static final String BOOK_SHELF_ANNOTATED_PACKAGES = "com.alextim.bookshelf.entity";
 
     @Autowired
     private DataSource dataSource;
@@ -39,15 +27,13 @@ public class ApplicationConfiguration {
     private PropertiesFactoryBean hibernateProperties;
 
     @Bean(name = "sessionFactory")
-    public AnnotationSessionFactoryBean sessionFactory() throws IOException {
-        final AnnotationSessionFactoryBean sessionFactoryBean = new AnnotationSessionFactoryBean();
+    public LocalSessionFactoryBean sessionFactory() throws IOException {
+        final LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
         sessionFactoryBean.setDataSource(dataSource);
-        sessionFactoryBean.setAnnotatedClasses(ANNOTATED_CLASSES);
+        sessionFactoryBean.setPackagesToScan(DISK_ARCHIVE_ANNOTATED_PACKAGES, BOOK_SHELF_ANNOTATED_PACKAGES);
 
-        sessionFactoryBean
-                .setHibernateProperties((Properties) hibernateProperties
-                        .getObject());
+        sessionFactoryBean.setHibernateProperties((Properties) hibernateProperties.getObject());
 
         return sessionFactoryBean;
     }

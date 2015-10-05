@@ -80,8 +80,8 @@
 
 	<properties>
 		<spring-version>4.2.1.RELEASE</spring-version>
-		<hibernate-version>3.3.2.GA</hibernate-version>
-		<hibernate-annotations-version>3.4.0.GA</hibernate-annotations-version>
+		<hibernate-version>5.0.1.Final</hibernate-version>
+		<!-- hibernate-annotations-version>3.5.6-Final</hibernate-annotations-version -->
 		<jetty-plugin-version>8.1.16.v20140903</jetty-plugin-version>
 		<mockito-version>1.9.5</mockito-version>
 	</properties>
@@ -121,6 +121,11 @@
             <version>${spring-version}</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
 		<dependency>
 			<groupId>net.sf.spring-json</groupId>
 			<artifactId>spring-json</artifactId>
@@ -147,12 +152,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate-version}</version>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>${hibernate-annotations-version}</version>
             <optional>true</optional>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>servlet-api</artifactId>

@@ -2,14 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<!-- <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"> 
-		<property name="sessionFactory" ref="sessionFactory" /> </bean> -->
-
-	<!--bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
-		<property name="driverClassName"><value>oracle.jdbc.driver.OracleDriver</value></property> 
-		<property name="url"><value>jdbc:oracle:thin:@localhost:1521:orcl</value></property> 
-		<property name="username"><value>disk_archive</value></property> <property 
-		name="password"><value>disk_archive</value></property> </bean -->
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
@@ -17,26 +9,6 @@
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
-
-	<!-- bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>com.alextim.diskarchive.entity.Film</value>
-				<value>com.alextim.diskarchive.entity.FilmGroup</value>
-				<value>com.alextim.diskarchive.entity.Series</value>
-				<value>com.alextim.diskarchive.entity.Author</value>
-				<value>com.alextim.diskarchive.entity.Actor</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.show_sql">true</prop>
-			</props>
-		</property>
-	</bean-->
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 	  <property name="properties">

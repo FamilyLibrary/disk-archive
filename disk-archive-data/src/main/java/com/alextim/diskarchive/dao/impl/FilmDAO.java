@@ -31,8 +31,8 @@ public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {
     @Override
     public Film findByName(String name) {
         Film result = null;
-        
-        List<Film> resultList = getSession().createCriteria(Film.class)
+
+        List<Film> resultList = currentSession().createCriteria(Film.class)
             .add(Restrictions.eq("name", name))
             .list();
         

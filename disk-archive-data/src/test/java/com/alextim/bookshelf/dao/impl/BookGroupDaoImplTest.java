@@ -12,9 +12,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import com.alextim.bookshelf.dao.IBookGroupDao;
 import com.alextim.bookshelf.entity.BookGroup;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,13 +28,15 @@ public class BookGroupDaoImplTest {
     private BookGroup bookGroup;
 
     @InjectMocks
-    private IBookGroupDao dao = new BookGroupDaoImpl();
+    private BookGroupDaoImpl dao = new BookGroupDaoImpl();
 
     @Before
     public void setUp() {
         when(bookGroup.getId()).thenReturn(ID_VALUE);
         when(bookGroup.getName()).thenReturn(NAME_VALUE);
         when(bookGroup.getDescription()).thenReturn(DESCRIPTION_VALUE);
+
+        dao.setHibernateTemplate(hibernateTemplate);
     }
 
     @Test

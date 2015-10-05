@@ -1,10 +1,10 @@
 package com.alextim.bookshelf.dao.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,9 +19,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.general.Gender;
 
@@ -40,7 +39,7 @@ public class AuthorDaoImplTest {
     private BookAuthor author;
 
     @InjectMocks
-    private IAuthorDao dao = new AuthorDaoImpl();
+    private AuthorDaoImpl dao = new AuthorDaoImpl();
 
     @Before
     public void setUp() {
@@ -49,6 +48,8 @@ public class AuthorDaoImplTest {
         when(author.getLastName()).thenReturn(AUTHOR_LAST_NAME);
         when(author.getGender()).thenReturn(AUTHOR_GENDER);
         when(author.getBirthdayDate()).thenReturn(AUTHOR_BIRTHDAY_DATE);
+
+        dao.setHibernateTemplate(hibernateTemplate);
     }
     
     @Test

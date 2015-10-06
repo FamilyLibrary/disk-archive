@@ -58,7 +58,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void testAddBookWithDefaultValues() {
+    public void shouldAddBookWithDefaultValues() {
         final Book resultBook = dao.addBook();
 
         verify(hibernateTemplate).saveOrUpdate(resultBook);
@@ -71,7 +71,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void testAddBookGroupWithPredefinedValues() {
+    public void shouldAddBookGroupWithPredefinedValues() {
         final Book resultBook = dao.addBook(book);
 
         verify(hibernateTemplate).saveOrUpdate(book);
@@ -85,7 +85,7 @@ public class BookDaoImplTest {
     }
 
     @Test(expected=HibernateException.class)
-    public void testThrowsHibernateExceptionIfValueIsNull() {
+    public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
             .when(hibernateTemplate).saveOrUpdate(null);
         dao.addBook(null);

@@ -40,7 +40,7 @@ public class BookGroupDaoImplTest {
     }
 
     @Test
-    public void testAddBookGroupWithDefaultValues() {
+    public void shouldAddBookGroupWithDefaultValues() {
         final BookGroup resultGroup = dao.addGroup();
 
         verify(hibernateTemplate).saveOrUpdate(resultGroup);
@@ -52,7 +52,7 @@ public class BookGroupDaoImplTest {
     }
 
     @Test
-    public void testAddBookGroupWithPredefinedValues() {
+    public void shouldAddBookGroupWithPredefinedValues() {
         final BookGroup resultGroup = dao.addGroup(bookGroup);
 
         verify(hibernateTemplate).saveOrUpdate(bookGroup);
@@ -63,7 +63,7 @@ public class BookGroupDaoImplTest {
     }
 
     @Test(expected=HibernateException.class)
-    public void testThrowsHibernateExceptionIfValueIsNull() {
+    public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
             .when(hibernateTemplate).saveOrUpdate(null);
         dao.addGroup(null);

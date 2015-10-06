@@ -20,6 +20,7 @@ public class Group implements IEntity {
 	private String name;
 	private String description;
 
+	@Override
 	public Long getId() {
 		return id;
 	}

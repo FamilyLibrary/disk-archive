@@ -57,7 +57,8 @@ public class Film  implements IEntity{
 	public void setFilmGroup(FilmGroup filmGroup) {
 		this.filmGroup = filmGroup;
 	}
-	
+
+	@Override
 	public Long getId() {
 		return id;
 	}

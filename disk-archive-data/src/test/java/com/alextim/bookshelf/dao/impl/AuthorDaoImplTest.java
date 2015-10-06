@@ -53,7 +53,7 @@ public class AuthorDaoImplTest {
     }
     
     @Test
-    public void testAddAuthorWithDefaultValues() {
+    public void shouldAddAuthorWithDefaultValues() {
         final BookAuthor resultAuthor = dao.addAuthor();
 
         verify(hibernateTemplate).saveOrUpdate(resultAuthor);
@@ -65,7 +65,7 @@ public class AuthorDaoImplTest {
     }
 
     @Test
-    public void testAddAuthorWithPredefinedValues() {
+    public void shouldAddAuthorWithPredefinedValues() {
         final BookAuthor resultAuthor = dao.addAuthor(author);
 
         verify(hibernateTemplate).saveOrUpdate(author);
@@ -78,7 +78,7 @@ public class AuthorDaoImplTest {
     }
 
     @Test(expected=HibernateException.class)
-    public void testThrowsHibernateExceptionIfValueIsNull() {
+    public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
             .when(hibernateTemplate).saveOrUpdate(null);
         dao.addAuthor(null);

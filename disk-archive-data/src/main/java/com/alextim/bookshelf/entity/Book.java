@@ -12,9 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.alextim.diskarchive.entity.IEntity;
+
 @Entity
 @Table(name="BOOKS")
-public class Book {
+public class Book implements IEntity {
     public final static String NEW_NAME = "new name";
     public final static String NEW_DESCRIPTION = "new description";
 
@@ -22,11 +24,14 @@ public class Book {
     @Column(name="ID")
     private Long id;
 
-    @Column(name="NAME")
+    @Column(name="NAME", nullable=false)
     private String name;
 
     @Column(name="DESCRIPTION")
     private String description;
+
+    @Column(name="VOLUME")
+    private Integer volume;
 
     @OneToMany
     @JoinColumn(name="AUTHOR_ID")
@@ -36,9 +41,14 @@ public class Book {
     @JoinColumn(name="GROUP_ID")
     private BookGroup bookGroup;
 
+    @OneToOne
+    @JoinColumn(name="COMPLETE_WORK_ID")
+    private CompleteWork completeWork;
+
     @Column(name="YEAR_OF_PUBLICATION")
     private Integer yearOfPublication;
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -60,11 +70,25 @@ public class Book {
         this.description = description;
     }
 
+    public CompleteWork getCompleteWork() {
+        return completeWork;
+    }
+    public void setCompleteWork(CompleteWork completeWork) {
+        this.completeWork = completeWork;
+    }
+
     public Integer getYearOfPublication() {
         return yearOfPublication;
     }
     public void setYearOfPublication(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+    public void setVolume(Integer volume) {
+        this.volume = volume;
     }
 
     public BookGroup getBookGroup() {

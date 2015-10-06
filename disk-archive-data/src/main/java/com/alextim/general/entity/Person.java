@@ -26,20 +26,21 @@ public class Person implements IEntity {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Column(name="firstName")
+    @Column(name="FIRST_NAME")
     private String firstName;
 
-    @Column(name="lastName")
+    @Column(name="LAST_NAME")
     private String lastName;
 
-    @Column(name="gener")
+    @Column(name="GENDER")
     @Enumerated(value=EnumType.STRING)
     private Gender gender;
 
-    @Column(name="birthdayDate")
+    @Column(name="BIRTHDAY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar birthdayDate;
 
+    @Override
     public Long getId() {
         return id;
     }

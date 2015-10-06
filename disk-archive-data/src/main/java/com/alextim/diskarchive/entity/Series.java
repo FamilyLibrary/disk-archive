@@ -25,7 +25,8 @@ public class Series implements IEntity {
 	
 	@Lob
 	private Byte[] image;
-	
+
+	@Override
 	public Long getId() {
 		return id;
 	}

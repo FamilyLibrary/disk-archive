@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="actors")
-public class Actor {
+public class Actor implements IEntity {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
@@ -27,6 +27,7 @@ public class Actor {
 	)
 	private Set<Film> films;
 	
+	@Override
 	public Long getId() {
 		return id;
 	}

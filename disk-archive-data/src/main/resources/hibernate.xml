@@ -4,16 +4,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:diskarchive" />
-		<property name="username" value="sa" />
-		<property name="password" value="" />
+		<property name="driverClassName" value="${driver.class.name}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
 	</bean>
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 	  <property name="properties">
 	    <props>
-			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+			<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 			<prop key="hibernate.hbm2ddl.auto">update</prop>
 			<prop key="hibernate.show_sql">true</prop>
 	    </props>

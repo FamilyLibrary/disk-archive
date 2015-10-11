@@ -13,7 +13,25 @@
     <artifactId>disk-archive-data</artifactId>
     <name>disk-archive-data</name>
 
+	<build>
+        <filters>
+            <filter>src/main/resources/${env}.properties</filter>
+        </filters>
+
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+	</build>
+
     <dependencies>
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <version>${h2database-version}</version>
+		</dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>

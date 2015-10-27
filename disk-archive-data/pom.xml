@@ -26,11 +26,11 @@
         </resources>
 	</build>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>${h2database-version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi-version}</version>
 		</dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

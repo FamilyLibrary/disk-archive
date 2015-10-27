@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +20,7 @@ import com.alextim.general.Gender;
 
 @Entity
 @Table(name="PEOPLE")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Person implements IEntity {
     public final static String NEW_FIRST_NAME = "new first name";
     public final static String NEW_LAST_NAME = "new last name";

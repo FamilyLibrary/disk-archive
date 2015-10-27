@@ -13,7 +13,9 @@ import com.alextim.bookshelf.dao.impl.AuthorDaoImpl;
 import com.alextim.bookshelf.dao.impl.BookDaoImpl;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
+import com.alextim.bookshelf.entity.CompleteWork;
 import com.alextim.bookshelf.service.BookService;
+import com.alextim.diskarchive.entity.Author;
 
 public class BookServiceImpl implements BookService {
     private static final int MIN_VOLUME_VALUE = 1;
@@ -78,6 +80,12 @@ public class BookServiceImpl implements BookService {
         });
 
         return result;
+    }
+
+    @Override
+    public Book findBook(final Integer volume, final Integer yearOfPublication, final CompleteWork completeWork, final Author author) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     private AbsentVolumesResult createAbsentBookResult(final BookAuthor author, List<Integer> absentVolumes) {

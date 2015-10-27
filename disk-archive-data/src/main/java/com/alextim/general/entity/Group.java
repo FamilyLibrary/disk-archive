@@ -4,12 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import com.alextim.diskarchive.entity.IEntity;
 
 @Entity
 @Table(name="GROUPS")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Group implements IEntity {
 	public final static String NEW_NAME = "new group name";
 	public final static String NEW_DESCRIPTION = "new group description";

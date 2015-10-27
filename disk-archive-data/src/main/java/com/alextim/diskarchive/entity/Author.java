@@ -4,8 +4,6 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -17,7 +15,6 @@ import com.alextim.general.entity.Person;
 
 @Entity
 @Table(name="authors")
-@Inheritance(strategy=InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="ID")
 public class Author extends Person {
     @OneToOne(mappedBy="author")

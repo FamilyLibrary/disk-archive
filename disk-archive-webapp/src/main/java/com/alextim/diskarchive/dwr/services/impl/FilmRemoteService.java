@@ -2,6 +2,7 @@ package com.alextim.diskarchive.dwr.services.impl;
 
 import com.alextim.diskarchive.FilmInfoWrapper;
 import com.alextim.diskarchive.dwr.services.IFilmRemoteService;
+import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.services.IFilmService;
 
 public class FilmRemoteService implements IFilmRemoteService{
@@ -9,8 +10,8 @@ public class FilmRemoteService implements IFilmRemoteService{
 	private IFilmService filmService;
 	
 	@Override
-	public void addFilm() {
-		filmService.addFilm();
+	public Film addFilm() {
+		return filmService.addFilm();
 	}
 	
 	@Override

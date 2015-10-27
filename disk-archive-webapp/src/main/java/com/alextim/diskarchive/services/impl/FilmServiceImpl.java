@@ -35,8 +35,9 @@ public class FilmServiceImpl implements IFilmService {
         return coreDAOFactory.getFilmDAO().getById(filmId);
     }
 
-    public void addFilm() {
-        coreDAOFactory.getFilmDAO().addFilm();
+    @Override
+    public Film addFilm() {
+        return coreDAOFactory.getFilmDAO().addFilm();
     }
 
     @Override

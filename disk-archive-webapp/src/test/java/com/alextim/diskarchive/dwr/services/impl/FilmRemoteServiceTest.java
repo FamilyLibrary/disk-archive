@@ -1,11 +1,13 @@
 package com.alextim.diskarchive.dwr.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +21,38 @@ import com.alextim.diskarchive.services.IFilmService;
 @ContextConfiguration(locations = { "classpath:hibernate.xml",
         "file:src/main/webapp/WEB-INF/web-application-config.xml" }, inheritLocations = true)
 public class FilmRemoteServiceTest {
-    public static final Logger log = Logger.getLogger(FilmRemoteServiceTest.class);
+    public static final Logger LOG = Logger.getLogger(FilmRemoteServiceTest.class);
 
     @Autowired
     IFilmService filmService;
 
+    private FilmRemoteService filmRemoteService = new FilmRemoteService();
+
+    private Long filmId;
+
+    @Before
+    public void setUp() {
+        filmRemoteService.setFilmService(filmService);
+    }
+
+    @After
+    public void tearDown() {
+        if (filmId != null) {
+            filmService.deleteFilm(filmId);
+        }
+    }
+
     @Test
     public void testAddFilm() {
-        List<Film> films = new ArrayList<Film>();
+        final Film created = filmRemoteService.addFilm();
+        filmId = created.getId();
 
-        FilmRemoteService filmRemoteService = new FilmRemoteService();
-        filmRemoteService.setFilmService(filmService);
+        Assert.assertNotNull(created);
 
-        films = filmService.getFilms();
-        Assert.assertEquals(0, films.size());
+        List<Film> films = filmRemoteService.getFilmService().getFilms();
+        List<Film> filtered = 
+                films.stream().filter(film -> film.getId().equals(filmId)).collect(Collectors.toList());
 
-        filmRemoteService.addFilm();
-
-        films = filmRemoteService.getFilmService().getFilms();
-        Assert.assertEquals(1, films.size());
+        Assert.assertEquals(filtered.size(), 1);
     }
 }

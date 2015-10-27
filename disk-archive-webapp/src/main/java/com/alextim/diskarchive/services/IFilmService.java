@@ -10,7 +10,7 @@ public interface IFilmService {
 
 	Film getById(Long filmId);
 
-	void addFilm();
+	Film addFilm();
 	void deleteFilm(Long id);
 	
 	void save(String jsonResult);

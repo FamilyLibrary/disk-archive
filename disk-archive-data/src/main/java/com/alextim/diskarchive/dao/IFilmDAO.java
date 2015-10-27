@@ -7,7 +7,7 @@ import com.alextim.general.dao.IBasicDAO;
 public interface IFilmDAO extends IBasicDAO<Film>{
 
 	void addFilm(Film film);
-	void addFilm();
+	Film addFilm();
 
 	Film findByName(String name);
 }

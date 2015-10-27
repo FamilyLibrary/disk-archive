@@ -18,13 +18,15 @@ public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {
 	}
 
 	@Override
-	public void addFilm() {
-		Film film = new Film();
-		
-		film.setDescription("");
-		film.setName("");
-		
-		addFilm(film);
+	public Film addFilm() {
+        final Film film = new Film();
+
+        film.setDescription("");
+        film.setName("");
+
+        addFilm(film);
+
+        return film;
 	}
 
     @SuppressWarnings("unchecked")

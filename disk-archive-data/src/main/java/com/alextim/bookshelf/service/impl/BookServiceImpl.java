@@ -9,19 +9,29 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.alextim.bookshelf.dao.impl.AuthorDaoImpl;
-import com.alextim.bookshelf.dao.impl.BookDaoImpl;
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.alextim.bookshelf.dao.IAuthorDao;
+import com.alextim.bookshelf.dao.IBookDao;
+import com.alextim.bookshelf.datauploader.uploader.IUploader;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.bookshelf.entity.CompleteWork;
-import com.alextim.bookshelf.service.BookService;
-import com.alextim.diskarchive.entity.Author;
+import com.alextim.bookshelf.service.IBookService;
 
-public class BookServiceImpl implements BookService {
+@Service
+public class BookServiceImpl implements IBookService {
     private static final int MIN_VOLUME_VALUE = 1;
 
-    private BookDaoImpl bookDao;
-    private AuthorDaoImpl authorDao;
+    @Resource
+    private IBookDao bookDao;
+
+    @Resource
+    private IAuthorDao authorDao;
+
+    @Resource
+    private IUploader dummyInstance;
 
     @Override
     public List<AbsentVolumesResult> getAllAbsentBooks() {
@@ -82,12 +92,6 @@ public class BookServiceImpl implements BookService {
         return result;
     }
 
-    @Override
-    public Book findBook(final Integer volume, final Integer yearOfPublication, final CompleteWork completeWork, final Author author) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     private AbsentVolumesResult createAbsentBookResult(final BookAuthor author, List<Integer> absentVolumes) {
         final AbsentVolumesResult result = new AbsentVolumesResult();
 
@@ -95,5 +99,10 @@ public class BookServiceImpl implements BookService {
         result.setBookAuthor(author);
 
         return result;
+    }
+
+    @Override
+    public void uploadBookFile() {
+        dummyInstance.load();
     }
 }

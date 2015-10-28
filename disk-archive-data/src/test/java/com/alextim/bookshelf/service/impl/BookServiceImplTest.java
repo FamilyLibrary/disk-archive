@@ -17,12 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.alextim.bookshelf.dao.impl.AuthorDaoImpl;
-import com.alextim.bookshelf.dao.impl.BookDaoImpl;
+import com.alextim.bookshelf.dao.IAuthorDao;
+import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
-import com.alextim.bookshelf.service.BookService;
+import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceImplTest {
@@ -35,9 +35,9 @@ public class BookServiceImplTest {
     private static final List<Integer> ABSENT_SHOLOHOV_BOOKS = Arrays.asList(3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
     @Mock
-    private BookDaoImpl bookDao;
+    private IBookDao bookDao;
     @Mock
-    private AuthorDaoImpl authorDao;
+    private IAuthorDao authorDao;
 
     @Mock
     private Book book;
@@ -65,7 +65,7 @@ public class BookServiceImplTest {
     private CompleteWork author2completeWork;
 
     @InjectMocks
-    private BookService bookService = new BookServiceImpl();
+    private IBookService bookService = new BookServiceImpl();
 
     private Set<BookAuthor> author1Set;
     private Set<BookAuthor> author2Set;

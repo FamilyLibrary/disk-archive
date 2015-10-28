@@ -11,4 +11,5 @@ public interface IBookDao {
     Book addBook();
 
     List<Book> findByAuthor(Set<BookAuthor> bookAuthor);
+    List<Book> findAllFromCompleteWork();
 }

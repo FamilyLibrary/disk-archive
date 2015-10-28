@@ -15,10 +15,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.dao.IBookDao;
+import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploader;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
@@ -38,6 +41,8 @@ public class BookServiceImplTest {
     private IBookDao bookDao;
     @Mock
     private IAuthorDao authorDao;
+    @Spy
+    private IUploader dummyInstance = new DummyUploader();
 
     @Mock
     private Book book;
@@ -127,5 +132,10 @@ public class BookServiceImplTest {
 
         assertEquals(TOTAL_ABSENT_RECORD, absentBooks.size());
         assertEquals(ABSENT_SHOLOHOV_BOOKS, absentBooks);
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void shouldUploadFile() {
+        bookService.uploadBookFile();
     }
 }

@@ -3,7 +3,9 @@ package com.alextim.bookshelf.service.impl;
 import java.io.File;
 
 import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploader;
 import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploader;
+import com.alextim.bookshelf.datauploader.uploader.impl.XlsFileUploader;
 import com.alextim.bookshelf.service.IDataService;
 
 public class DataServiceImpl implements IDataService {
@@ -20,11 +22,11 @@ public class DataServiceImpl implements IDataService {
 
     @Override
     public IUploader createCsvInstance(final File file) {
-        throw new UnsupportedOperationException("Not Implemented");
+        return new CsvFileUploader(file);
     }
 
     @Override
     public IUploader createXslInstance(final File file) {
-        throw new UnsupportedOperationException("Not Implemented");
+        return new XlsFileUploader(file);
     }
 }

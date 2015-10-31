@@ -2,17 +2,15 @@ package com.alextim.bookshelf.service.impl;
 
 import java.util.List;
 
-import com.alextim.bookshelf.entity.BookAuthor;
-
 public class AbsentVolumesResult {
-    private BookAuthor bookAuthor;
+    private Object key;
     private List<Integer> absentVolumes;
 
-    public BookAuthor getBookAuthor() {
-        return bookAuthor;
+    public Object getKey() {
+        return key;
     }
-    public void setBookAuthor(BookAuthor bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setKey(Object key) {
+        this.key = key;
     }
 
     public List<Integer> getAbsentVolumes() {

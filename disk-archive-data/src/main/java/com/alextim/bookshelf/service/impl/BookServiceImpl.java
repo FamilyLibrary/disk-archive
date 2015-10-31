@@ -2,10 +2,12 @@ package com.alextim.bookshelf.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,75 +36,77 @@ public class BookServiceImpl implements IBookService {
     private IUploader dummyInstance;
 
     @Override
-    public List<AbsentVolumesResult> getAllAbsentBooks() {
+    public List<AbsentVolumesResult> getAllAbsentBooks(final Function<Book, Object> function) {
         final List<Book> books = bookDao.findAllFromCompleteWork();
-        final List<AbsentVolumesResult> result = getAllAbsentBooks(books);
+        final List<AbsentVolumesResult> result = getAllAbsentBooks(books, function);
 
         return result;
     }
 
     @Override
-    public List<Integer> getAllAbsentBooks(final String firstAuthorName, final String lastAuthorName) {
+    public List<Integer> getAllAbsentBooks(final String firstAuthorName, 
+            final String lastAuthorName, final Function<Book, Object> function) {
+
         final BookAuthor bookAuthor = authorDao.findAuthor(firstAuthorName, lastAuthorName);
 
         final Set<BookAuthor> bookAuthors = Arrays.asList(bookAuthor).stream().collect(Collectors.toSet());
         final List<Book> books = bookDao.findByAuthor(bookAuthors);
 
-        final List<AbsentVolumesResult> result = getAllAbsentBooks(books);
+        final List<AbsentVolumesResult> result = getAllAbsentBooks(books, function);
         return result.get(0).getAbsentVolumes();
     }
 
-    private List<AbsentVolumesResult> getAllAbsentBooks(final List<Book> books) {
-        final List<AbsentVolumesResult> result = new ArrayList<>();
+    private List<AbsentVolumesResult> getAllAbsentBooks(final List<Book> books, final Function<Book, Object> function) {
+        final Map<Object, AuthorVolumesResult> authorVolumes = new LinkedHashMap<>();
 
-        final Map<BookAuthor, AuthorVolumesResult> authorVolumes = new HashMap<>();
-
-        books.stream().forEach(book -> {
-            final Set<BookAuthor> authors = book.getAuthors();
-
-            authors.forEach(author -> {
-                AuthorVolumesResult authorVolumesResult = authorVolumes.get(author);
-                if (authorVolumesResult == null) {
-                    authorVolumesResult = new AuthorVolumesResult();
-                    authorVolumesResult.setVolumes(new ArrayList<>());
-                }
+        books.forEach(book -> {
+            final Object key = function.apply(book);
+            book.getAuthors().forEach(author -> {
+                final AuthorVolumesResult result = getOrCreateAuthorVolumesResult(authorVolumes.get(key));
                 if (book.getCompleteWork() != null) {
-                    authorVolumesResult.setCompleteWork(book.getCompleteWork());
+                    result.setCompleteWork(book.getCompleteWork());
                 }
-                authorVolumesResult.getVolumes().add(book.getVolume());
-
-                authorVolumes.put(author, authorVolumesResult);
+                result.getVolumes().add(book.getVolume());
+                authorVolumes.put(key, result);
             });
         });
 
-        authorVolumes.entrySet().stream().forEach(entry -> {
+        List<AbsentVolumesResult> result = authorVolumes.entrySet().stream().map(entry -> {
             int maxVolume = MIN_VOLUME_VALUE;
 
             if (entry.getValue().getCompleteWork() != null) {
                 maxVolume = entry.getValue().getCompleteWork().getTotalVolumes();
             }
 
-            List<Integer> absentVolumes = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
+            final List<Integer> absentVolumes = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
                     .filter(volume -> !entry.getValue().getVolumes().contains(volume))
                     .boxed().collect(Collectors.toList());
 
-            result.add(createAbsentBookResult(entry.getKey(), absentVolumes));
-        });
+            return createAbsentBookResult(entry.getKey(), absentVolumes);
+        }).collect(Collectors.toList());
 
         return result;
     }
 
-    private AbsentVolumesResult createAbsentBookResult(final BookAuthor author, List<Integer> absentVolumes) {
+    private AuthorVolumesResult getOrCreateAuthorVolumesResult(AuthorVolumesResult authorVolumesResult) {
+        if (authorVolumesResult == null) {
+            authorVolumesResult = new AuthorVolumesResult();
+            authorVolumesResult.setVolumes(new ArrayList<>());
+        }
+        return authorVolumesResult;
+    }
+
+    private AbsentVolumesResult createAbsentBookResult(final Object key, List<Integer> absentVolumes) {
         final AbsentVolumesResult result = new AbsentVolumesResult();
 
         result.setAbsentVolumes(absentVolumes);
-        result.setBookAuthor(author);
+        result.setKey(key);
 
         return result;
     }
 
     @Override
-    public void uploadBookFile() {
-        dummyInstance.load();
+    public Collection<Book> uploadBookFile() {
+        return dummyInstance.load();
     }
 }

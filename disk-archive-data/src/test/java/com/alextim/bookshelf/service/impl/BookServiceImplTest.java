@@ -3,11 +3,13 @@ package com.alextim.bookshelf.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.junit.Before;
@@ -29,13 +31,21 @@ import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceImplTest {
-    private static final String BOOK_AUTHOR_FIRST_NAME = "ÃËı‡ËÎ";
-    private static final String BOOK_AUTHOR_LAST_NAME = "ÿÓÎÓıÓ‚";
+    private static final String BOOK_AUTHOR_FIRST_NAME = "–ú–∏—Ö–∞–∏–ª";
+    private static final String BOOK_AUTHOR_LAST_NAME = "–®–æ–ª–æ—Ö–æ–≤";
 
     private static final int TOTAL_ABSENT_RECORD = 10;
     private static final List<Integer> ABSENT_BOOK_AUTHOR1 = Arrays.asList(3, 5, 6, 7, 8, 9, 10, 11, 12);
     private static final List<Integer> ABSENT_BOOK_AUTHOR2 = Arrays.asList(3, 4);
     private static final List<Integer> ABSENT_SHOLOHOV_BOOKS = Arrays.asList(3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+
+    private static final Function<Book, Object> AUTHOR_FUNCTION = new Function<Book, Object>() {
+        @Override
+        public Long apply(Book book) {
+            final BookAuthor author = book.getAuthors().iterator().next();
+            return author.getId();
+        };
+    };
 
     @Mock
     private IBookDao bookDao;
@@ -107,19 +117,19 @@ public class BookServiceImplTest {
         when(bookDao.findAllFromCompleteWork()).thenReturn(Arrays.asList(
                 author1bookVol1, author1bookVol2, author1bookVol4, author2bookVol1, author2bookVol2));
 
-        List<AbsentVolumesResult> result = bookService.getAllAbsentBooks();
+        List<AbsentVolumesResult> result = bookService.getAllAbsentBooks(AUTHOR_FUNCTION);
 
-        Collections.sort(result, new Comparator<AbsentVolumesResult>() {
-            @Override
-            public int compare(AbsentVolumesResult result1, AbsentVolumesResult result2) {
-                return result1.getBookAuthor().getId().compareTo(result2.getBookAuthor().getId());
-            }
+        Collections.sort(result, 
+            (AbsentVolumesResult result1, AbsentVolumesResult result2) -> {
+                final Long id1 = (Long)result1.getKey();
+                final Long id2 = (Long)result2.getKey();
+                return id1.compareTo(id2);
         });
 
         assertEquals(2, result.size());
-        assertEquals(author1, result.get(0).getBookAuthor());
+        assertEquals(author1.getId(), result.get(0).getKey());
         assertEquals(ABSENT_BOOK_AUTHOR1, result.get(0).getAbsentVolumes());
-        assertEquals(author2, result.get(1).getBookAuthor());
+        assertEquals(author2.getId(), result.get(1).getKey());
         assertEquals(ABSENT_BOOK_AUTHOR2, result.get(1).getAbsentVolumes());
     }
 
@@ -128,14 +138,34 @@ public class BookServiceImplTest {
         when(authorDao.findAuthor(BOOK_AUTHOR_FIRST_NAME, BOOK_AUTHOR_LAST_NAME)).thenReturn(author1);
         when(bookDao.findByAuthor(author1Set)).thenReturn(Arrays.asList(author1bookVol1, author1bookVol2));
 
-        List<Integer> absentBooks = bookService.getAllAbsentBooks(BOOK_AUTHOR_FIRST_NAME, BOOK_AUTHOR_LAST_NAME);
+        List<Integer> absentBooks = bookService.getAllAbsentBooks(
+                BOOK_AUTHOR_FIRST_NAME, BOOK_AUTHOR_LAST_NAME, AUTHOR_FUNCTION);
 
         assertEquals(TOTAL_ABSENT_RECORD, absentBooks.size());
         assertEquals(ABSENT_SHOLOHOV_BOOKS, absentBooks);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
-    public void shouldUploadFile() {
-        bookService.uploadBookFile();
+    @Test
+    public void shouldUploadFileAndReturnAllAbsentBooks() {
+        final Collection<Book> books = bookService.uploadBookFile();
+        when(bookDao.findAllFromCompleteWork()).thenReturn(new ArrayList<Book>(books));
+
+        List<AbsentVolumesResult> result =  bookService.getAllAbsentBooks(
+            new Function<Book, Object>() {
+                @Override
+                public String apply(Book book) {
+                    final BookAuthor author = book.getAuthors().iterator().next();
+                    return author.getLastName();
+                }
+            }
+        );
+
+        assertEquals(11, books.size());
+
+        assertEquals(Arrays.asList(new Integer[]{}), result.get(0).getAbsentVolumes());
+        assertEquals(Arrays.asList(new Integer[]{4, 5}), result.get(1).getAbsentVolumes());
+        assertEquals(Arrays.asList(new Integer[]{}), result.get(2).getAbsentVolumes());
+        assertEquals(Arrays.asList(new Integer[]{4}), result.get(3).getAbsentVolumes());
+
     }
 }

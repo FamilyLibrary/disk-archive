@@ -3,13 +3,13 @@ package com.alextim.bookshelf.datauploader.uploader.impl;
 import java.io.File;
 import java.util.Collection;
 
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
-public class CsvFileUploader implements IUploader {
+public class XlsFileUploaderStrategy implements IUploaderStrategy {
     private File file;
 
-    public CsvFileUploader(final File file) {
+    public XlsFileUploaderStrategy(final File file) {
         this.file = file;
     }
 

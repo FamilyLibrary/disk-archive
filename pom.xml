@@ -10,7 +10,7 @@
 	<name>disk-archive</name>
 
 	<properties>
-		<env>dev</env>
+		<env>val</env>
 		<spring-version>4.2.1.RELEASE</spring-version>
 		<hibernate-version>5.0.1.Final</hibernate-version>
 		<jetty-plugin-version>8.1.16.v20140903</jetty-plugin-version>

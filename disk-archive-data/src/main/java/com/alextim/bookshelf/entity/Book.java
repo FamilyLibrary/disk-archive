@@ -20,7 +20,7 @@ public class Book implements IEntity {
     public final static String NEW_NAME = "new name";
     public final static String NEW_DESCRIPTION = "new description";
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name="ID")
     private Long id;
 

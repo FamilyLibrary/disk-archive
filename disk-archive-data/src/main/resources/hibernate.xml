@@ -14,7 +14,7 @@
 	  <property name="properties">
 	    <props>
 			<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-			<prop key="hibernate.hbm2ddl.auto">update</prop>
+			<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.mode}</prop>
 			<prop key="hibernate.show_sql">true</prop>
 	    </props>
 	  </property>

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.dao.IBookDao;
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.service.IBookService;
@@ -33,7 +33,7 @@ public class BookServiceImpl implements IBookService {
     private IAuthorDao authorDao;
 
     @Resource
-    private IUploader dummyInstance;
+    private UploaderContext uploaderContext;
 
     @Override
     public List<AbsentVolumesResult> getAllAbsentBooks(final Function<Book, Object> function) {
@@ -107,6 +107,6 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public Collection<Book> uploadBookFile() {
-        return dummyInstance.load();
+        return uploaderContext.perform();
     }
 }

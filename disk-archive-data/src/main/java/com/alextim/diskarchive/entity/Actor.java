@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="actors")
 public class Actor implements IEntity {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	private String name;
 

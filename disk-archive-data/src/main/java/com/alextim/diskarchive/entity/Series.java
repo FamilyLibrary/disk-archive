@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="SERIES")
 public class Series implements IEntity {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 
 	@ManyToOne(fetch=FetchType.EAGER)

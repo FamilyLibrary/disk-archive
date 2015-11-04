@@ -3,13 +3,16 @@ package com.alextim.bookshelf.datauploader.uploader.impl;
 import java.io.File;
 import java.util.Collection;
 
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
-public class XlsFileUploader implements IUploader {
+public class CsvFileUploaderStrategy implements IUploaderStrategy {
     private File file;
 
-    public XlsFileUploader(final File file) {
+    public CsvFileUploaderStrategy(final File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("File: Illegal argument. File can not be null value");
+        }
         this.file = file;
     }
 

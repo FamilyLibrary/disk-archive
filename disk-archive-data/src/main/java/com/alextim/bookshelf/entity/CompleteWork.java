@@ -12,7 +12,7 @@ import com.alextim.diskarchive.entity.IEntity;
 @Entity
 @Table(name="COMPLETE_WORKS")
 public class CompleteWork implements IEntity {
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name="ID")
     private Long id;
 

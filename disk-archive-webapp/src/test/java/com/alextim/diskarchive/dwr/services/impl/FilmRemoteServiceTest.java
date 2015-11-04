@@ -24,7 +24,7 @@ public class FilmRemoteServiceTest {
     public static final Logger LOG = Logger.getLogger(FilmRemoteServiceTest.class);
 
     @Autowired
-    IFilmService filmService;
+    private IFilmService filmService;
 
     private FilmRemoteService filmRemoteService = new FilmRemoteService();
 

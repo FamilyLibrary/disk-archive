@@ -13,12 +13,16 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="films")
+@Table(name="FILMS")
 public class Film  implements IEntity{
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+    /*TODO: Fix mapping for ID field. Find a correct way mapping them to a sequence for in memory database*/
+	@Id 
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILMS_SEQUENCE")
+	@SequenceGenerator(name="FILMS_SEQUENCE", sequenceName="SEQ_FILMS")
 	private Long id;
 
 	private String name;

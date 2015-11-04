@@ -26,7 +26,7 @@ public class Person implements IEntity {
     public final static String NEW_LAST_NAME = "new last name";
     public final static Gender NEW_GENDER = Gender.NOT_KOWN;
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name="FIRST_NAME")

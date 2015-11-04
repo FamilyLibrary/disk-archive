@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
 
-public class DummyUploader implements IUploader {
+public class DummyUploaderStrategy implements IUploaderStrategy {
     private static final String SEPARATOR = ",";
 
     private final List<String> data = Arrays.asList(new String[] {

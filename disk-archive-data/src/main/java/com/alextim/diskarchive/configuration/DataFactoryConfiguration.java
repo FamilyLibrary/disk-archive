@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Lazy;
 
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
+import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
+import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.service.IDataService;
 import com.alextim.bookshelf.service.impl.DataServiceImpl;
 
@@ -22,25 +23,28 @@ public class DataFactoryConfiguration {
     private File xlsFile;
 
     @Bean
-    public IDataService dataServiceFactory() {
-        return DataServiceImpl.createService();
+    public UploaderContext uploaderContext() {
+        return new UploaderContext(csvInstance());
     }
 
     @Bean
     @Lazy
-    public IUploader csvInstance() {
+    public IUploaderStrategy csvInstance() {
         return dataServiceFactory().createCsvInstance(csvFile);
     }
 
     @Bean
     @Lazy
-    public IUploader xlsInstance() {
+    public IUploaderStrategy xlsInstance() {
         return dataServiceFactory().createXslInstance(xlsFile);
     }
 
     @Bean
-    public IUploader dummyInstance() {
+    public IUploaderStrategy dummyInstance() {
         return dataServiceFactory().createDummyInstance();
     }
 
+    private IDataService dataServiceFactory() {
+        return DataServiceImpl.createService();
+    }
 }

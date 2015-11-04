@@ -2,10 +2,10 @@ package com.alextim.bookshelf.service.impl;
 
 import java.io.File;
 
-import com.alextim.bookshelf.datauploader.uploader.IUploader;
-import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploader;
-import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploader;
-import com.alextim.bookshelf.datauploader.uploader.impl.XlsFileUploader;
+import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
+import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploaderStrategy;
+import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploaderStrategy;
+import com.alextim.bookshelf.datauploader.uploader.impl.XlsFileUploaderStrategy;
 import com.alextim.bookshelf.service.IDataService;
 
 public class DataServiceImpl implements IDataService {
@@ -16,17 +16,17 @@ public class DataServiceImpl implements IDataService {
     }
 
     @Override
-    public IUploader createDummyInstance() {
-        return new DummyUploader();
+    public IUploaderStrategy createDummyInstance() {
+        return new DummyUploaderStrategy();
     }
 
     @Override
-    public IUploader createCsvInstance(final File file) {
-        return new CsvFileUploader(file);
+    public IUploaderStrategy createCsvInstance(final File file) {
+        return new CsvFileUploaderStrategy(file);
     }
 
     @Override
-    public IUploader createXslInstance(final File file) {
-        return new XlsFileUploader(file);
+    public IUploaderStrategy createXslInstance(final File file) {
+        return new XlsFileUploaderStrategy(file);
     }
 }

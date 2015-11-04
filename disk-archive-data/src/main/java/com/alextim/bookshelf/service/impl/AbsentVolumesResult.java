@@ -19,4 +19,9 @@ public class AbsentVolumesResult {
     public void setAbsentVolumes(List<Integer> absentVolumes) {
         this.absentVolumes = absentVolumes;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Key: %s, Absent Volumes: %s", key, getAbsentVolumes());
+    }
 }

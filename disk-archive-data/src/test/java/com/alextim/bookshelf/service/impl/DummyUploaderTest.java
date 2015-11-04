@@ -51,10 +51,8 @@ public class DummyUploaderTest {
 
         assertEquals(11, books.size());
 
-        assertEquals(Arrays.asList(new Integer[]{}), result.get(0).getAbsentVolumes());
-        assertEquals(Arrays.asList(new Integer[]{4, 5}), result.get(1).getAbsentVolumes());
-        assertEquals(Arrays.asList(new Integer[]{}), result.get(2).getAbsentVolumes());
-        assertEquals(Arrays.asList(new Integer[]{4}), result.get(3).getAbsentVolumes());
+        assertEquals(Arrays.asList(new Integer[]{4, 5}), result.get(0).getAbsentVolumes());
+        assertEquals(Arrays.asList(new Integer[]{4}), result.get(1).getAbsentVolumes());
     }
 
 }

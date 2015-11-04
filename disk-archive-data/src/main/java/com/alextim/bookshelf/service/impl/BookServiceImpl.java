@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -59,33 +60,38 @@ public class BookServiceImpl implements IBookService {
     private List<AbsentVolumesResult> getAllAbsentBooks(final List<Book> books, final Function<Book, Object> function) {
         final Map<Object, AuthorVolumesResult> authorVolumes = new LinkedHashMap<>();
 
-        books.forEach(book -> {
+        books.stream().filter(b -> b.getCompleteWork() != null).forEach(book -> {
             final Object key = function.apply(book);
             book.getAuthors().forEach(author -> {
                 final AuthorVolumesResult result = getOrCreateAuthorVolumesResult(authorVolumes.get(key));
-                if (book.getCompleteWork() != null) {
-                    result.setCompleteWork(book.getCompleteWork());
-                }
+
+                result.setCompleteWork(book.getCompleteWork());
                 result.getVolumes().add(book.getVolume());
                 authorVolumes.put(key, result);
             });
         });
 
-        List<AbsentVolumesResult> result = authorVolumes.entrySet().stream().map(entry -> {
-            int maxVolume = MIN_VOLUME_VALUE;
-
-            if (entry.getValue().getCompleteWork() != null) {
-                maxVolume = entry.getValue().getCompleteWork().getTotalVolumes();
-            }
-
-            final List<Integer> absentVolumes = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
-                    .filter(volume -> !entry.getValue().getVolumes().contains(volume))
-                    .boxed().collect(Collectors.toList());
-
-            return createAbsentBookResult(entry.getKey(), absentVolumes);
-        }).collect(Collectors.toList());
+        List<AbsentVolumesResult> result = 
+                authorVolumes.entrySet()
+                .stream()
+                .map(entry -> {return findAbsentBooks(entry);})
+                .filter(e -> e.getAbsentVolumes().size() > 0).collect(Collectors.toList());
 
         return result;
+    }
+
+    private AbsentVolumesResult findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
+        int maxVolume = MIN_VOLUME_VALUE;
+
+        if (entry.getValue().getCompleteWork() != null) {
+            maxVolume = entry.getValue().getCompleteWork().getTotalVolumes();
+        }
+
+        final List<Integer> absentVolumes = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
+                .filter(volume -> !entry.getValue().getVolumes().contains(volume))
+                .boxed().collect(Collectors.toList());
+
+        return createAbsentBookResult(entry.getKey(), absentVolumes);
     }
 
     private AuthorVolumesResult getOrCreateAuthorVolumesResult(AuthorVolumesResult authorVolumesResult) {

@@ -55,6 +55,12 @@ public class CsvUploaderTest {
     private static final String STIVENSON_KEY = "Р.Л. Стивенсон_1981";
     private static final String GRIN_KEY = "А.С. Грин_1980";
     private static final String TWEN_KEY = "Марк Твен_1980";
+    private static final String TEKKEREY_KEY = "Уильям Теккерей_1975";
+    private static final String STENDAL_KEY = "Стендаль_1978";
+    private static final String LONDON_KEY = "Джек Лондон_1976";
+    private static final String GORKIY_KEY = "М. Горький_1979";
+    private static final String PUSHKIN_KEY = "Александр Пушкин_1974";
+    private static final String MAYAKOVSKIY_KEY = "Владимир Маяковский_1978";
 
     private static final List<Integer> EMPTY_LIST = Arrays.asList(new Integer[]{});
 
@@ -124,6 +130,12 @@ public class CsvUploaderTest {
         assertEquals(STIVENSON_KEY, Arrays.asList(new Integer[]{1, 2}), result.get(STIVENSON_KEY));
         assertEquals(GRIN_KEY, Arrays.asList(new Integer[]{2}), result.get(GRIN_KEY));
         assertEquals(TWEN_KEY, EMPTY_LIST, result.get(TWEN_KEY));
+        assertEquals(TEKKEREY_KEY, Arrays.asList(new Integer[]{4, 5, 10, 11}), result.get(TEKKEREY_KEY));
+        assertEquals(STENDAL_KEY, EMPTY_LIST, result.get(STENDAL_KEY));
+        assertEquals(LONDON_KEY, EMPTY_LIST, result.get(LONDON_KEY));
+        assertEquals(GORKIY_KEY, EMPTY_LIST, result.get(GORKIY_KEY));
+        assertEquals(PUSHKIN_KEY, EMPTY_LIST, result.get(PUSHKIN_KEY));
+        assertEquals(MAYAKOVSKIY_KEY, Arrays.asList(new Integer[]{5, 6, 7, 9}), result.get(MAYAKOVSKIY_KEY));
         
     }
 }

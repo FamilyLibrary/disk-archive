@@ -15,6 +15,8 @@ import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
 public class CsvFileUploaderStrategy extends AbstractUploaderStrategy implements IUploaderStrategy {
+    private static final String FILE_ENCODING = "UTF-8";
+
     private File file;
 
     public CsvFileUploaderStrategy(final File file) {
@@ -30,7 +32,7 @@ public class CsvFileUploaderStrategy extends AbstractUploaderStrategy implements
 
         final Path path = file.toPath();
         try (final InputStream in = Files.newInputStream(path, StandardOpenOption.READ);
-             final BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+             final BufferedReader reader = new BufferedReader(new InputStreamReader(in, FILE_ENCODING))) {
 
             String line = reader.readLine(); //Skip first line
             while ((line = reader.readLine()) != null) {

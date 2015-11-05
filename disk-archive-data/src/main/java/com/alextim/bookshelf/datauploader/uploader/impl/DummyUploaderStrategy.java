@@ -21,16 +21,16 @@ public class DummyUploaderStrategy extends AbstractUploaderStrategy implements I
             "Этель Лилиан Войнич,Собрание сочинений в 3-ти томах,3,3,1975",
             "И.А. Гончаров,Собрание сочинений в 4-ти томах,1,4,1981",
             "И.А. Гончаров,Собрание сочинений в 4-ти томах,2,4,1981",
-            "И.А. Гончаров,Собрание сочинений в 4-ти томах,3,4,1981"
+            "И.А. Гончаров,Собрание сочинений в 4-ти томах,3,4,1981",
+            "\"Александр Блок, Андрей Белый\",Диалог поэтов о России и революции,,,1990,"
     });
 
     @Override
     public Collection<Book> load() {
-        final List<Book> result = data.subList(1, data.size())
-                .stream()
-                .map(line -> {
-            return mapToBook(line);
-        }).collect(Collectors.toList());
+        final List<Book> result = data.stream()
+                .skip(1) //Skip the first line
+                .map(line -> {return mapToBook(line);})
+                .collect(Collectors.toList());
         return result;
     }
 }

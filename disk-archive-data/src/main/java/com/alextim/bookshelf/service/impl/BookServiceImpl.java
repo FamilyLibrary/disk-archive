@@ -3,10 +3,11 @@ package com.alextim.bookshelf.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,15 +38,13 @@ public class BookServiceImpl implements IBookService {
     private UploaderContext uploaderContext;
 
     @Override
-    public List<AbsentVolumesResult> getAllAbsentBooks(final Function<Book, Object> function) {
+    public Map<Object, List<Integer>> getAllAbsentBooks(final Function<Book, Object> function) {
         final List<Book> books = bookDao.findAllFromCompleteWork();
-        final List<AbsentVolumesResult> result = getAllAbsentBooks(books, function);
-
-        return result;
+        return getAllAbsentBooks(books, function);
     }
 
     @Override
-    public List<Integer> getAllAbsentBooks(final String firstAuthorName, 
+    public Map<Object, List<Integer>> getAllAbsentBooks(final String firstAuthorName, 
             final String lastAuthorName, final Function<Book, Object> function) {
 
         final BookAuthor bookAuthor = authorDao.findAuthor(firstAuthorName, lastAuthorName);
@@ -53,45 +52,46 @@ public class BookServiceImpl implements IBookService {
         final Set<BookAuthor> bookAuthors = Arrays.asList(bookAuthor).stream().collect(Collectors.toSet());
         final List<Book> books = bookDao.findByAuthor(bookAuthors);
 
-        final List<AbsentVolumesResult> result = getAllAbsentBooks(books, function);
-        return result.get(0).getAbsentVolumes();
+        return getAllAbsentBooks(books, function);
     }
 
-    private List<AbsentVolumesResult> getAllAbsentBooks(final List<Book> books, final Function<Book, Object> function) {
-        final Map<Object, AuthorVolumesResult> authorVolumes = new LinkedHashMap<>();
+    private Map<Object, List<Integer>> getAllAbsentBooks(final List<Book> books, final Function<Book, Object> function) {
+        final Map<Object, AuthorVolumesResult> authorVolumes = new HashMap<>();
 
-        books.stream().filter(b -> b.getCompleteWork() != null).forEach(book -> {
+        books.stream().forEach(book -> {
             final Object key = function.apply(book);
-            book.getAuthors().forEach(author -> {
-                final AuthorVolumesResult result = getOrCreateAuthorVolumesResult(authorVolumes.get(key));
+            final AuthorVolumesResult result = getOrCreateAuthorVolumesResult(authorVolumes.get(key));
 
-                result.setCompleteWork(book.getCompleteWork());
-                result.getVolumes().add(book.getVolume());
-                authorVolumes.put(key, result);
-            });
+            result.setCompleteWork(book.getCompleteWork());
+            result.getVolumes().add(Optional.ofNullable(book.getVolume()).orElse(MIN_VOLUME_VALUE));
+            authorVolumes.put(key, result);
         });
 
-        List<AbsentVolumesResult> result = 
+        final Map<Object, List<Integer>> result = 
                 authorVolumes.entrySet()
-                .stream()
-                .map(entry -> {return findAbsentBooks(entry);})
-                .filter(e -> e.getAbsentVolumes().size() > 0).collect(Collectors.toList());
+                    .stream()
+                    .collect(Collectors.toMap(
+                            (Entry<Object, AuthorVolumesResult> entry) -> entry.getKey(), 
+                             entry -> findAbsentBooks(entry))
+                    );
 
         return result;
     }
 
-    private AbsentVolumesResult findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
+    private List<Integer> findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
         int maxVolume = MIN_VOLUME_VALUE;
 
         if (entry.getValue().getCompleteWork() != null) {
             maxVolume = entry.getValue().getCompleteWork().getTotalVolumes();
         }
 
-        final List<Integer> absentVolumes = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
-                .filter(volume -> !entry.getValue().getVolumes().contains(volume))
-                .boxed().collect(Collectors.toList());
+        List<Integer> rangeList = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
+            .boxed()
+            .collect(Collectors.toList());
 
-        return createAbsentBookResult(entry.getKey(), absentVolumes);
+        rangeList.removeAll(entry.getValue().getVolumes());
+
+        return rangeList;
     }
 
     private AuthorVolumesResult getOrCreateAuthorVolumesResult(AuthorVolumesResult authorVolumesResult) {
@@ -100,15 +100,6 @@ public class BookServiceImpl implements IBookService {
             authorVolumesResult.setVolumes(new ArrayList<>());
         }
         return authorVolumesResult;
-    }
-
-    private AbsentVolumesResult createAbsentBookResult(final Object key, List<Integer> absentVolumes) {
-        final AbsentVolumesResult result = new AbsentVolumesResult();
-
-        result.setAbsentVolumes(absentVolumes);
-        result.setKey(key);
-
-        return result;
     }
 
     @Override

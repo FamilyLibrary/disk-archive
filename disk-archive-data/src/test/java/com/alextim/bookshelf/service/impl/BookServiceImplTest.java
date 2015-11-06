@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +28,6 @@ import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceImplTest {
-    private static final String BOOK_AUTHOR_FIRST_NAME = "Михаил";
-    private static final String BOOK_AUTHOR_LAST_NAME = "Шолохов";
-
     private static final int TOTAL_ABSENT_SHOLOHOV_BOOKS = 10;
     private static final List<Integer> ABSENT_BOOK_AUTHOR1 = Arrays.asList(3, 5, 6, 7, 8, 9, 10, 11, 12);
     private static final List<Integer> ABSENT_BOOK_AUTHOR2 = Arrays.asList(3, 4);
@@ -81,29 +79,24 @@ public class BookServiceImplTest {
 
     @Before
     public void setUp() {
+        List<Book> author1Books = Arrays.asList(new Book[]{author1bookVol1, author1bookVol2, author1bookVol4});
+        when(author1.getId()).thenReturn(1L);
+        
         when(author1bookVol1.getVolume()).thenReturn(1);
         when(author1bookVol2.getVolume()).thenReturn(2);
         when(author1bookVol4.getVolume()).thenReturn(4);
-        Arrays.asList(author1bookVol1, author1bookVol2, author1bookVol4).stream()
-            .forEach(bookAuthor -> when(bookAuthor.getCompleteWork()).thenReturn(author1completeWork));
+
+        mockCompleteWorkForBooks(author1Books, author1completeWork, 12);
+        mockAuthorsForBooks(author1Books, author1Set, author1);
+
+        List<Book> author2Books = Arrays.asList(new Book[]{author2bookVol1, author2bookVol2});
+        when(author2.getId()).thenReturn(2L);
 
         when(author2bookVol1.getVolume()).thenReturn(1);
         when(author2bookVol2.getVolume()).thenReturn(2);
-        Arrays.asList(author2bookVol1, author2bookVol2).stream()
-            .forEach(bookAuthor -> when(bookAuthor.getCompleteWork()).thenReturn(author2completeWork));
-
-        when(author1.getId()).thenReturn(1L);
-        author1Set = Arrays.asList(author1).stream().collect(Collectors.toSet());
-        Arrays.asList(author1bookVol1, author1bookVol2, author1bookVol4).stream()
-            .forEach(bookAuthor -> when(bookAuthor.getAuthors()).thenReturn(author1Set));
-
-        when(author2.getId()).thenReturn(2L);
-        author2Set = Arrays.asList(author2).stream().collect(Collectors.toSet());
-        Arrays.asList(author2bookVol1, author2bookVol2).stream()
-            .forEach(bookAuthor -> when(bookAuthor.getAuthors()).thenReturn(author2Set));
-
-        when(author1completeWork.getTotalVolumes()).thenReturn(12);
-        when(author2completeWork.getTotalVolumes()).thenReturn(4);
+        
+        mockCompleteWorkForBooks(author2Books, author2completeWork, 4);
+        mockAuthorsForBooks(author2Books, author2Set, author2);
     }
 
     @Test
@@ -122,14 +115,25 @@ public class BookServiceImplTest {
 
     @Test
     public void shouldReturnAbsentBooksByAuthor() {
-        when(authorDao.findAuthor(BOOK_AUTHOR_FIRST_NAME, BOOK_AUTHOR_LAST_NAME)).thenReturn(author1);
-        when(bookDao.findByAuthor(author1Set)).thenReturn(Arrays.asList(author1bookVol1, author1bookVol2));
-
-        Map<Object, List<Integer>> result = bookService.getAllAbsentBooks(
-                BOOK_AUTHOR_FIRST_NAME, BOOK_AUTHOR_LAST_NAME, AUTHOR_FUNCTION);
+        when(bookDao.findByAuthors(author1Set)).thenReturn(Arrays.asList(author1bookVol1, author1bookVol2));
+        Map<Object, List<Integer>> result = bookService.getAllAbsentBooks(author1Set, AUTHOR_FUNCTION);
 
         assertEquals(1, result.size());
         assertEquals(ABSENT_SHOLOHOV_BOOKS, result.get(author1.getId()));
         assertEquals(TOTAL_ABSENT_SHOLOHOV_BOOKS, result.get(author1.getId()).size());
+    }
+
+    private void mockAuthorsForBooks(final List<Book> books, final Set<BookAuthor> authors, final BookAuthor author) {
+        books.stream().forEach(bookAuthor -> when(bookAuthor.getAuthors()).thenReturn(
+                Stream.of(author).collect(Collectors.toSet())
+        ));
+    }
+
+    private void mockCompleteWorkForBooks(final List<Book> books, final CompleteWork completeWork, final Integer totalVolumes) {
+        books.stream().forEach(bookAuthor -> when(bookAuthor.getCompleteWork()).thenReturn(completeWork));
+        when(completeWork.getTotalVolumes()).thenReturn(totalVolumes);
+
+        when(completeWork.getFirstVolumeInYear()).thenReturn(null);
+        when(completeWork.getLastVolumeInYear()).thenReturn(null);
     }
 }

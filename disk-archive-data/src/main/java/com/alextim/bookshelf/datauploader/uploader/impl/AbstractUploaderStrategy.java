@@ -36,8 +36,8 @@ public class AbstractUploaderStrategy {
         if (StringUtils.isNotBlank(row.volume)) {
             book.setVolume(Integer.valueOf(row.volume));
         }
-        if (StringUtils.isNotBlank(row.startYear)) {
-            book.setYearOfPublication(Integer.valueOf(row.startYear));
+        if (StringUtils.isNotBlank(row.yearOfPublication)) {
+            book.setYearOfPublication(Integer.valueOf(row.yearOfPublication));
         }
     }
     private void createBookAuthor(final Book book, final Row row) {
@@ -53,7 +53,15 @@ public class AbstractUploaderStrategy {
     }
     private void createCompleteWork(Book book, Row row) {
         CompleteWork completeWork = new CompleteWork();
+
         completeWork.setTotalVolumes(Integer.valueOf(row.volumes));
+
+        if (StringUtils.isNotBlank(row.firstVolumeInYear)) {
+            completeWork.setFirstVolumeInYear(Integer.valueOf(row.firstVolumeInYear));
+        }
+        if (StringUtils.isNotBlank(row.lastVolumeInYear)) {
+            completeWork.setLastVolumeInYear(Integer.valueOf(row.lastVolumeInYear));
+        }
         book.setCompleteWork(completeWork);
     }
 
@@ -64,7 +72,9 @@ public class AbstractUploaderStrategy {
         row.name = parts.get(1);
         row.volume = parts.get(2);
         row.volumes = parts.get(3);
-        row.startYear = parts.get(4);
+        row.yearOfPublication = parts.get(4);
+        row.firstVolumeInYear = parts.get(5);
+        row.lastVolumeInYear = parts.get(6);
 
         return row;
     }
@@ -74,6 +84,8 @@ public class AbstractUploaderStrategy {
         private String name;
         private String volume;
         private String volumes;
-        private String startYear;
+        private String yearOfPublication;
+        private String firstVolumeInYear;
+        private String lastVolumeInYear;
     }
 }

@@ -31,9 +31,9 @@ public class BookDaoImpl extends BasicDAO<Book> implements IBookDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Book> findByAuthor(final Set<BookAuthor> bookAuthor) {
+    public List<Book> findByAuthors(final Set<BookAuthor> bookAuthors) {
         return currentSession().createCriteria(Book.class)
-            .add(Restrictions.in("authors", bookAuthor)).list();
+            .add(Restrictions.in("authors", bookAuthors)).list();
     }
 
     @SuppressWarnings("unchecked")

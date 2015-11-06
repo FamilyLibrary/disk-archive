@@ -16,6 +16,12 @@ public class CompleteWork implements IEntity {
     @Column(name="ID")
     private Long id;
 
+    @Column(name="FIRST_VOLUME_IN_YEAR")
+    private Integer firstVolumeInYear;
+
+    @Column(name="LAST_VOLUME_IN_YEAR")
+    private Integer lastVolumeInYear;
+
     @Column(name="TOTAL_VOLUMES")
     private Integer totalVolumes;
 
@@ -32,5 +38,19 @@ public class CompleteWork implements IEntity {
     }
     public void setTotalVolumes(Integer totalVolumes) {
         this.totalVolumes = totalVolumes;
+    }
+
+    public Integer getFirstVolumeInYear() {
+        return firstVolumeInYear;
+    }
+    public void setFirstVolumeInYear(Integer firstVolumeInYear) {
+        this.firstVolumeInYear = firstVolumeInYear;
+    }
+
+    public Integer getLastVolumeInYear() {
+        return lastVolumeInYear;
+    }
+    public void setLastVolumeInYear(Integer lastVolumeInYear) {
+        this.lastVolumeInYear = lastVolumeInYear;
     }
 }

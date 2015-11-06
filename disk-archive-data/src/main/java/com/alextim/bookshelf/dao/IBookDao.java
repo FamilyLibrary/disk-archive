@@ -10,6 +10,6 @@ public interface IBookDao {
     Book addBook(Book book);
     Book addBook();
 
-    List<Book> findByAuthor(Set<BookAuthor> bookAuthor);
+    List<Book> findByAuthors(Set<BookAuthor> bookAuthors);
     List<Book> findAllFromCompleteWork();
 }

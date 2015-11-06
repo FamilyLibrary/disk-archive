@@ -7,8 +7,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.entity.Book;
+import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,13 +65,36 @@ public class CsvUploaderTest {
     private static final String PUSHKIN_KEY = "Александр Пушкин_1974";
     private static final String MAYAKOVSKIY_KEY = "Владимир Маяковский_1978";
 
-    private static final List<Integer> EMPTY_LIST = Arrays.asList(new Integer[]{});
+    private static final String BROKGAUS_EFRON_LAST_NAME = "Ф.А. Брокгауз,И.А. Ефрон";
+    
+    private static final String BROKGAUS_EFRON_1891_KEY = BROKGAUS_EFRON_LAST_NAME + "_1891";
+    private static final String BROKGAUS_EFRON_1893_KEY = BROKGAUS_EFRON_LAST_NAME + "_1893";
+    private static final String BROKGAUS_EFRON_1898_KEY = BROKGAUS_EFRON_LAST_NAME + "_1898";
+    private static final String BROKGAUS_EFRON_1900_KEY = BROKGAUS_EFRON_LAST_NAME + "_1900";
+    private static final String BROKGAUS_EFRON_1901_KEY = BROKGAUS_EFRON_LAST_NAME + "_1901";
+    private static final String BROKGAUS_EFRON_1902_KEY = BROKGAUS_EFRON_LAST_NAME + "_1902";
+    private static final String BROKGAUS_EFRON_1903_KEY = BROKGAUS_EFRON_LAST_NAME + "_1903";
+
+    private static final List<Integer> EMPTY_LIST = Collections.emptyList();
+    private static final Function<Book, Object> AUTHOR_YEAR_PUBLICATION_FUNCTION = 
+            new Function<Book, Object>() {
+        @Override
+        public String apply(final Book book) {
+            final String authorNames = book.getAuthors()
+                .stream()
+                .map(author -> author.getLastName())
+                .collect(Collectors.joining(","));
+            return String.format("%s_%s", authorNames, book.getYearOfPublication());
+        }
+    };
 
     @Resource
     private File csvFile;
 
     @Mock
     private IBookDao bookDao;
+    @Mock
+    private Set<BookAuthor> author1Set;
 
     @Spy
     private UploaderContext uploaderContext;
@@ -95,19 +121,7 @@ public class CsvUploaderTest {
     public void shouldReturnAllAbsentBooks() {
         when(bookDao.findAllFromCompleteWork()).thenReturn(new ArrayList<Book>(books));
 
-        Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(
-            new Function<Book, Object>() {
-                @Override
-                public String apply(Book book) {
-                    final String authors = book.getAuthors()
-                        .stream()
-                        .map(author -> author.getLastName())
-                        .collect(Collectors.joining(","));
-                    return String.format("%s_%s", authors, book.getYearOfPublication());
-                }
-            }
-        );
-
+        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(AUTHOR_YEAR_PUBLICATION_FUNCTION);
         result.entrySet().stream()
             .filter(e -> e.getValue().size() > 0)
             .forEach(System.out::println);
@@ -121,7 +135,7 @@ public class CsvUploaderTest {
         assertEquals(TUTCHEV_KEY, Arrays.asList(new Integer[]{3, 4}), result.get(TUTCHEV_KEY));
         assertEquals(BAYRON_KEY, EMPTY_LIST, result.get(BAYRON_KEY));
         assertEquals(SIRAFIMOVICH_KEY, EMPTY_LIST, result.get(SIRAFIMOVICH_KEY));
-        //assertEquals(Arrays.asList(EMPTY_ARRAY), result.get(SOLJENICEN_LAST_NAME));
+        assertEquals(SOLJENICEN_KEY, Arrays.asList(new Integer[]{1}), result.get(SOLJENICEN_KEY));
         assertEquals(BLOCK_BELIY_KEY, EMPTY_LIST, result.get(BLOCK_BELIY_KEY));
         assertEquals(STANUKOVICH_KEY, Arrays.asList(new Integer[]{7}), result.get(STANUKOVICH_KEY));
         assertEquals(TOLSTOY_KEY, EMPTY_LIST, result.get(TOLSTOY_KEY));
@@ -136,6 +150,32 @@ public class CsvUploaderTest {
         assertEquals(GORKIY_KEY, EMPTY_LIST, result.get(GORKIY_KEY));
         assertEquals(PUSHKIN_KEY, EMPTY_LIST, result.get(PUSHKIN_KEY));
         assertEquals(MAYAKOVSKIY_KEY, Arrays.asList(new Integer[]{5, 6, 7, 9}), result.get(MAYAKOVSKIY_KEY));
-        
+    }
+
+    @Test
+    public void shouldReturnAbsentBooksForMultiYearPublication() {
+        final Set<Book> brokgausEfronBooks = getBrockgusEfronBooks();
+        when(bookDao.findByAuthors(author1Set)).thenReturn(new ArrayList<Book>(brokgausEfronBooks));
+
+        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(author1Set, AUTHOR_YEAR_PUBLICATION_FUNCTION);
+
+        assertEquals(BROKGAUS_EFRON_1891_KEY, Arrays.asList(new Integer[]{4, 5, 6, 8, 9}), result.get(BROKGAUS_EFRON_1891_KEY));
+        assertEquals(BROKGAUS_EFRON_1893_KEY, Arrays.asList(new Integer[]{16, 17, 18, 19, 20}), result.get(BROKGAUS_EFRON_1893_KEY));
+        assertEquals(BROKGAUS_EFRON_1898_KEY, Arrays.asList(new Integer[]{46, 47, 48, 49, 50}), result.get(BROKGAUS_EFRON_1898_KEY));
+        assertEquals(BROKGAUS_EFRON_1900_KEY, Arrays.asList(new Integer[]{56, 58, 59, 60, 61}), result.get(BROKGAUS_EFRON_1900_KEY));
+        assertEquals(BROKGAUS_EFRON_1901_KEY, Arrays.asList(new Integer[]{62, 63, 64, 65, 66}), result.get(BROKGAUS_EFRON_1901_KEY));
+        assertEquals(BROKGAUS_EFRON_1902_KEY, Arrays.asList(new Integer[]{68, 69, 70, 72}), result.get(BROKGAUS_EFRON_1902_KEY));
+        assertEquals(BROKGAUS_EFRON_1903_KEY, Arrays.asList(new Integer[]{73, 74, 75, 77, 78}), result.get(BROKGAUS_EFRON_1903_KEY));
+    }
+
+    private Set<Book> getBrockgusEfronBooks() {
+        return books.stream()
+            .filter(book -> {
+                return book.getAuthors()
+                    .stream()
+                    .map(author -> author.getLastName())
+                    .collect(Collectors.joining(","))
+                    .equals(BROKGAUS_EFRON_LAST_NAME);
+            }).collect(Collectors.toSet());
     }
 }

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,7 +34,7 @@ public class DummyUploaderTest {
     private static final String SERVANTES_LAST_NAME = "Мигель де Сервантес Сааведра";
     private static final String VOINICH_LAST_NAME = "Этель Лилиан Войнич";
 
-    private static final List<Integer> EMPTY_LIST = Arrays.asList(new Integer[]{});
+    private static final List<Integer> EMPTY_LIST = Collections.emptyList();
 
     @Spy
     private UploaderContext uploaderContext = new UploaderContext(new DummyUploaderStrategy());

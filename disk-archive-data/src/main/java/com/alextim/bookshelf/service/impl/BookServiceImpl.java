@@ -1,8 +1,8 @@
 package com.alextim.bookshelf.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +22,7 @@ import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
+import com.alextim.bookshelf.entity.CompleteWork;
 import com.alextim.bookshelf.service.IBookService;
 
 @Service
@@ -44,14 +45,8 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Map<Object, List<Integer>> getAllAbsentBooks(final String firstAuthorName, 
-            final String lastAuthorName, final Function<Book, Object> function) {
-
-        final BookAuthor bookAuthor = authorDao.findAuthor(firstAuthorName, lastAuthorName);
-
-        final Set<BookAuthor> bookAuthors = Arrays.asList(bookAuthor).stream().collect(Collectors.toSet());
-        final List<Book> books = bookDao.findByAuthor(bookAuthors);
-
+    public Map<Object, List<Integer>> getAllAbsentBooks(final Set<BookAuthor> authors, final Function<Book, Object> function) {
+        final List<Book> books = bookDao.findByAuthors(authors);
         return getAllAbsentBooks(books, function);
     }
 
@@ -79,25 +74,43 @@ public class BookServiceImpl implements IBookService {
     }
 
     private List<Integer> findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
-        int maxVolume = MIN_VOLUME_VALUE;
+        final CompleteWork completeWork = entry.getValue().getCompleteWork();
 
-        if (entry.getValue().getCompleteWork() != null) {
-            maxVolume = entry.getValue().getCompleteWork().getTotalVolumes();
+        List<Integer> rangeList = Collections.emptyList();
+        if (completeWork != null) {
+            final int minVolume = getMinVolume(completeWork.getFirstVolumeInYear());
+            final int maxVolume = getMaxVolume(completeWork.getLastVolumeInYear(), 
+                    completeWork.getTotalVolumes());
+
+            rangeList = IntStream.rangeClosed(minVolume, maxVolume)
+                    .boxed()
+                    .collect(Collectors.toList());
+            rangeList.removeAll(entry.getValue().getVolumes());
         }
-
-        List<Integer> rangeList = IntStream.rangeClosed(MIN_VOLUME_VALUE, maxVolume)
-            .boxed()
-            .collect(Collectors.toList());
-
-        rangeList.removeAll(entry.getValue().getVolumes());
 
         return rangeList;
     }
 
-    private AuthorVolumesResult getOrCreateAuthorVolumesResult(AuthorVolumesResult authorVolumesResult) {
+    private int getMinVolume(final Integer firstVolumeInYear) {
+        if (firstVolumeInYear == null) { /*TODO: add test on 0 value*/
+            return MIN_VOLUME_VALUE;
+        }
+        return firstVolumeInYear;
+    }
+
+    private int getMaxVolume(final Integer lastVolumeInYear, final Integer totalVolumes) {
+        if (lastVolumeInYear == null) { /*TODO: add test on 0 value*/
+            return Optional.ofNullable(totalVolumes).orElse(MIN_VOLUME_VALUE);
+        }
+        return lastVolumeInYear;
+    }
+
+    private AuthorVolumesResult getOrCreateAuthorVolumesResult(final AuthorVolumesResult authorVolumesResult) {
         if (authorVolumesResult == null) {
-            authorVolumesResult = new AuthorVolumesResult();
-            authorVolumesResult.setVolumes(new ArrayList<>());
+            final AuthorVolumesResult volumesResult = new AuthorVolumesResult();
+            volumesResult.setVolumes(new ArrayList<>());
+
+            return volumesResult;
         }
         return authorVolumesResult;
     }

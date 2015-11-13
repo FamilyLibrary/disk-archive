@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.alextim.diskarchive.entity.IEntity;
@@ -12,7 +13,9 @@ import com.alextim.diskarchive.entity.IEntity;
 @Entity
 @Table(name="COMPLETE_WORKS")
 public class CompleteWork implements IEntity {
-    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="COMPLETE_WORKS_SEQUENCE")
+    @SequenceGenerator(name="COMPLETE_WORKS_SEQUENCE", sequenceName="SEQ_COMPLETE_WORKS")
     @Column(name="ID")
     private Long id;
 

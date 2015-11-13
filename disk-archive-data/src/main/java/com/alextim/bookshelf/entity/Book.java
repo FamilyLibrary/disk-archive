@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.alextim.diskarchive.entity.IEntity;
@@ -20,7 +21,9 @@ public class Book implements IEntity {
     public final static String NEW_NAME = "new name";
     public final static String NEW_DESCRIPTION = "new description";
 
-    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOKS_SEQUENCE")
+    @SequenceGenerator(name="BOOKS_SEQUENCE", sequenceName="SEQ_BOOKS")
     @Column(name="ID")
     private Long id;
 

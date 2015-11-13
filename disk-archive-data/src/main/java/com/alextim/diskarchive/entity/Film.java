@@ -2,6 +2,7 @@ package com.alextim.diskarchive.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,10 +20,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name="FILMS")
 public class Film  implements IEntity{
-    /*TODO: Fix mapping for ID field. Find a correct way mapping them to a sequence for in memory database*/
-	@Id 
+	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILMS_SEQUENCE")
 	@SequenceGenerator(name="FILMS_SEQUENCE", sequenceName="SEQ_FILMS")
+    @Column(name="ID")
 	private Long id;
 
 	private String name;
@@ -38,7 +39,7 @@ public class Film  implements IEntity{
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinTable(
-		name="films_actors",
+		name="FILMS_ACTORS",
 		joinColumns=@JoinColumn(name="film_id"),
 		inverseJoinColumns=@JoinColumn(name="actor_id")
 	)

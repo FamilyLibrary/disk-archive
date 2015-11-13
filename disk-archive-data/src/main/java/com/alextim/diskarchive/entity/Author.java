@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.alextim.general.entity.Person;
 
 @Entity
-@Table(name="authors")
+@Table(name="AUTHORS")
 @PrimaryKeyJoinColumn(name="ID")
 public class Author extends Person {
     @OneToOne(mappedBy="author")
@@ -22,7 +22,7 @@ public class Author extends Person {
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinTable(
-		name="films_authors",
+		name="FILMS_AUTHORS",
 		joinColumns=@JoinColumn(name="author_id"),
 		inverseJoinColumns=@JoinColumn(name="film_id")
 	)

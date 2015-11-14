@@ -1,9 +1,7 @@
 package com.alextim.bookshelf.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,12 +57,10 @@ public class DummyUploaderTest {
 
     @Test
     public void shouldReturnAllAbsentBooks() {
-        when(bookDao.findAllFromCompleteWork()).thenReturn(new ArrayList<Book>(books));
-
-        Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(
+        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(books,
             new Function<Book, Object>() {
                 @Override
-                public String apply(Book book) {
+                public String apply(final Book book) {
                     return book.getAuthors()
                             .stream()
                             .map(author -> author.getLastName())
@@ -73,6 +69,7 @@ public class DummyUploaderTest {
             }
         );
 
+        assertEquals(5, result.size());
         assertEquals(EMPTY_LIST, result.get(SERVANTES_LAST_NAME));
         assertEquals(Arrays.asList(new Integer[]{4, 5}), result.get(LESKOV_LAST_NAME));
         assertEquals(EMPTY_LIST, result.get(VOINICH_LAST_NAME));

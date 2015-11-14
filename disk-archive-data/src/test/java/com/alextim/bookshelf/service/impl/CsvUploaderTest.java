@@ -1,13 +1,12 @@
 package com.alextim.bookshelf.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,8 +92,6 @@ public class CsvUploaderTest {
 
     @Mock
     private IBookDao bookDao;
-    @Mock
-    private Set<BookAuthor> author1Set;
 
     @Spy
     private UploaderContext uploaderContext;
@@ -119,13 +116,12 @@ public class CsvUploaderTest {
 
     @Test
     public void shouldReturnAllAbsentBooks() {
-        when(bookDao.findAllFromCompleteWork()).thenReturn(new ArrayList<Book>(books));
-
-        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(AUTHOR_YEAR_PUBLICATION_FUNCTION);
+        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(books, AUTHOR_YEAR_PUBLICATION_FUNCTION);
         result.entrySet().stream()
             .filter(e -> e.getValue().size() > 0)
             .forEach(System.out::println);
 
+        assertEquals(46, result.size());
         assertEquals(SERVANTES_KEY, EMPTY_LIST, result.get(SERVANTES_KEY));
         assertEquals(LESKOV_KEY, Arrays.asList(new Integer[]{4, 5}), result.get(LESKOV_KEY));
         assertEquals(VOINICH_KEY, EMPTY_LIST, result.get(VOINICH_KEY));
@@ -154,11 +150,12 @@ public class CsvUploaderTest {
 
     @Test
     public void shouldReturnAbsentBooksForMultiYearPublication() {
-        final Set<Book> brokgausEfronBooks = getBrockgusEfronBooks();
-        when(bookDao.findByAuthors(author1Set)).thenReturn(new ArrayList<Book>(brokgausEfronBooks));
+        final Set<BookAuthor> authors  = new HashSet<>();
+        authors.add(createBrockgusEfronBookAuthor());
 
-        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(author1Set, AUTHOR_YEAR_PUBLICATION_FUNCTION);
+        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(books, authors, AUTHOR_YEAR_PUBLICATION_FUNCTION);
 
+        assertEquals(7, result.size());
         assertEquals(BROKGAUS_EFRON_1891_KEY, Arrays.asList(new Integer[]{4, 5, 6, 8, 9}), result.get(BROKGAUS_EFRON_1891_KEY));
         assertEquals(BROKGAUS_EFRON_1893_KEY, Arrays.asList(new Integer[]{16, 17, 18, 19, 20}), result.get(BROKGAUS_EFRON_1893_KEY));
         assertEquals(BROKGAUS_EFRON_1898_KEY, Arrays.asList(new Integer[]{46, 47, 48, 49, 50}), result.get(BROKGAUS_EFRON_1898_KEY));
@@ -168,14 +165,9 @@ public class CsvUploaderTest {
         assertEquals(BROKGAUS_EFRON_1903_KEY, Arrays.asList(new Integer[]{73, 74, 75, 77, 78}), result.get(BROKGAUS_EFRON_1903_KEY));
     }
 
-    private Set<Book> getBrockgusEfronBooks() {
-        return books.stream()
-            .filter(book -> {
-                return book.getAuthors()
-                    .stream()
-                    .map(author -> author.getLastName())
-                    .collect(Collectors.joining(","))
-                    .equals(BROKGAUS_EFRON_LAST_NAME);
-            }).collect(Collectors.toSet());
+    private BookAuthor createBrockgusEfronBookAuthor() {
+        final BookAuthor bookAuthor = new BookAuthor();
+        bookAuthor.setLastName(BROKGAUS_EFRON_LAST_NAME);
+        return bookAuthor;
     }
 }

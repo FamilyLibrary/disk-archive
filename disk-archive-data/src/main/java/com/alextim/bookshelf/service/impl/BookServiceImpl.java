@@ -39,18 +39,25 @@ public class BookServiceImpl implements IBookService {
     private UploaderContext uploaderContext;
 
     @Override
-    public Map<Object, List<Integer>> getAllAbsentBooks(final Function<Book, Object> function) {
-        final List<Book> books = bookDao.findAllFromCompleteWork();
-        return getAllAbsentBooks(books, function);
+    public Map<Object, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Set<BookAuthor> authors, final Function<Book, Object> function) {
+        final String authorNames = authors.stream()
+            .map(author -> author.getLastName())
+            .collect(Collectors.joining(","));
+
+        final List<Book> filteredByAuthor = books.stream()
+                .filter(book -> {
+                    return book.getAuthors().stream()
+                        .map(author -> author.getLastName())
+                        .collect(Collectors.joining(","))
+                        .equals(authorNames);
+                }
+        ).collect(Collectors.toList());
+
+        return getAllAbsentBooks(filteredByAuthor, function);
     }
 
     @Override
-    public Map<Object, List<Integer>> getAllAbsentBooks(final Set<BookAuthor> authors, final Function<Book, Object> function) {
-        final List<Book> books = bookDao.findByAuthors(authors);
-        return getAllAbsentBooks(books, function);
-    }
-
-    private Map<Object, List<Integer>> getAllAbsentBooks(final List<Book> books, final Function<Book, Object> function) {
+    public Map<Object, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Function<Book, Object> function) {
         final Map<Object, AuthorVolumesResult> authorVolumes = new HashMap<>();
 
         books.stream().forEach(book -> {

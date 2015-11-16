@@ -13,6 +13,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.alextim.diskarchive.entity.IEntity;
 
 @Entity
@@ -37,6 +40,7 @@ public class Book implements IEntity {
     private Integer volume;
 
     @OneToMany
+    @Cascade({CascadeType.MERGE, CascadeType.SAVE_UPDATE})
     @JoinColumn(name="AUTHOR_ID")
     private Set<BookAuthor> authors;
 
@@ -45,6 +49,7 @@ public class Book implements IEntity {
     private BookGroup bookGroup;
 
     @OneToOne
+    @Cascade({CascadeType.MERGE, CascadeType.SAVE_UPDATE})
     @JoinColumn(name="COMPLETE_WORK_ID")
     private CompleteWork completeWork;
 

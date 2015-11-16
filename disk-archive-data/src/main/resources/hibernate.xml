@@ -20,6 +20,10 @@
 	  </property>
 	</bean>
 
+    <bean id="bookDao" class="com.alextim.bookshelf.dao.impl.BookDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
 	<bean id="filmDAO" class="com.alextim.diskarchive.dao.impl.FilmDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

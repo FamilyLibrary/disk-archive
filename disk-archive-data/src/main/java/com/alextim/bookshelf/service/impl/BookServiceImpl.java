@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.entity.Book;
@@ -31,9 +30,6 @@ public class BookServiceImpl implements IBookService {
 
     @Resource
     private IBookDao bookDao;
-
-    @Resource
-    private IAuthorDao authorDao;
 
     @Resource
     private UploaderContext uploaderContext;
@@ -80,6 +76,11 @@ public class BookServiceImpl implements IBookService {
         return result;
     }
 
+    @Override
+    public void insert(final Collection<Book> books) {
+        books.forEach(book -> bookDao.addBook(book));
+    }
+
     private List<Integer> findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
         final CompleteWork completeWork = entry.getValue().getCompleteWork();
 
@@ -99,14 +100,14 @@ public class BookServiceImpl implements IBookService {
     }
 
     private int getMinVolume(final Integer firstVolumeInYear) {
-        if (firstVolumeInYear == null) { /*TODO: add test on 0 value*/
+        if (firstVolumeInYear == null || firstVolumeInYear.equals(0)) {
             return MIN_VOLUME_VALUE;
         }
         return firstVolumeInYear;
     }
 
     private int getMaxVolume(final Integer lastVolumeInYear, final Integer totalVolumes) {
-        if (lastVolumeInYear == null) { /*TODO: add test on 0 value*/
+        if (lastVolumeInYear == null || lastVolumeInYear.equals(0)) {
             return Optional.ofNullable(totalVolumes).orElse(MIN_VOLUME_VALUE);
         }
         return lastVolumeInYear;

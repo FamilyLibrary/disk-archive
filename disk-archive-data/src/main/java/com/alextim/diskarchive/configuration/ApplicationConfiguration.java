@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages={"com.alextim.bookshelf.service"})
 public class ApplicationConfiguration {
     private static final String DISK_ARCHIVE_ANNOTATED_PACKAGES = "com.alextim.diskarchive.entity";
     private static final String BOOK_SHELF_ANNOTATED_PACKAGES = "com.alextim.bookshelf.entity";

@@ -5,12 +5,16 @@ import java.util.Set;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.general.dao.impl.BasicDAO;
 
+@Repository
+@Transactional
 public class BookDaoImpl extends BasicDAO<Book> implements IBookDao {
 
     @Override

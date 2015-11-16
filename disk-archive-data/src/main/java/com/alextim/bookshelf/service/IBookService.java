@@ -14,4 +14,6 @@ public interface IBookService {
     Map<Object, List<Integer>> getAllAbsentBooks(Collection<Book> books, Set<BookAuthor> authors, Function<Book, Object> function);
 
     Collection<Book> uploadBookFile();
+
+    void insert(Collection<Book> books);
 }

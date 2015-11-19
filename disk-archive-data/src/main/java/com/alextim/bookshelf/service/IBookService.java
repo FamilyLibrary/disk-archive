@@ -10,8 +10,8 @@ import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 
 public interface IBookService {
-    Map<Object, List<Integer>> getAllAbsentBooks(Collection<Book> books, Function<Book, Object> function);
-    Map<Object, List<Integer>> getAllAbsentBooks(Collection<Book> books, Set<BookAuthor> authors, Function<Book, Object> function);
+    <T> Map<T, List<Integer>> getAllAbsentBooks(Collection<Book> books, final Function<Book, T> function);
+    <T> Map<T, List<Integer>> getAllAbsentBooks(Collection<Book> books, Set<BookAuthor> authors, Function<Book, T> function);
 
     Collection<Book> uploadBookFile();
 

@@ -1,6 +1,5 @@
 package com.alextim.bookshelf.service.impl;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.annotation.Resource;
@@ -22,8 +21,8 @@ import com.alextim.diskarchive.configuration.TestDaoConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class, DataFactoryConfiguration.class, TestDaoConfiguration.class}, 
                       inheritLocations = true)
-public class BookServiceImplTest_CRUDOperations {
-    public static final Logger LOG = Logger.getLogger(BookServiceImplTest_CRUDOperations.class);
+public class BookServiceImpl_CRUDOperationsTest {
+    public static final Logger LOG = Logger.getLogger(BookServiceImpl_CRUDOperationsTest.class);
 
     @Resource
     private IBookService bookService;

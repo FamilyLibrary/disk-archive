@@ -1,5 +1,7 @@
 package com.alextim.bookshelf.service.impl;
 
+import static com.alextim.bookshelf.Utilities.FILTER_BY_AUTHOR_NAMES_BI_FUNCTION;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,29 +37,16 @@ public class BookServiceImpl implements IBookService {
     private UploaderContext uploaderContext;
 
     @Override
-    public Map<Object, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Set<BookAuthor> authors, final Function<Book, Object> function) {
-        final String authorNames = authors.stream()
-            .map(author -> author.getLastName())
-            .collect(Collectors.joining(","));
-
-        final List<Book> filteredByAuthor = books.stream()
-                .filter(book -> {
-                    return book.getAuthors().stream()
-                        .map(author -> author.getLastName())
-                        .collect(Collectors.joining(","))
-                        .equals(authorNames);
-                }
-        ).collect(Collectors.toList());
-
-        return getAllAbsentBooks(filteredByAuthor, function);
+    public <T> Map<T, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Set<BookAuthor> authors, final Function<Book, T> function) {
+        return getAllAbsentBooks(FILTER_BY_AUTHOR_NAMES_BI_FUNCTION.apply(books, authors), function);
     }
 
     @Override
-    public Map<Object, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Function<Book, Object> function) {
-        final Map<Object, AuthorVolumesResult> authorVolumes = new HashMap<>();
+    public <T> Map<T, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Function<Book, T> function) {
+        final Map<T, AuthorVolumesResult> authorVolumes = new HashMap<>();
 
         books.stream().forEach(book -> {
-            final Object key = function.apply(book);
+            final T key = function.apply(book);
             final AuthorVolumesResult result = getOrCreateAuthorVolumesResult(authorVolumes.get(key));
 
             result.setCompleteWork(book.getCompleteWork());
@@ -65,11 +54,11 @@ public class BookServiceImpl implements IBookService {
             authorVolumes.put(key, result);
         });
 
-        final Map<Object, List<Integer>> result = 
+        final Map<T, List<Integer>> result = 
                 authorVolumes.entrySet()
                     .stream()
                     .collect(Collectors.toMap(
-                            (Entry<Object, AuthorVolumesResult> entry) -> entry.getKey(), 
+                            (Entry<T, AuthorVolumesResult> entry) -> entry.getKey(), 
                              entry -> findAbsentBooks(entry))
                     );
 
@@ -78,10 +67,10 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public void insert(final Collection<Book> books) {
-        books.forEach(book -> bookDao.addBook(book));
+        books.parallelStream().forEach(book -> bookDao.addBook(book));
     }
 
-    private List<Integer> findAbsentBooks(final Entry<Object, AuthorVolumesResult> entry) {
+    private <T> List<Integer> findAbsentBooks(final Entry<T, AuthorVolumesResult> entry) {
         final CompleteWork completeWork = entry.getValue().getCompleteWork();
 
         List<Integer> rangeList = Collections.emptyList();

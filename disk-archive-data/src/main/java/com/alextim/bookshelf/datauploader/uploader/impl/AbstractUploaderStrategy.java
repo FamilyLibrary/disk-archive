@@ -51,7 +51,7 @@ public class AbstractUploaderStrategy {
             }).collect(Collectors.toCollection(LinkedHashSet::new))
         );
     }
-    private void createCompleteWork(Book book, Row row) {
+    private void createCompleteWork(final Book book, final Row row) {
         CompleteWork completeWork = new CompleteWork();
 
         completeWork.setTotalVolumes(Integer.valueOf(row.volumes));
@@ -65,7 +65,7 @@ public class AbstractUploaderStrategy {
         book.setCompleteWork(completeWork);
     }
 
-    private Row createRow(List<String> parts) {
+    private Row createRow(final List<String> parts) {
         final Row row = new Row();
 
         row.author = parts.get(0);

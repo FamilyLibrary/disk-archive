@@ -1,5 +1,6 @@
 package com.alextim.bookshelf.service.impl;
 
+import static com.alextim.bookshelf.Utilities.AUTHOR_ID_FUNCTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -10,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,14 +35,6 @@ public class BookServiceImplTest {
     private static final List<Integer> ABSENT_BOOK_AUTHOR2 = Arrays.asList(3, 4);
     private static final String SHOLOCHOV_NAME = "Михаил Шолохов";
     private static final List<Integer> ABSENT_SHOLOHOV_BOOKS = Arrays.asList(3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-
-    private static final Function<Book, Object> AUTHOR_FUNCTION = new Function<Book, Object>() {
-        @Override
-        public Long apply(Book book) {
-            final BookAuthor author = book.getAuthors().iterator().next();
-            return author.getId();
-        };
-    };
 
     @Mock
     private IBookDao bookDao;
@@ -104,7 +96,7 @@ public class BookServiceImplTest {
     public void shouldReturnAllAbsentBooks() {
         final Collection<Book> books = Arrays.asList(
                 author1bookVol1, author1bookVol2, author1bookVol4, author2bookVol1, author2bookVol2);
-        final Map<Object, List<Integer>> result = bookService.getAllAbsentBooks(books, AUTHOR_FUNCTION);
+        final Map<Long, List<Integer>> result = bookService.getAllAbsentBooks(books, AUTHOR_ID_FUNCTION);
 
         assertEquals(2, result.size());
         assertTrue(result.containsKey(author1.getId()));
@@ -119,8 +111,7 @@ public class BookServiceImplTest {
         authors.add(createBookAuthor());
 
         final Collection<Book> books = Arrays.asList(author1bookVol1, author1bookVol2);
-        final Map<Object, List<Integer>> result = bookService.getAllAbsentBooks(books, 
-                authors, AUTHOR_FUNCTION);
+        final Map<Long, List<Integer>> result = bookService.getAllAbsentBooks(books, authors, AUTHOR_ID_FUNCTION);
 
         assertEquals(1, result.size());
         assertEquals(ABSENT_SHOLOHOV_BOOKS, result.get(author1.getId()));

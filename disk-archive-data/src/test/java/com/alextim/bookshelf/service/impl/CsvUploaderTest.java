@@ -1,5 +1,6 @@
 package com.alextim.bookshelf.service.impl;
 
+import static com.alextim.bookshelf.Utilities.AUTHOR_YEAR_PUBLICATION_FUNCTION;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -10,8 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -75,17 +74,6 @@ public class CsvUploaderTest {
     private static final String BROKGAUS_EFRON_1903_KEY = BROKGAUS_EFRON_LAST_NAME + "_1903";
 
     private static final List<Integer> EMPTY_LIST = Collections.emptyList();
-    private static final Function<Book, Object> AUTHOR_YEAR_PUBLICATION_FUNCTION = 
-            new Function<Book, Object>() {
-        @Override
-        public String apply(final Book book) {
-            final String authorNames = book.getAuthors()
-                .stream()
-                .map(author -> author.getLastName())
-                .collect(Collectors.joining(","));
-            return String.format("%s_%s", authorNames, book.getYearOfPublication());
-        }
-    };
 
     @Resource
     private File csvFile;
@@ -116,7 +104,8 @@ public class CsvUploaderTest {
 
     @Test
     public void shouldReturnAllAbsentBooks() {
-        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(books, AUTHOR_YEAR_PUBLICATION_FUNCTION);
+        final Map<String, List<Integer>> result =  
+                bookService.getAllAbsentBooks(books, AUTHOR_YEAR_PUBLICATION_FUNCTION);
         result.entrySet().stream()
             .filter(e -> e.getValue().size() > 0)
             .forEach(System.out::println);
@@ -153,7 +142,8 @@ public class CsvUploaderTest {
         final Set<BookAuthor> authors  = new HashSet<>();
         authors.add(createBrockgusEfronBookAuthor());
 
-        final Map<Object, List<Integer>> result =  bookService.getAllAbsentBooks(books, authors, AUTHOR_YEAR_PUBLICATION_FUNCTION);
+        final Map<String, List<Integer>> result = 
+                bookService.getAllAbsentBooks(books, authors, AUTHOR_YEAR_PUBLICATION_FUNCTION);
 
         assertEquals(7, result.size());
         assertEquals(BROKGAUS_EFRON_1891_KEY, Arrays.asList(new Integer[]{4, 5, 6, 8, 9}), result.get(BROKGAUS_EFRON_1891_KEY));

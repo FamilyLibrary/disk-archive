@@ -11,4 +11,5 @@ import com.alextim.general.entity.Person;
 @PrimaryKeyJoinColumn(name="ID")
 public class BookAuthor extends Person {
 
+    
 }

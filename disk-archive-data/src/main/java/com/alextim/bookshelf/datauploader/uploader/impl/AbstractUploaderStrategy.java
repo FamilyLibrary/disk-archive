@@ -1,7 +1,13 @@
 package com.alextim.bookshelf.datauploader.uploader.impl;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +21,8 @@ public class AbstractUploaderStrategy {
     private static final String AUTHOR_SEPARATOR = "[\"]\\s*|\\s*,\\s*|\\s*[\"]";
     private static final String REG_EXP_SEPARATOR = ",(?=([^\"]|\"[^\"]*\")*$)";
 
+    private Map<CompleteWorkKey, CompleteWork> completeWorkMap = new HashMap<>();
+
     protected Book mapToBook(final String line) {
         final Row row = createRow(Stream
             .of(line.split(REG_EXP_SEPARATOR, -1))
@@ -25,7 +33,7 @@ public class AbstractUploaderStrategy {
         createGeneralFields(book, row);
         createBookAuthor(book, row);
         if (StringUtils.isNotBlank(row.volumes)) {
-            createCompleteWork(book, row);
+            getOrCreateCompleteWork(book, row);
         }
 
         return book;
@@ -51,8 +59,21 @@ public class AbstractUploaderStrategy {
             }).collect(Collectors.toCollection(LinkedHashSet::new))
         );
     }
-    private void createCompleteWork(final Book book, final Row row) {
-        CompleteWork completeWork = new CompleteWork();
+
+    private void getOrCreateCompleteWork(final Book book, final Row row) {
+        final CompleteWorkKey key = new CompleteWorkKey();
+        key.setBook(book);
+
+        CompleteWork completeWork = completeWorkMap.get(key);
+        if (completeWork == null) {
+            completeWork = initCompleteWork(book, row);
+            completeWorkMap.put(key, completeWork);
+        }
+
+        book.setCompleteWork(completeWork);
+    }
+    private CompleteWork initCompleteWork(final Book book, final Row row) {
+        final CompleteWork completeWork = new CompleteWork();
 
         completeWork.setTotalVolumes(Integer.valueOf(row.volumes));
 
@@ -62,7 +83,7 @@ public class AbstractUploaderStrategy {
         if (StringUtils.isNotBlank(row.lastVolumeInYear)) {
             completeWork.setLastVolumeInYear(Integer.valueOf(row.lastVolumeInYear));
         }
-        book.setCompleteWork(completeWork);
+        return completeWork;
     }
 
     private Row createRow(final List<String> parts) {
@@ -87,5 +108,46 @@ public class AbstractUploaderStrategy {
         private String yearOfPublication;
         private String firstVolumeInYear;
         private String lastVolumeInYear;
+    }
+
+    private static class CompleteWorkKey {
+        private static final Function<CompleteWorkKey, Book> CHECK_BOOK_FUNCTION = 
+                (completeWork) -> Optional.ofNullable(completeWork.book).orElseThrow(() -> new IllegalStateException("A complete Work must have a book"));
+        private static final Function<CompleteWorkKey, Optional<Integer>> YEAR_OF_PUBLICATION_FUNCTION =  
+                (completeWork) -> Optional.ofNullable(CHECK_BOOK_FUNCTION.apply(completeWork).getYearOfPublication());
+        private static final Function<CompleteWorkKey, Optional<Set<BookAuthor>>> AUTHORS_FUNCTION =  
+                 (completeWork) -> Optional.ofNullable(CHECK_BOOK_FUNCTION.apply(completeWork).getAuthors());
+
+         private Book book;
+
+         public void setBook(Book book) {
+             this.book = book;
+         }
+
+         @Override
+         public boolean equals(final Object completeWorkKeyObj) {
+             if (!(completeWorkKeyObj instanceof CompleteWorkKey)) {
+                 return false;
+             }
+             if (this == completeWorkKeyObj) {
+                 return true;
+             }
+
+             final CompleteWorkKey completeWorkKey = (CompleteWorkKey)completeWorkKeyObj;
+
+             return (YEAR_OF_PUBLICATION_FUNCTION.apply(completeWorkKey).equals(YEAR_OF_PUBLICATION_FUNCTION.apply(this)) 
+                     && AUTHORS_FUNCTION.apply(completeWorkKey).equals(AUTHORS_FUNCTION.apply(this)));
+         }
+
+         @Override
+         public int hashCode() {
+             int result = 17;
+
+             result = 31 * result + (YEAR_OF_PUBLICATION_FUNCTION.apply(this).orElse(0).hashCode());
+             result = 31 * result + (AUTHORS_FUNCTION.apply(this).orElse(Collections.emptySet()).hashCode());
+
+             return result;
+         }
+
     }
 }

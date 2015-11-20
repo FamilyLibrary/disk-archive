@@ -67,7 +67,7 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public void insert(final Collection<Book> books) {
-        books.parallelStream().forEach(book -> bookDao.addBook(book));
+        books.stream().forEach(book -> bookDao.addBook(book));
     }
 
     private <T> List<Integer> findAbsentBooks(final Entry<T, AuthorVolumesResult> entry) {

@@ -78,4 +78,32 @@ public class Person implements IEntity {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
+    @Override
+    public boolean equals(final Object personObj) {
+        if (!(personObj instanceof Person)) {
+            return false;
+        }
+        if (this == personObj) {
+            return true;
+        }
+
+        final Person person = (Person)personObj;
+
+        return (person.firstName == null ? this.firstName == null : person.firstName.equals(this.firstName)
+                && person.lastName == null ? this.lastName == null : person.lastName.equals(this.lastName)
+                && person.gender == null ? this.gender == null : person.gender.equals(this.gender)
+                && person.birthdayDate == null ? this.birthdayDate == null : person.birthdayDate.equals(this.birthdayDate));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (this.firstName != null ? this.firstName.hashCode() : 0);
+        result = 31 * result + (this.lastName != null ? this.lastName.hashCode() : 0);
+        result = 31 * result + (this.gender != null ? this.gender.hashCode() : 0);
+        result = 31 * result + (this.birthdayDate != null ? this.birthdayDate.hashCode() : 0);
+        return result;
+    }
+
 }

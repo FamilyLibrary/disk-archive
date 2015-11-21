@@ -34,7 +34,7 @@ public class Film  implements IEntity{
 	private FilmGroup filmGroup;
 	
 	@OneToOne
-	@JoinColumn(name="author_id")
+	@JoinColumn(name="FILM_ID")
 	private Author author;
 	
 	@OneToMany(fetch=FetchType.EAGER)

@@ -1,6 +1,9 @@
 package com.alextim.bookshelf.entity;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +24,9 @@ import com.alextim.diskarchive.entity.IEntity;
 @Entity
 @Table(name="BOOKS")
 public class Book implements IEntity {
+    private static final Function<Book, Optional<Integer>> YEAR_OF_PUBLICATION_FUNCTION = (book) -> Optional.ofNullable(book.getYearOfPublication());
+    private static final Function<Book, Optional<Set<BookAuthor>>> AUTHORS_FUNCTION = (book) ->  Optional.ofNullable(book.getAuthors());
+
     public final static String NEW_NAME = "new name";
     public final static String NEW_DESCRIPTION = "new description";
 
@@ -41,7 +47,7 @@ public class Book implements IEntity {
 
     @OneToMany
     @Cascade({CascadeType.MERGE, CascadeType.SAVE_UPDATE})
-    @JoinColumn(name="AUTHOR_ID")
+    @JoinColumn(name="BOOK_ID")
     private Set<BookAuthor> authors;
 
     @OneToOne
@@ -112,4 +118,31 @@ public class Book implements IEntity {
     public void setAuthors(Set<BookAuthor> authors) {
         this.authors = authors;
     }
+
+    @Override
+    public boolean equals(final Object bookObj) {
+        if (!(bookObj instanceof Book)) {
+            return false;
+        }
+        if (this == bookObj) {
+            return true;
+        }
+
+        final Book book = (Book)bookObj;
+
+        return (YEAR_OF_PUBLICATION_FUNCTION.apply(book).equals(YEAR_OF_PUBLICATION_FUNCTION.apply(this)) 
+                && AUTHORS_FUNCTION.apply(book).equals(AUTHORS_FUNCTION.apply(this))
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 31 * result + (YEAR_OF_PUBLICATION_FUNCTION.apply(this).orElse(0).hashCode());
+        result = 31 * result + (AUTHORS_FUNCTION.apply(this).orElse(Collections.emptySet()).hashCode());
+
+        return result;
+    }
+
 }

@@ -15,5 +15,9 @@ public interface IBookService {
 
     Collection<Book> uploadBookFile();
 
-    void insert(Collection<Book> books);
+    List<Book> save(Collection<Book> books);
+    void delete(Book book);
+
+    Book getById(Long id);
+    Collection<Book> findAll();
 }

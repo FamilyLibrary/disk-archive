@@ -1,5 +1,6 @@
 package com.alextim.bookshelf.dao;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -12,4 +13,8 @@ public interface IBookDao {
 
     List<Book> findByAuthors(Set<BookAuthor> bookAuthors);
     List<Book> findAllFromCompleteWork();
+
+    Collection<Book> findAll();
+    Book getById(Long id);
+    void delete(Book book);
 }

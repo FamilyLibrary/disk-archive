@@ -24,6 +24,20 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
+    <bean name="completeWorkDao" class="com.alextim.general.dao.impl.BasicDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+        <constructor-arg>
+            <value>com.alextim.bookshelf.entity.CompleteWork</value>
+        </constructor-arg>
+    </bean>
+
+    <bean name="bookAuthorDao" class="com.alextim.general.dao.impl.BasicDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+        <constructor-arg>
+            <value>com.alextim.bookshelf.entity.BookAuthor</value>
+        </constructor-arg>
+    </bean>
+
 	<bean id="filmDAO" class="com.alextim.diskarchive.dao.impl.FilmDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

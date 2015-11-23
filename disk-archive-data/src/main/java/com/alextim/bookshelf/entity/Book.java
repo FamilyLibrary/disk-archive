@@ -46,7 +46,7 @@ public class Book implements IEntity {
     private Integer volume;
 
     @OneToMany
-    @Cascade({CascadeType.MERGE, CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name="BOOK_ID")
     private Set<BookAuthor> authors;
 
@@ -55,7 +55,7 @@ public class Book implements IEntity {
     private BookGroup bookGroup;
 
     @OneToOne
-    @Cascade({CascadeType.MERGE, CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name="COMPLETE_WORK_ID")
     private CompleteWork completeWork;
 

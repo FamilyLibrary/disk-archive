@@ -18,11 +18,17 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 
 	private Class<T> persistentClass;
 
-	@SuppressWarnings("unchecked")
-	public BasicDAO(){
+	public BasicDAO(Class<T> persistentClass){
 	    //TODO Remove or replace persistentClass field to something
-		this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		//this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	    this.persistentClass = persistentClass;
 	}
+
+    @SuppressWarnings("unchecked")
+    public BasicDAO(){
+        //TODO Remove or replace persistentClass field to something
+        this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 	
 	@SuppressWarnings("unchecked")
 	public Collection<T> findAll() {
@@ -44,6 +50,14 @@ public class BasicDAO<T> extends HibernateDaoSupport implements IBasicDAO<T>{
 	public void delete(T object) {
 		getHibernateTemplate().delete(object);
 	}
+	
+    @Override
+    public void getByIdThenDelete(final Long id) {
+        final T entity = getById(id);
+        if (entity != null) {
+            getHibernateTemplate().delete(entity);
+        }
+    }
 
 	@Override
 	public T getById(Long id) {

@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -66,8 +67,29 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public void insert(final Collection<Book> books) {
-        books.stream().forEach(book -> bookDao.addBook(book));
+    public List<Book> save(final Collection<Book> books) {
+        return books.stream()
+            .map(book -> bookDao.addBook(book))
+            .flatMap(book -> Stream.of(book))
+            .collect(Collectors.toList());
+    }
+    
+
+    @Override
+    public void delete(final Book book) {
+        bookDao.delete(book);
+    }
+
+    @Override
+    public Book getById(final Long id) {
+        return bookDao.getById(
+                Optional.ofNullable(id).orElseThrow(() -> new IllegalArgumentException("Id value can not be null"))
+        );
+    }
+
+    @Override
+    public Collection<Book> findAll() {
+        return bookDao.findAll();
     }
 
     private <T> List<Integer> findAbsentBooks(final Entry<T, AuthorVolumesResult> entry) {

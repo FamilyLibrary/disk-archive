@@ -1,12 +1,19 @@
 package com.alextim.bookshelf.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.alextim.diskarchive.entity.IEntity;
 
@@ -27,6 +34,10 @@ public class CompleteWork implements IEntity {
 
     @Column(name="TOTAL_VOLUMES")
     private Integer totalVolumes;
+
+    @OneToMany(mappedBy="completeWork", fetch=FetchType.EAGER)
+    @Cascade(value={CascadeType.ALL})
+    private List<Book> books;
 
     @Override
     public Long getId() {
@@ -55,5 +66,12 @@ public class CompleteWork implements IEntity {
     }
     public void setLastVolumeInYear(Integer lastVolumeInYear) {
         this.lastVolumeInYear = lastVolumeInYear;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

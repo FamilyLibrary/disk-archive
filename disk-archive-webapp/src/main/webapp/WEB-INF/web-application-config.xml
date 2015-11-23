@@ -60,6 +60,4 @@
     
     <context:annotation-config/>
     <context:component-scan base-package="com.alextim.diskarchive"/>
-
-    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

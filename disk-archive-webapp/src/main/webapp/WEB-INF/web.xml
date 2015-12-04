@@ -1,69 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	version="2.4"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Archetype Created Web Application</display-name>
+     version="2.4"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+     <display-name>Archetype Created Web Application</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:hibernate.xml
             WEB-INF/security.xml
-            WEB-INF/dwr-config.xml
+            <!--WEB-INF/dwr-config.xml-->
             WEB-INF/web-application-config.xml
         </param-value>
     </context-param>
 
-	<servlet>
-		<servlet-name>dwr</servlet-name>
-		<!--servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class-->
-		<servlet-class>org.directwebremoting.spring.DwrSpringServlet</servlet-class>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</servlet>
+     <servlet>
+          <servlet-name>dwr</servlet-name>
+          <!--servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class-->
+          <servlet-class>org.directwebremoting.spring.DwrSpringServlet</servlet-class>
+          <init-param>
+               <param-name>debug</param-name>
+               <param-value>true</param-value>
+          </init-param>
+     </servlet>
 
-	<servlet>
-		<servlet-name>dispacher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value></param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
- <!-- 
-		<servlet> <servlet-name>hibernate</servlet-name> <servlet-class>
-		com.alextim.diskarchive.hibernate.HibernateUtil </servlet-class>
-		<load-on-startup>2</load-on-startup> </servlet>
--->  	
-	<servlet-mapping>
-		<servlet-name>dispacher</servlet-name>
-		<url-pattern>*.html</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>dwr</servlet-name>
-		<url-pattern>/dwr/*</url-pattern>
-	</servlet-mapping>
-	
-	<filter>
-		<filter-name>Acegi Authentication Processing Filter</filter-name>
-		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
-		<init-param>
-			<param-name>targetClass</param-name>
-			<param-value>
-        		org.acegisecurity.ui.webapp.AuthenticationProcessingFilter
-        	</param-value>
-		</init-param>
-	</filter>
+     <servlet>
+          <servlet-name>dispacher</servlet-name>
+          <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+          <init-param>
+               <param-name>contextConfigLocation</param-name>
+               <param-value></param-value>
+          </init-param>
+          <load-on-startup>1</load-on-startup>
+     </servlet>
 
-	<filter-mapping>
-		<filter-name>Acegi Authentication Processing Filter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+     <servlet-mapping>
+          <servlet-name>dispacher</servlet-name>
+          <url-pattern>*.html</url-pattern>
+     </servlet-mapping>
+     
+     <servlet-mapping>
+          <servlet-name>dwr</servlet-name>
+          <url-pattern>/dwr/*</url-pattern>
+     </servlet-mapping>
 
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

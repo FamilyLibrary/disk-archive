@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/security
+                        http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<bean id="authenticationEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<property name="loginFormUrl" value="/login.html" />
-		<property name="forceHttps" value="true" />
-	</bean>
+    <security:http auto-config='true' use-expressions="false">
+        <security:intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/**" access="ROLE_USER" />
+        <security:form-login login-page="/WEB-INF/jsp/login.jsp"/>
+    </security:http>
 
-	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
-		<property name="filterProcessesUrl" value="/j_acegi_security_check" />
-		<property name="authenticationFailureUrl" value="/login.html?login_error=1" />
-		<property name="defaultTargetUrl" value="/main.html" />
-		<property name="authenticationManager" ref="authenticationManager" />
-	</bean>
+    <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+        <constructor-arg name="providers">
+            <list>
+                 <ref bean="authenticationProvider"/>
+            </list>
+        </constructor-arg>
+    </bean>
 
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService" />
+    </bean>
 
-	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
-		<property name="providers">
-			<list>
-				<ref bean="authenticationProvider" />
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="authenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="userDetailsService" />
-	</bean>
-	
-	<bean id="userDetailsService" class="org.acegisecurity.userdetails.jdbc.JdbcDaoImpl">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-
+    <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 </beans>

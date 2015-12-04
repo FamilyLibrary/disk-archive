@@ -20,14 +20,14 @@
 		</tr>
 		<tr>
 			<td>
-				<form action="j_acegi_security_check">
+				<form action="j_security_check">
 					<input name="j_username"/><br/>
 					<input type="password" name="j_password"/><br/>
 					<input type="submit" value="OK"/>
 				</form>
 			</td>
 			<td>
-				<img src="images/login-scaled.jpg"/>
+				<img src="/images/login-scaled.jpg"/>
 			</td>
 		</tr>
 	</table>

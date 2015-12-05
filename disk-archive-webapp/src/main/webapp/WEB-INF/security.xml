@@ -11,8 +11,14 @@
 
     <security:http auto-config='true' use-expressions="false">
         <security:intercept-url pattern="/login.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
         <security:intercept-url pattern="/**" access="ROLE_USER" />
-        <security:form-login login-page="/login.html"/>
+        <security:form-login
+            login-processing-url="/login.html"
+            login-page="/login.html"
+            default-target-url="/main.html"
+            always-use-default-target="true"
+            authentication-failure-url="/login.html?error=true"/>
     </security:http>
 
     <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">

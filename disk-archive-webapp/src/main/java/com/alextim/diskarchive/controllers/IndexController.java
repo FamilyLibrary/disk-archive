@@ -26,8 +26,7 @@ public class IndexController extends MultiActionController {
 	private IFilmService filmService;
 	private IFilmGroupService filmGroupService;
 
-	public ModelAndView login(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("WEB-INF/jsp/login.jsp");
 		mv.addObject("title", "Login");
 		return mv;

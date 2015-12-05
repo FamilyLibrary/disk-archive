@@ -35,13 +35,25 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-version}</version>
-            <optional>false</optional>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${spring-version}</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.spring-json</groupId>
+            <artifactId>spring-json</artifactId>
+            <version>1.1</version>
+            <optional>true</optional>
+		    <exclusions>
+				<exclusion>
+				  <groupId>org.springframework</groupId>
+				  <artifactId>spring</artifactId>
+				</exclusion>
+            </exclusions> 
         </dependency>
         <!-- Spring Security dependencies -->
         <dependency>

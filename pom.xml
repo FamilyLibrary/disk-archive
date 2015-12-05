@@ -156,11 +156,6 @@
             <version>${spring-version}</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.spring-json</groupId>
-            <artifactId>spring-json</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
             <groupId>net.sf.sojo</groupId>
             <artifactId>sojo</artifactId>
             <version>1.0.5</version>

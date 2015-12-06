@@ -18,7 +18,9 @@
             login-page="/login.html"
             default-target-url="/main.html"
             always-use-default-target="true"
-            authentication-failure-url="/login.html?error=true"/>
+            authentication-failure-url="/login.html?error=true"
+            username-parameter="j_username"
+            password-parameter="j_password"/>
     </security:http>
 
     <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">

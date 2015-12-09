@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
@@ -23,7 +24,7 @@ public class UploaderContext {
         List<Book> books = new ArrayList<>();
         try {
             return strategy.load();
-        } catch (IOException e) {
+        } catch (IOException | InvalidFormatException e) {
             LOG.error(e.getMessage(), e);
         }
         return books;

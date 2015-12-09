@@ -11,7 +11,7 @@ import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
 public class UploaderContext {
-    public static final Logger LOG = Logger.getLogger(UploaderContext.class);
+    private static final Logger LOG = Logger.getLogger(UploaderContext.class);
 
     private IUploaderStrategy strategy;
 

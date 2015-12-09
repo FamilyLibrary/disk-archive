@@ -1,21 +1,86 @@
 package com.alextim.bookshelf.datauploader.uploader.impl;
 
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.AUTHOR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.FIRST_VOLUME_IN_YEAR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.LAST_VOLUME_IN_YEAR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.NAME;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.VOLUME;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.VOLUMES;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.YEAR_OF_PUBLICATION;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Function;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
-public class XlsFileUploaderStrategy implements IUploaderStrategy {
-    private File file;
+public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements IUploaderStrategy {
+    private static final Logger LOG = Logger.getLogger(XlsFileUploaderStrategy.class);
+
+    private final File file;
 
     public XlsFileUploaderStrategy(final File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("File: Illegal argument. File can not be null value");
+        }
         this.file = file;
     }
 
-    @Override
-    public Collection<Book> load() {
-        throw new UnsupportedOperationException("Not Implemented");
+    private Book mapToBook(final Row row) {
+        Function<Integer, Cell> getFunc = row::getCell;
+        return convertToBook(createRow(getFunc));
     }
 
+    @Override
+    public Collection<Book> load() throws IOException {
+        final Collection<Book> books = new ArrayList<Book>();
+
+        try (final Workbook workbook = new XSSFWorkbook(file)) {
+            for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
+                final Sheet sheet = workbook.getSheetAt(sheetIndex);
+                for (int rowIndex = 1; rowIndex < sheet.getPhysicalNumberOfRows(); rowIndex++) {
+                    final Row row = sheet.getRow(rowIndex);
+                    books.add(mapToBook(row));
+                }
+            }
+        } catch (final InvalidFormatException e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+        return books;
+    }
+    
+    protected BookRow createRow(final Function<Integer, Cell> getFunc) {
+        final BookRow bookRow = new BookRow();
+
+        bookRow.setAuthor(readAsString(AUTHOR.apply(getFunc)));
+        bookRow.setName(readAsString(NAME.apply(getFunc)));
+        bookRow.setVolume(readAsString(VOLUME.apply(getFunc)));
+        bookRow.setVolumes(readAsString(VOLUMES.apply(getFunc)));
+        bookRow.setYearOfPublication(readAsString(YEAR_OF_PUBLICATION.apply(getFunc)));
+        bookRow.setFirstVolumeInYear(readAsString(FIRST_VOLUME_IN_YEAR.apply(getFunc)));
+        bookRow.setLastVolumeInYear(readAsString(LAST_VOLUME_IN_YEAR.apply(getFunc)));
+
+        return bookRow;
+    }
+
+    /*TODO: Should be refactored somehow */
+    private String readAsString(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        cell.setCellType(Cell.CELL_TYPE_STRING);
+        return cell.getStringCellValue();
+    }
 }

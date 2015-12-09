@@ -14,10 +14,10 @@ import java.util.Collection;
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
-public class CsvFileUploaderStrategy extends AbstractUploaderStrategy implements IUploaderStrategy {
+public class CsvFileUploaderStrategy extends AbstractCsvUploaderStrategy implements IUploaderStrategy {
     private static final String FILE_ENCODING = "UTF-8";
 
-    private File file;
+    private final File file;
 
     public CsvFileUploaderStrategy(final File file) {
         if (file == null) {
@@ -41,5 +41,4 @@ public class CsvFileUploaderStrategy extends AbstractUploaderStrategy implements
         }
         return books;
     }
-
 }

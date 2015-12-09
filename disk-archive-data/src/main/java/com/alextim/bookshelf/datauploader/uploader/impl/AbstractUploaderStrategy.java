@@ -1,10 +1,12 @@
 package com.alextim.bookshelf.datauploader.uploader.impl;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,42 +18,35 @@ import com.alextim.bookshelf.entity.CompleteWork;
 
 public class AbstractUploaderStrategy {
     private static final String AUTHOR_SEPARATOR = "[\"]\\s*|\\s*,\\s*|\\s*[\"]";
-    private static final String REG_EXP_SEPARATOR = ",(?=([^\"]|\"[^\"]*\")*$)";
 
     private Map<Book, CompleteWork> completeWorkMap = new ConcurrentHashMap<>();
     private Map<String, BookAuthor> bookAuthorMap = new ConcurrentHashMap<>();
 
-    protected Book mapToBook(final String line) {
-        final Row row = createRow(Stream
-            .of(line.split(REG_EXP_SEPARATOR, -1))
-            .collect(Collectors.toList()));
-
+    protected Book convertToBook(BookRow bookRow) {
         final Book book = new Book();
 
-        createGeneralFields(book, row);
-        createBookAuthor(book, row);
-        if (StringUtils.isNotBlank(row.volumes)) {
-            getOrCreateCompleteWork(book, row);
+        createGeneralFields(book, bookRow);
+        createBookAuthor(book, bookRow);
+        if (StringUtils.isNotBlank(bookRow.getVolumes())) {
+            getOrCreateCompleteWork(book, bookRow);
         }
-
         return book;
     }
 
-    private void createGeneralFields(final Book book, final Row row) {
-        book.setName(row.name);
-        if (StringUtils.isNotBlank(row.volume)) {
-            book.setVolume(Integer.valueOf(row.volume));
-        }
-        if (StringUtils.isNotBlank(row.yearOfPublication)) {
-            book.setYearOfPublication(Integer.valueOf(row.yearOfPublication));
-        }
+    private void createGeneralFields(final Book book, final BookRow bookRow) {
+        book.setName(bookRow.getName());
+
+        updateIntegerField(bookRow::getVolume, book::setVolume);
+        updateIntegerField(bookRow::getYearOfPublication, book::setYearOfPublication);
     }
 
-    private void createBookAuthor(final Book book, final Row row) {
-        final Set<BookAuthor> authors =  Stream.of(row.author.split(AUTHOR_SEPARATOR, -1))
-               .filter(authorName -> (authorName != null && !authorName.isEmpty()))
-               .map(authorName -> getOrCreateAuthor(authorName))
-               .collect(Collectors.toCollection(LinkedHashSet::new));
+    private void createBookAuthor(final Book book, final BookRow bookRow) {
+        final String[] authorArray = Optional.ofNullable(bookRow.getAuthor())
+                .orElse("").split(AUTHOR_SEPARATOR, -1);
+        final Set<BookAuthor> authors = Stream.of(authorArray)
+                    .filter(authorName -> (authorName != null && !authorName.isEmpty()))
+                    .map(authorName -> getOrCreateAuthor(authorName))
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         book.setAuthors(authors);
     }
 
@@ -66,7 +61,7 @@ public class AbstractUploaderStrategy {
         return author;
     }
 
-    private void getOrCreateCompleteWork(final Book book, final Row row) {
+    private void getOrCreateCompleteWork(final Book book, final BookRow row) {
         CompleteWork completeWork = completeWorkMap.get(book);
         if (completeWork == null) {
             completeWork = initCompleteWork(book, row);
@@ -74,41 +69,22 @@ public class AbstractUploaderStrategy {
         }
         book.setCompleteWork(completeWork);
     }
-    private CompleteWork initCompleteWork(final Book book, final Row row) {
+
+    private CompleteWork initCompleteWork(final Book book, final BookRow row) {
         final CompleteWork completeWork = new CompleteWork();
 
-        completeWork.setTotalVolumes(Integer.valueOf(row.volumes));
+        completeWork.setTotalVolumes(Integer.valueOf(row.getVolumes()));
 
-        if (StringUtils.isNotBlank(row.firstVolumeInYear)) {
-            completeWork.setFirstVolumeInYear(Integer.valueOf(row.firstVolumeInYear));
-        }
-        if (StringUtils.isNotBlank(row.lastVolumeInYear)) {
-            completeWork.setLastVolumeInYear(Integer.valueOf(row.lastVolumeInYear));
-        }
+        updateIntegerField(row::getFirstVolumeInYear, completeWork::setFirstVolumeInYear);
+        updateIntegerField(row::getLastVolumeInYear, completeWork::setLastVolumeInYear);
+
         return completeWork;
     }
 
-    private Row createRow(final List<String> parts) {
-        final Row row = new Row();
-
-        row.author = parts.get(0);
-        row.name = parts.get(1);
-        row.volume = parts.get(2);
-        row.volumes = parts.get(3);
-        row.yearOfPublication = parts.get(4);
-        row.firstVolumeInYear = parts.get(5);
-        row.lastVolumeInYear = parts.get(6);
-
-        return row;
-    }
-
-    private static final class Row {
-        private String author;
-        private String name;
-        private String volume;
-        private String volumes;
-        private String yearOfPublication;
-        private String firstVolumeInYear;
-        private String lastVolumeInYear;
+    private void updateIntegerField(final Supplier<String> supplier, final Consumer<Integer> consumer) {
+        final String volumeInYear = supplier.get();
+        if (StringUtils.isNotBlank(volumeInYear)) {
+            consumer.accept(Integer.valueOf(volumeInYear));
+        }
     }
 }

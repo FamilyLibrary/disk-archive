@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.entity.Book;
 
-public class DummyUploaderStrategy extends AbstractUploaderStrategy implements IUploaderStrategy {
+public class DummyUploaderStrategy extends AbstractCsvUploaderStrategy implements IUploaderStrategy {
     private final List<String> data = Arrays.asList(new String[] {
             "Автор,Название,Том,Количество томов,Год издания,Номер первого тома в году,Номер последнего тома в году,Том (старая маркировка)",
             "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,,,",
@@ -29,7 +29,7 @@ public class DummyUploaderStrategy extends AbstractUploaderStrategy implements I
     public Collection<Book> load() {
         final List<Book> result = data.stream()
                 .skip(1) //Skip the first line
-                .map(line -> {return mapToBook(line);})
+                .map(line -> mapToBook(line))
                 .collect(Collectors.toList());
         return result;
     }

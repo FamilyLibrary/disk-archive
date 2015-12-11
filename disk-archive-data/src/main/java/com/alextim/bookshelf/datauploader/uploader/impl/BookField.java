@@ -2,7 +2,7 @@ package com.alextim.bookshelf.datauploader.uploader.impl;
 
 import java.util.function.Function;
 
-public enum BookRowIndex {
+public enum BookField {
     AUTHOR(0),
     NAME(1),
     VOLUME(2),
@@ -13,7 +13,7 @@ public enum BookRowIndex {
 
     private final int index;
 
-    private BookRowIndex(int index) {
+    private BookField(int index) {
         this.index = index;
     }
 

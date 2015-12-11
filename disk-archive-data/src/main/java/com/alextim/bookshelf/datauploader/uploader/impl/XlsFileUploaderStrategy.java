@@ -1,12 +1,12 @@
 package com.alextim.bookshelf.datauploader.uploader.impl;
 
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.AUTHOR;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.FIRST_VOLUME_IN_YEAR;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.LAST_VOLUME_IN_YEAR;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.NAME;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.VOLUME;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.VOLUMES;
-import static com.alextim.bookshelf.datauploader.uploader.impl.BookRowIndex.YEAR_OF_PUBLICATION;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.AUTHOR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.FIRST_VOLUME_IN_YEAR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.LAST_VOLUME_IN_YEAR;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.NAME;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.VOLUME;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.VOLUMES;
+import static com.alextim.bookshelf.datauploader.uploader.impl.BookField.YEAR_OF_PUBLICATION;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements
         return books;
     }
     
-    protected BookRow createRow(final Function<Integer, Cell> getFunc) {
+    private BookRow createRow(final Function<Integer, Cell> getFunc) {
         final BookRow bookRow = new BookRow();
 
         bookRow.setAuthor(readAsString(AUTHOR.apply(getFunc)));

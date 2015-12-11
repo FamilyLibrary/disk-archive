@@ -61,22 +61,22 @@ public class AbstractUploaderStrategy {
         return author;
     }
 
-    private void getOrCreateCompleteWork(final Book book, final BookRow row) {
+    private void getOrCreateCompleteWork(final Book book, final BookRow bookRow) {
         CompleteWork completeWork = completeWorkMap.get(book);
         if (completeWork == null) {
-            completeWork = initCompleteWork(book, row);
+            completeWork = initCompleteWork(book, bookRow);
             completeWorkMap.put(book, completeWork);
         }
         book.setCompleteWork(completeWork);
     }
 
-    private CompleteWork initCompleteWork(final Book book, final BookRow row) {
+    private CompleteWork initCompleteWork(final Book book, final BookRow bookRow) {
         final CompleteWork completeWork = new CompleteWork();
 
-        completeWork.setTotalVolumes(Integer.valueOf(row.getVolumes()));
+        completeWork.setTotalVolumes(Integer.valueOf(bookRow.getVolumes()));
 
-        updateIntegerField(row::getFirstVolumeInYear, completeWork::setFirstVolumeInYear);
-        updateIntegerField(row::getLastVolumeInYear, completeWork::setLastVolumeInYear);
+        updateIntegerField(bookRow::getFirstVolumeInYear, completeWork::setFirstVolumeInYear);
+        updateIntegerField(bookRow::getLastVolumeInYear, completeWork::setLastVolumeInYear);
 
         return completeWork;
     }

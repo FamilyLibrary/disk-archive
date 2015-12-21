@@ -13,17 +13,13 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.alextim.bookshelf.datauploader.uploader.impl.BookField;
 import com.alextim.bookshelf.datauploader.validator.IBookValidator;
+import com.alextim.bookshelf.datauploader.validator.exception.FirstFieldGreatThenSecondFieldException;
 import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CsvBookValidatorTest {
-    private IBookValidator<String> validator;
-
     private static final String BOOK_WITHOUT_AUTHORS = ",Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,,,";
     private static final String BOOK_WITHOUT_YOP = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,,,,";
 
@@ -34,8 +30,13 @@ public class CsvBookValidatorTest {
     private static final String BOOK_WITH_INVALID_VOLUMES = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,38,AAA,1979,,,";
     private static final String BOOK_WITH_INVALID_FIRST_VOLUME = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,!1A,,";
     private static final String BOOK_WITH_INVALID_LAST_VOLUME = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,,!1A,";
+    private static final String BOOK_WITH_VOLUME_GREAT_THEN_VOLUMES = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,85,2,1979,,,";
+    private static final String BOOK_WITH_FIRST_VOLUME_IN_YEAR_GREAT_THEN_LAST_VOLUME_IN_YEAR = 
+            "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,88,12,";
 
     private static final String VALID_BOOK = "Мигель де Сервантес Сааведра,Хитроумный Идальго Дон Кихот Ламанчский,1,2,1979,,,";
+
+    private IBookValidator<String> validator;
 
     @Before
     public void setUp() {
@@ -53,7 +54,7 @@ public class CsvBookValidatorTest {
     }
 
     @Test
-    public void shouldThrowValidationExceptionForInvalidCSVString() throws ValidationException {
+    public void shouldThrowValidationExceptionForInvalidCSVString() {
         try {
             validate(INVALID_CSV_STRING);
         } catch (final ValidationException e) {
@@ -67,41 +68,51 @@ public class CsvBookValidatorTest {
     }
 
     @Test
-    public void shouldThrowValidationExceptionForRecordWithoutYOP() throws ValidationException {
+    public void shouldThrowValidationExceptionForRecordWithoutYOP() {
         validateAndCheckField(BOOK_WITHOUT_YOP, YEAR_OF_PUBLICATION);
     }
 
     @Test
-    public void shouldThrowValidationExceptionForNonNumericYOP() throws ValidationException {
+    public void shouldThrowValidationExceptionForNonNumericYOP() {
         validateAndCheckValidationException(BOOK_WITH_INVALID_YOP, YEAR_OF_PUBLICATION, NumberFormatException.class);
     }
 
     @Test
-    public void shouldThrowValidationExceptionForNonNumericVolume() throws ValidationException {
+    public void shouldThrowValidationExceptionForNonNumericVolume() {
         validateAndCheckValidationException(BOOK_WITH_INVALID_VOLUME, VOLUME, NumberFormatException.class);
     }
 
     @Test
-    public void shouldThrowValidationExceptionForNonNumericVolumes() throws ValidationException {
+    public void shouldThrowValidationExceptionForNonNumericVolumes() {
         validateAndCheckValidationException(BOOK_WITH_INVALID_VOLUMES, VOLUMES, NumberFormatException.class);
     }
 
     @Test
-    public void shouldThrowValidationExceptionForNonNumericFirstVolume() throws ValidationException {
+    public void shouldThrowValidationExceptionForNonNumericFirstVolume() {
         validateAndCheckValidationException(BOOK_WITH_INVALID_FIRST_VOLUME, FIRST_VOLUME_IN_YEAR, NumberFormatException.class);
     }
 
     @Test
-    public void shouldThrowValidationExceptionForNonNumericLastVolume() throws ValidationException {
+    public void shouldThrowValidationExceptionForNonNumericLastVolume() {
         validateAndCheckValidationException(BOOK_WITH_INVALID_LAST_VOLUME, LAST_VOLUME_IN_YEAR, NumberFormatException.class);
+    }
+
+    @Test
+    public void shouldThrowValidationExceptionIfVolumeGreatThenVolumes() throws ValidationException {
+        validateAndCheckFields(BOOK_WITH_VOLUME_GREAT_THEN_VOLUMES, VOLUME, VOLUMES);
+    }
+
+    @Test
+    public void shouldThrowValidationExceptionIfFirstVolumeInYearGreatThenLastVolumeInYear() throws ValidationException {
+        validateAndCheckFields(BOOK_WITH_FIRST_VOLUME_IN_YEAR_GREAT_THEN_LAST_VOLUME_IN_YEAR, FIRST_VOLUME_IN_YEAR, LAST_VOLUME_IN_YEAR);
     }
 
     @Test
     public void shouldValidateBook() throws ValidationException {
         assertTrue(validator.validate(VALID_BOOK));
     }
-    
-    private void validateAndCheckValidationException(String bookRecord, BookField field, Class<? extends Throwable> clazz) {
+
+    private void validateAndCheckValidationException(final String bookRecord, final BookField field, final Class<? extends Throwable> clazz) {
         try {
             validate(bookRecord);
         } catch (final ValidationException e) {
@@ -110,11 +121,20 @@ public class CsvBookValidatorTest {
         }
     }
 
-    private void validateAndCheckField(String bookRecord, BookField field) {
+    private void validateAndCheckField(final String bookRecord, final BookField field) {
         try {
             validate(bookRecord);
         } catch (final ValidationException e) {
             assertEquals(field, e.getField());
+        }
+    }
+
+    private void validateAndCheckFields(final String bookRecord, BookField firstField, BookField secondField) throws ValidationException {
+        try {
+            validate(bookRecord);
+        } catch (final FirstFieldGreatThenSecondFieldException e) {
+            assertEquals(firstField, e.getField());
+            assertEquals(secondField, e.getSecondField());
         }
     }
 

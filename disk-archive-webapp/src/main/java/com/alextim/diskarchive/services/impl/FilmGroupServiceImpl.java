@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
@@ -13,8 +15,10 @@ import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.services.IFilmGroupService;
 import com.alextim.diskarchive.utils.JSONHelper;
 
+@Service
 @Transactional
 public class FilmGroupServiceImpl implements IFilmGroupService {
+    @Autowired
 	private ICoreDAOFactory coreDAOFactory;
 	private JSONHelper jsonHelper;
 
@@ -33,11 +37,6 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
             return result;
         }
     };
-
-	
-    public FilmGroupServiceImpl(ICoreDAOFactory coreDAOFactory) {
-		this.coreDAOFactory = coreDAOFactory;
-	}
 	
 	@Override
 	public List<FilmGroup> getFilmGroups(Comparator<FilmGroup> comporator) {

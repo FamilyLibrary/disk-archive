@@ -1,11 +1,13 @@
 package com.alextim.bookshelf.dao.impl;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.IBookGroupDao;
 import com.alextim.bookshelf.entity.BookGroup;
 import com.alextim.general.dao.impl.BasicDAO;
 
+@Repository
 @Transactional
 public class BookGroupDaoImpl extends BasicDAO<BookGroup> implements IBookGroupDao {
 

@@ -20,40 +20,6 @@
 	  </property>
 	</bean>
 
-    <bean id="bookDao" class="com.alextim.bookshelf.dao.impl.BookDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-
-    <bean name="completeWorkDao" class="com.alextim.general.dao.impl.BasicDAO">
-        <property name="sessionFactory" ref="sessionFactory" />
-        <constructor-arg>
-            <value>com.alextim.bookshelf.entity.CompleteWork</value>
-        </constructor-arg>
-    </bean>
-
-    <bean name="bookAuthorDao" class="com.alextim.general.dao.impl.BasicDAO">
-        <property name="sessionFactory" ref="sessionFactory" />
-        <constructor-arg>
-            <value>com.alextim.bookshelf.entity.BookAuthor</value>
-        </constructor-arg>
-    </bean>
-
-	<bean id="filmDAO" class="com.alextim.diskarchive.dao.impl.FilmDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="filmGroupDAO" class="com.alextim.diskarchive.dao.impl.FilmGroupDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="seriesDAO" class="com.alextim.diskarchive.dao.impl.SeriesDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="authorDAO" class="com.alextim.diskarchive.dao.impl.AuthorDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="genericDAO" class="com.alextim.diskarchive.dao.impl.GenericDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<bean id="coreDAOFactory" class="com.alextim.diskarchive.dao.factory.impl.CoreDAOFactory">
 		<property name="filmDAO" ref="filmDAO" />
 		<property name="filmGroupDAO" ref="filmGroupDAO" />

@@ -23,18 +23,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
+import com.alextim.bookshelf.datauploader.validator.impl.CsvBookValidator;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/resources/data-factory-context.xml"}, inheritLocations = true)
+@Rollback(true)
 public class CsvUploaderTest {
     public static final Logger LOG = Logger.getLogger(CsvUploaderTest.class);
 
@@ -78,20 +80,28 @@ public class CsvUploaderTest {
     @Resource
     private File csvFile;
 
+    @Spy
+    private CsvBookValidator validator;
+    @Spy
+    private UploaderContext uploaderContext;
+    @Spy
+    @InjectMocks
+    private CsvFileUploaderStrategy uploaderStrategy;
+
     @Mock
     private IBookDao bookDao;
 
     @Spy
-    private UploaderContext uploaderContext;
-
     @InjectMocks
-    private IBookService bookService = new BookServiceImpl();
+    private BookServiceImpl bookService;
 
     private Collection<Book> books;
 
     @Before
     public void setUp() {
-        uploaderContext = Mockito.spy(new UploaderContext(new CsvFileUploaderStrategy(csvFile)));
+        uploaderStrategy = Mockito.spy(new CsvFileUploaderStrategy(csvFile));
+        uploaderContext = Mockito.spy(new UploaderContext(uploaderStrategy));
+
         MockitoAnnotations.initMocks(this);
 
         books = bookService.uploadBookFile();
@@ -99,7 +109,7 @@ public class CsvUploaderTest {
 
     @Test
     public void shouldReturnCorrectBookSize() {
-        assertEquals(178, books.size());
+        assertEquals(177, books.size());
     }
 
     @Test
@@ -110,7 +120,7 @@ public class CsvUploaderTest {
             .filter(e -> e.getValue().size() > 0)
             .forEach(System.out::println);
 
-        assertEquals(46, result.size());
+        assertEquals(45, result.size());
         assertEquals(SERVANTES_KEY, EMPTY_LIST, result.get(SERVANTES_KEY));
         assertEquals(LESKOV_KEY, Arrays.asList(new Integer[]{4, 5}), result.get(LESKOV_KEY));
         assertEquals(VOINICH_KEY, EMPTY_LIST, result.get(VOINICH_KEY));

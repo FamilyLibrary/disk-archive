@@ -5,6 +5,8 @@ import java.util.List;
 
 import net.sf.json.util.PropertyFilter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.FilmInfoWrapper;
@@ -14,14 +16,13 @@ import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.services.IFilmService;
 import com.alextim.diskarchive.utils.JSONHelper;
 
+@Service
 @Transactional
 public class FilmServiceImpl implements IFilmService {
+    @Autowired
     private ICoreDAOFactory coreDAOFactory;
-    private JSONHelper jsonHelper;
 
-    public FilmServiceImpl(ICoreDAOFactory coreDAOFactory) {
-        this.coreDAOFactory = coreDAOFactory;
-    }
+    private JSONHelper jsonHelper;
 
     @Override
     public List<Film> getFilms() {

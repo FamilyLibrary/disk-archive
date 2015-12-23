@@ -3,12 +3,14 @@ package com.alextim.diskarchive.dao.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.general.dao.impl.BasicDAO;
 
+@Repository
 @Transactional
 public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {
 
@@ -34,7 +36,7 @@ public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {
     public Film findByName(String name) {
         Film result = null;
 
-        List<Film> resultList = currentSession().createCriteria(Film.class)
+        List<Film> resultList = getSessionFactory().getCurrentSession().createCriteria(Film.class)
             .add(Restrictions.eq("name", name))
             .list();
         

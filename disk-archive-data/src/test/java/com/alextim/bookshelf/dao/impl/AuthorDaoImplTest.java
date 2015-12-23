@@ -48,8 +48,6 @@ public class AuthorDaoImplTest {
         when(author.getLastName()).thenReturn(AUTHOR_LAST_NAME);
         when(author.getGender()).thenReturn(AUTHOR_GENDER);
         when(author.getBirthdayDate()).thenReturn(AUTHOR_BIRTHDAY_DATE);
-
-        dao.setHibernateTemplate(hibernateTemplate);
     }
     
     @Test

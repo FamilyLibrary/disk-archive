@@ -36,14 +36,14 @@ public class BookDaoImpl extends BasicDAO<Book> implements IBookDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Book> findByAuthors(final Set<BookAuthor> bookAuthors) {
-        return currentSession().createCriteria(Book.class)
+        return getSessionFactory().getCurrentSession().createCriteria(Book.class)
             .add(Restrictions.in("authors", bookAuthors)).list();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Book> findAllFromCompleteWork() {
-        return currentSession().createCriteria(Book.class)
+        return getSessionFactory().getCurrentSession().createCriteria(Book.class)
                 .add(Restrictions.isNotNull("completeWork"))
                 .addOrder(Order.asc("completeWork.id")).list();
     }

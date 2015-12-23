@@ -16,11 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.alextim.bookshelf.dao.IAuthorDao;
+import com.alextim.bookshelf.dao.ICompleteWorkDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
@@ -28,12 +29,11 @@ import com.alextim.bookshelf.service.IBookService;
 import com.alextim.diskarchive.configuration.ApplicationConfiguration;
 import com.alextim.diskarchive.configuration.DataFactoryConfiguration;
 import com.alextim.diskarchive.configuration.TestDaoConfiguration;
-import com.alextim.diskarchive.entity.IEntity;
-import com.alextim.general.dao.IBasicDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class, DataFactoryConfiguration.class, TestDaoConfiguration.class}, 
                       inheritLocations = true)
+@Rollback(true)
 public class BookServiceImpl_CRUDOperationsTest {
     public static final Logger LOG = Logger.getLogger(BookServiceImpl_CRUDOperationsTest.class);
 
@@ -44,13 +44,11 @@ public class BookServiceImpl_CRUDOperationsTest {
     @Resource
     private IBookService bookService;
 
-    @Autowired
-    @Qualifier("completeWorkDao")
-    private IBasicDAO<IEntity> completeWorkDao;
+    @Resource
+    private ICompleteWorkDao completeWorkDao;
 
-    @Autowired
-    @Qualifier("bookAuthorDao")
-    private IBasicDAO<IEntity> bookAuthorDao;
+    @Resource
+    private IAuthorDao bookAuthorDao;
 
     @Before
     public void setUp() {
@@ -63,7 +61,7 @@ public class BookServiceImpl_CRUDOperationsTest {
         final Collection<Book> savedBooks = bookService.save(books);
 
         assertNotNull(savedBooks);
-        assertEquals(178, savedBooks.size());
+        assertEquals(177, savedBooks.size());
     }
 
     @Test
@@ -92,9 +90,6 @@ public class BookServiceImpl_CRUDOperationsTest {
                 savedBook2.getCompleteWork().getId());
         assertEquals(savedBook1.getCompleteWork().getTotalVolumes(), 
                 savedBook2.getCompleteWork().getTotalVolumes());
-
-        deleteBooks(completeWorkDao, 
-                Arrays.asList(savedBook1.getCompleteWork(), savedBook2.getCompleteWork()));
     }
 
     @Test
@@ -123,15 +118,6 @@ public class BookServiceImpl_CRUDOperationsTest {
         BookAuthor author2 = savedBook2.getAuthors().iterator().next();
 
         assertEquals(author1.getId(), author2.getId());
-
-        deleteBooks(bookAuthorDao, Arrays.asList(author1, author2));
-    }
-
-    
-    private void deleteBooks(final IBasicDAO<IEntity> dao, final List<IEntity> entities) {
-        for (IEntity entity : entities) {
-            dao.getByIdThenDelete(entity.getId());
-        }
     }
 
     private Book createTestBook() {

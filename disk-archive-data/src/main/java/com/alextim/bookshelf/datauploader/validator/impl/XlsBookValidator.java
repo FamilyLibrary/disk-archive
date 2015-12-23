@@ -4,10 +4,12 @@ import java.util.function.Function;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.stereotype.Component;
 
 import com.alextim.bookshelf.datauploader.uploader.impl.BookField;
 import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 
+@Component
 public class XlsBookValidator extends AbstractBookValidator<Row, Cell> {
     private static final String MSG_DATA_NULL_VALUE = String.join(" ", INVALID_DATA_PREFIX, "Parameter is null value");
 

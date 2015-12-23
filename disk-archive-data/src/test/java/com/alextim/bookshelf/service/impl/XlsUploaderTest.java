@@ -22,8 +22,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.datauploader.uploader.impl.XlsFileUploaderStrategy;
+import com.alextim.bookshelf.datauploader.validator.impl.XlsBookValidator;
 import com.alextim.bookshelf.entity.Book;
-import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/resources/data-factory-context.xml"}, inheritLocations = true)
@@ -33,20 +33,27 @@ public class XlsUploaderTest {
     @Resource
     private File xlsFile;
 
-    @Mock
-    private IBookDao bookDao;
-
+    @Spy
+    private XlsBookValidator validator;
     @Spy
     private UploaderContext uploaderContext;
-
+    @Spy
     @InjectMocks
-    private IBookService bookService = new BookServiceImpl();
+    private XlsFileUploaderStrategy uploaderStrategy;
+
+    @Mock
+    private IBookDao bookDao;
+    @Spy
+    @InjectMocks
+    private BookServiceImpl bookService;
 
     private Collection<Book> books;
 
     @Before
     public void setUp() {
-        uploaderContext = Mockito.spy(new UploaderContext(new XlsFileUploaderStrategy(xlsFile)));
+        uploaderStrategy = Mockito.spy(new XlsFileUploaderStrategy(xlsFile));
+        uploaderContext = Mockito.spy(new UploaderContext(uploaderStrategy));
+
         MockitoAnnotations.initMocks(this);
 
         books = bookService.uploadBookFile();
@@ -54,7 +61,7 @@ public class XlsUploaderTest {
 
     @Test
     public void shouldReturnCorrectBookSize() {
-        assertEquals(178, books.size());
+        assertEquals(177, books.size());
     }
 
 }

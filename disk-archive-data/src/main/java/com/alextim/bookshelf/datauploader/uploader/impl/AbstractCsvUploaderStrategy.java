@@ -13,10 +13,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Resource;
+
+import com.alextim.bookshelf.datauploader.validator.IBookValidator;
 import com.alextim.bookshelf.entity.Book;
 
 public class AbstractCsvUploaderStrategy extends AbstractUploaderStrategy {
     private static final String REG_EXP_SEPARATOR = ",(?=([^\"]|\"[^\"]*\")*$)";
+
+    @Resource
+    protected IBookValidator<String> validator;
 
     protected Book mapToBook(final String line) {
         final List<String> parts = Stream

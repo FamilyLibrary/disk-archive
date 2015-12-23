@@ -24,7 +24,7 @@ public class DataFactoryConfiguration {
 
     @Bean
     public UploaderContext uploaderContext() {
-        return new UploaderContext(csvInstance());
+        return new UploaderContext(xlsInstance());
     }
 
     @Bean

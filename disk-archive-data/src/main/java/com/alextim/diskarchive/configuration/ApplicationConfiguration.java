@@ -11,6 +11,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages={"com.alextim.bookshelf.service"})
+@ComponentScan(basePackages={"com.alextim"})
 public class ApplicationConfiguration {
     private static final String DISK_ARCHIVE_ANNOTATED_PACKAGES = "com.alextim.diskarchive.entity";
     private static final String BOOK_SHELF_ANNOTATED_PACKAGES = "com.alextim.bookshelf.entity";
@@ -28,7 +29,7 @@ public class ApplicationConfiguration {
     @Autowired
     private PropertiesFactoryBean hibernateProperties;
 
-    @Bean(name = "sessionFactory")
+    @Bean
     public LocalSessionFactoryBean sessionFactory() throws IOException {
         final LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
@@ -40,12 +41,18 @@ public class ApplicationConfiguration {
         return sessionFactoryBean;
     }
 
-    @Bean(name = "transactionManager")
+    @Bean
     @Autowired
     public PlatformTransactionManager transactionManager(final SessionFactory sessionFactory) {
         final HibernateTransactionManager tm = new HibernateTransactionManager();
         tm.setDataSource(dataSource);
         tm.setSessionFactory(sessionFactory);
         return tm;
+    }
+
+    @Bean
+    @Autowired
+    public HibernateTemplate hibernateTemplate(final SessionFactory sessionFactory) throws IOException {
+        return new HibernateTemplate(sessionFactory);
     }
 }

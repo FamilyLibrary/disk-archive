@@ -35,8 +35,6 @@ public class BookGroupDaoImplTest {
         when(bookGroup.getId()).thenReturn(ID_VALUE);
         when(bookGroup.getName()).thenReturn(NAME_VALUE);
         when(bookGroup.getDescription()).thenReturn(DESCRIPTION_VALUE);
-
-        dao.setHibernateTemplate(hibernateTemplate);
     }
 
     @Test

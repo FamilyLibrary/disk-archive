@@ -14,7 +14,7 @@
         <spring-version>4.2.2.RELEASE</spring-version>
         <spring-security-version>4.0.3.RELEASE</spring-security-version>
         <hibernate-version>5.0.3.Final</hibernate-version>
-        <jetty-plugin-version>8.1.16.v20140903</jetty-plugin-version>
+        <jetty-plugin-version>9.3.6.v20151106</jetty-plugin-version>
         <mockito-version>1.9.5</mockito-version>
         <h2database-version>1.3.176</h2database-version>
         <hsqldatabase-version>1.8.0.10</hsqldatabase-version>

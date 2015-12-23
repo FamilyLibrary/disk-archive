@@ -54,7 +54,6 @@ public class BookDaoImplTest {
         when(book.getAuthors()).thenReturn(
                 new HashSet<BookAuthor>(Arrays.asList(bookAuthor))
         );
-        dao.setHibernateTemplate(hibernateTemplate);
     }
 
     @Test

@@ -11,10 +11,15 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
+
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
+import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 import com.alextim.bookshelf.entity.Book;
 
 public class CsvFileUploaderStrategy extends AbstractCsvUploaderStrategy implements IUploaderStrategy {
+    private static final Logger LOG = Logger.getLogger(CsvFileUploaderStrategy.class);
+
     private static final String FILE_ENCODING = "UTF-8";
 
     private final File file;
@@ -36,7 +41,12 @@ public class CsvFileUploaderStrategy extends AbstractCsvUploaderStrategy impleme
 
             String line = reader.readLine(); //Skip first line
             while ((line = reader.readLine()) != null) {
-                books.add(mapToBook(line));
+                try {
+                    validator.validate(line);
+                    books.add(mapToBook(line));
+                } catch (ValidationException e) {
+                    LOG.error(e.getMessage(), e);
+                }
             }
         }
         return books;

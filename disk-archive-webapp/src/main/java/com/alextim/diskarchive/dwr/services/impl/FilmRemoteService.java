@@ -1,5 +1,9 @@
 package com.alextim.diskarchive.dwr.services.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Required;
+
 import com.alextim.diskarchive.FilmInfoWrapper;
 import com.alextim.diskarchive.dwr.services.IFilmRemoteService;
 import com.alextim.diskarchive.entity.Film;
@@ -9,7 +13,7 @@ public class FilmRemoteService implements IFilmRemoteService{
 
 	private IFilmService filmService;
 	
-	@Override
+    @Override
 	public Film addFilm() {
 		return filmService.addFilm();
 	}
@@ -29,13 +33,12 @@ public class FilmRemoteService implements IFilmRemoteService{
 		return filmService.filmInfo(id);
 	}
 
-		
-	public IFilmService getFilmService() {
-		return filmService;
-	}
-	public void setFilmService(IFilmService filmService) {
-		this.filmService = filmService;
-	}
+    public List<Film> getFilms() {
+        return filmService.getFilms();
+    }
 
-	
+    @Required
+    public void setFilmService(IFilmService filmService) {
+        this.filmService = filmService;
+    }
 }

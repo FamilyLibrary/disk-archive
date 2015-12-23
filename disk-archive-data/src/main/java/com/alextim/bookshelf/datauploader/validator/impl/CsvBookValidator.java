@@ -3,10 +3,12 @@ package com.alextim.bookshelf.datauploader.validator.impl;
 import java.util.function.Function;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.alextim.bookshelf.datauploader.uploader.impl.BookField;
 import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 
+@Component
 public class CsvBookValidator extends AbstractBookValidator<String, String> {
     private static final String REG_EXP_SEPARATOR = ",(?=([^\"]|\"[^\"]*\")*$)";
 

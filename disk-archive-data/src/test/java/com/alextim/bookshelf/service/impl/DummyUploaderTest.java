@@ -15,14 +15,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
+import com.alextim.bookshelf.datauploader.validator.impl.CsvBookValidator;
 import com.alextim.bookshelf.entity.Book;
-import com.alextim.bookshelf.service.IBookService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DummyUploaderTest {
@@ -35,18 +37,30 @@ public class DummyUploaderTest {
     private static final List<Integer> EMPTY_LIST = Collections.emptyList();
 
     @Spy
-    private UploaderContext uploaderContext = new UploaderContext(new DummyUploaderStrategy());
+    private CsvBookValidator validator;
+    @Spy
+    @InjectMocks
+    private DummyUploaderStrategy uploaderStrategy;
+    @Spy
+    @InjectMocks
+    private UploaderContext uploaderContext;
 
     @Mock
     private IBookDao bookDao;
 
+    @Spy
     @InjectMocks
-    private IBookService bookService = new BookServiceImpl();
+    private BookServiceImpl bookService;
 
     private Collection<Book> books;
 
     @Before
     public void setUp() {
+        uploaderStrategy = Mockito.spy(new DummyUploaderStrategy());
+        uploaderContext = Mockito.spy(new UploaderContext(uploaderStrategy));
+
+        MockitoAnnotations.initMocks(this);
+
         books = bookService.uploadBookFile();
     }
     

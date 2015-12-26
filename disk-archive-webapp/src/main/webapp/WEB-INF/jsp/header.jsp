@@ -1,5 +1,4 @@
-<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css">
+<link rel="stylesheet" type="text/css" href="/ext/build/classic/theme-neptune/resources/theme-neptune-all-debug.css">
 
-<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="ext/ext-all-debug.js"></script>
-<script type='text/javascript' src='ext/ext-core/util/JSON.js'></script>
+<script type="text/javascript" src="/ext/build/ext-all-debug.js"></script>
+<script type="text/javascript" src="/ext/build/classic/theme-neptune/theme-neptune-debug.js"></script>

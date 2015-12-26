@@ -3,9 +3,10 @@ package com.alextim.diskarchive.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import net.sf.json.util.PropertyFilter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +20,10 @@ import com.alextim.diskarchive.utils.JSONHelper;
 @Service
 @Transactional
 public class FilmServiceImpl implements IFilmService {
-    @Autowired
+    @Resource
     private ICoreDAOFactory coreDAOFactory;
 
+    @Resource
     private JSONHelper jsonHelper;
 
     @Override
@@ -74,12 +76,4 @@ public class FilmServiceImpl implements IFilmService {
         
         coreDAOFactory.getFilmDAO().addFilm(film);
     }
-
-    public JSONHelper getJsonHelper() {
-        return jsonHelper;
-    }
-    public void setJsonHelper(JSONHelper jsonHelper) {
-        this.jsonHelper = jsonHelper;
-    }
-
 }

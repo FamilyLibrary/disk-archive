@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
@@ -11,6 +13,7 @@ import net.sf.json.util.CycleDetectionStrategy;
 import net.sf.json.util.PropertyFilter;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
 import com.alextim.diskarchive.entity.IEntity;
@@ -19,6 +22,7 @@ import com.alextim.general.dao.IBasicDAO;
 
 public class JSONHelperImpl implements JSONHelper {
 
+    @Resource
     private ICoreDAOFactory coreDAOFactory;
 
     @Override
@@ -102,10 +106,7 @@ public class JSONHelperImpl implements JSONHelper {
 	public String json(List<? extends IEntity> entities) {
 		return json(entities, null);
 	}
-    
-    public ICoreDAOFactory getCoreDAOFactory() {
-        return coreDAOFactory;
-    }
+
     public void setCoreDAOFactory(ICoreDAOFactory coreDAOFactory) {
         this.coreDAOFactory = coreDAOFactory;
     }

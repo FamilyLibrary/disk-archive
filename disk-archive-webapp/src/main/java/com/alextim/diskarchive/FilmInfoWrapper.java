@@ -2,7 +2,6 @@ package com.alextim.diskarchive;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -42,15 +41,12 @@ public class FilmInfoWrapper {
 		Set<Actor> actors = film.getActors();
 		if (actors != null && actors.size() > 0) {
 			int index = 0;
-			
+
 			String formatWithoutComma = "%s";
 			String formatWithComma = ", %s";
 			
 			List<Actor> actorsList = new ArrayList<Actor>(actors); 
-			Collections.sort(actorsList, new Comparator<Actor>() {
-				@Override
-				public int compare(Actor actor1, Actor actor2) {
-					int result = 0;
+			Collections.sort(actorsList, (actor1, actor2) -> {
 					String name1 = null;
 					String name2 = null;
 					if (actor1 != null) {
@@ -60,14 +56,13 @@ public class FilmInfoWrapper {
 						name2 = actor2.getName();
 					}
 					if (name1 != null) {
-						result = name1.compareTo(name2);
+						return name1.compareTo(name2);
 					} else if (name2 != null) {
-						result = name2.compareTo(name1);
+						return name2.compareTo(name1);
 					}
-					return result;
-				}
+					return 0;
 			});
-			
+
 			for (Actor actor : actorsList) {
 				String name = actor.getName();
 				result+=String.format((index == 0 ? formatWithoutComma : formatWithComma), name.trim());

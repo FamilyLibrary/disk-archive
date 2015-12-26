@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +19,12 @@ import com.alextim.diskarchive.utils.JSONHelper;
 @Service
 @Transactional
 public class FilmGroupServiceImpl implements IFilmGroupService {
-    @Autowired
+    @Resource
 	private ICoreDAOFactory coreDAOFactory;
-	private JSONHelper jsonHelper;
+    @Resource
+    private JSONHelper jsonHelper;
 
-    public static Comparator<FilmGroup> BY_GROUPNAME = new Comparator<FilmGroup>() {
-        @Override
-        public int compare(FilmGroup filmGroup1, FilmGroup filmGroup2) {
+    public static Comparator<FilmGroup> BY_GROUPNAME = (filmGroup1, filmGroup2) -> {
             String name1 = filmGroup1.getName();
             String name2 = filmGroup2.getName();
 
@@ -35,7 +35,6 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
                 result = name2.compareTo(name1);
             }
             return result;
-        }
     };
 	
 	@Override
@@ -67,12 +66,4 @@ public class FilmGroupServiceImpl implements IFilmGroupService {
     public String convertToJSON(List<FilmGroup> groups) {
         return this.jsonHelper.json(groups);
     }
-
-    public JSONHelper getJsonHelper() {
-        return jsonHelper;
-    }
-    public void setJsonHelper(JSONHelper jsonHelper) {
-        this.jsonHelper = jsonHelper;
-    }
-
 }

@@ -7,12 +7,16 @@
                         http://www.springframework.org/schema/security
                         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+    <security:http pattern="/ext/**" security="none"/>
     <security:http pattern="/images/**" security="none"/>
+    <security:http pattern="/js/**" security="none"/>
 
     <security:http auto-config='true' use-expressions="false">
         <security:intercept-url pattern="/login.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/register**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
         <security:intercept-url pattern="/**" access="ROLE_USER" />
+
         <security:form-login
             login-processing-url="/login.html"
             login-page="/login.html"

@@ -37,7 +37,6 @@ public class FilmRemoteService implements IFilmRemoteService{
         return filmService.getFilms();
     }
 
-    @Required
     public void setFilmService(IFilmService filmService) {
         this.filmService = filmService;
     }

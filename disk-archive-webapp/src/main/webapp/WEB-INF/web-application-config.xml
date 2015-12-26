@@ -13,9 +13,10 @@
         class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="login.html">indexController</prop>
-                <prop key="main.html">indexController</prop>
-                <prop key="renderGeneralImage.html">indexController</prop>
+                <prop key="login.html">loginController</prop>
+                <prop key="register.html">loginController</prop>
+                <prop key="main.html">mainController</prop>
+                <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
             </props>
         </property>
@@ -26,35 +27,14 @@
         <property name="prefix" value="" />
     </bean>
 
-    <bean id="indexController" class="com.alextim.diskarchive.controllers.IndexController">
-        <property name="methodNameResolver" ref="internalPathMethodNameResolver" />
-
-        <property name="filmService" ref="filmService" />
-        <property name="filmGroupService" ref="filmGroupService" />
-    </bean>
-
-    <bean id="filmService"
-        class="com.alextim.diskarchive.services.impl.FilmServiceImpl">
-        <property name="jsonHelper" ref="jsonHelper" />
-    </bean>
-    <bean id="filmGroupService"
-        class="com.alextim.diskarchive.services.impl.FilmGroupServiceImpl">
-        <property name="jsonHelper" ref="jsonHelper" />
-    </bean>
-
-    <bean id="filmGroupController"
-        class="com.alextim.diskarchive.controllers.FilmGroupController">
-        <property name="filmGroupService" ref="filmGroupService" />
-    </bean>
+    <bean id="filmGroupService" class="com.alextim.diskarchive.services.impl.FilmGroupServiceImpl"/>
 
     <bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="1000000" />
     </bean>
 
-    <bean id="jsonHelper" class="com.alextim.diskarchive.utils.impl.JSONHelperImpl">
-        <property name="coreDAOFactory" ref="coreDAOFactory" />
-    </bean>
+    <bean id="jsonHelper" class="com.alextim.diskarchive.utils.impl.JSONHelperImpl"/>
 
     <context:component-scan base-package="com.alextim.diskarchive.configuration"/>
 </beans>

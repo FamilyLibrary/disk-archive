@@ -39,7 +39,8 @@
 						<form:form action="${spring_security_check}">
 							<input name="j_username" style="width: 100%;"/><br/>
 							<input type="password" name="j_password" style="width: 100%;"/><br/>
-							<input type="submit" value="Login"/>
+							<input type="submit" value="Login"/>&nbsp;
+							<a style="float:right" href="/register.html">Register</a>
 		
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						</form:form>

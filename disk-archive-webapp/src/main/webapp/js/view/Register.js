@@ -3,10 +3,6 @@ Ext.define('MyApp.view.Register', {
     alias : 'MyApp.view.Register',
 
     cancelUrl: "#",
-    /*constructor: function(config) {
-        Ext.apply(this.config, config || {} );
-        this.cancelUrl = config.cancelUrl;
-    },*/
 
     height : 280,
     width : 448,

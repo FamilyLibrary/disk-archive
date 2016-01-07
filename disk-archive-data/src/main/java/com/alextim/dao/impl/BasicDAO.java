@@ -1,4 +1,4 @@
-package com.alextim.general.dao.impl;
+package com.alextim.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -13,7 +13,7 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alextim.general.dao.IBasicDAO;
+import com.alextim.dao.IBasicDAO;
 
 @Transactional
 public class BasicDAO<T> implements IBasicDAO<T>{

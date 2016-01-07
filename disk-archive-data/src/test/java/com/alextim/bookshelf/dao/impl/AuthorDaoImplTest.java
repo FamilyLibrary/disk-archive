@@ -21,8 +21,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
+import com.alextim.Gender;
 import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.general.Gender;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorDaoImplTest {

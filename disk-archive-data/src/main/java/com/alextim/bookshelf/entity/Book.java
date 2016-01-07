@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,11 +20,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.entity.IEntity;
+import com.alextim.entity.IEntityWithTimestampColumns;
+import com.alextim.entity.TimestampColumns;
 
 @Entity
 @Table(name="BOOKS")
-public class Book implements IEntity {
+public class Book implements IEntity, IEntityWithTimestampColumns {
     private static final Function<Book, Optional<Integer>> YEAR_OF_PUBLICATION_FUNCTION = (book) -> Optional.ofNullable(book.getYearOfPublication());
     private static final Function<Book, Optional<Set<BookAuthor>>> AUTHORS_FUNCTION = (book) ->  Optional.ofNullable(book.getAuthors());
 
@@ -61,6 +64,9 @@ public class Book implements IEntity {
 
     @Column(name="YEAR_OF_PUBLICATION")
     private Integer yearOfPublication;
+
+    @Embedded
+    private TimestampColumns timestampColumns;
 
     @Override
     public Long getId() {
@@ -120,6 +126,15 @@ public class Book implements IEntity {
     }
 
     @Override
+    public TimestampColumns getTimestampColumns() {
+        return timestampColumns;
+    }
+    @Override
+    public void setTimestampColumns(final TimestampColumns timestampColumns) {
+        this.timestampColumns = timestampColumns;
+    }
+
+    @Override
     public boolean equals(final Object bookObj) {
         if (!(bookObj instanceof Book)) {
             return false;
@@ -144,5 +159,4 @@ public class Book implements IEntity {
 
         return result;
     }
-
 }

@@ -2,8 +2,6 @@ package com.alextim.diskarchive.dwr.services.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import com.alextim.diskarchive.FilmInfoWrapper;
 import com.alextim.diskarchive.dwr.services.IFilmRemoteService;
 import com.alextim.diskarchive.entity.Film;

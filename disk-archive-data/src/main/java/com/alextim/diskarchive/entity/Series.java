@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.alextim.entity.IEntity;
+
 @Entity
 @Table(name="SERIES")
 public class Series implements IEntity {

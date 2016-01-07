@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
 import com.alextim.bookshelf.entity.BookAuthor;
-import com.alextim.general.dao.impl.BasicDAO;
+import com.alextim.dao.impl.BasicDAO;
 
 @Repository
 @Transactional

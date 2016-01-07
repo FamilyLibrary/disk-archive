@@ -5,29 +5,31 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
+import com.alextim.entity.TimestampColumns;
 
 public class AbstractUploaderStrategy {
     private static final String AUTHOR_SEPARATOR = "[\"]\\s*|\\s*,\\s*|\\s*[\"]";
 
-    private Map<Book, CompleteWork> completeWorkMap = new ConcurrentHashMap<>();
-    private Map<String, BookAuthor> bookAuthorMap = new ConcurrentHashMap<>();
+    private final Map<Book, CompleteWork> completeWorkMap = new ConcurrentHashMap<>();
+    private final Map<String, BookAuthor> bookAuthorMap = new ConcurrentHashMap<>();
 
-    protected Book convertToBook(BookRow bookRow) {
+    protected Book convertToBook(final BookRow bookRow) {
         final Book book = new Book();
+        /*TODO: Hibernate won't save a timestampColumns object that contains updated and created fields 
+         * if the timestampColumns object is null before calling saveOrUpdate function.
+         * Investigate a possibility to create a timestampColumns object during creation of a book object. 
+         */ 
+        book.setTimestampColumns(new TimestampColumns());
 
         createGeneralFields(book, bookRow);
         createBookAuthor(book, bookRow);
-        if (StringUtils.isNotBlank(bookRow.getVolumes())) {
+        if (bookRow.getVolumes() != null) {
             getOrCreateCompleteWork(book, bookRow);
         }
         return book;
@@ -35,9 +37,8 @@ public class AbstractUploaderStrategy {
 
     private void createGeneralFields(final Book book, final BookRow bookRow) {
         book.setName(bookRow.getName());
-
-        updateIntegerField(bookRow::getVolume, book::setVolume);
-        updateIntegerField(bookRow::getYearOfPublication, book::setYearOfPublication);
+        book.setVolume(bookRow.getVolume());
+        book.setYearOfPublication(bookRow.getYearOfPublication());
     }
 
     private void createBookAuthor(final Book book, final BookRow bookRow) {
@@ -75,16 +76,9 @@ public class AbstractUploaderStrategy {
 
         completeWork.setTotalVolumes(Integer.valueOf(bookRow.getVolumes()));
 
-        updateIntegerField(bookRow::getFirstVolumeInYear, completeWork::setFirstVolumeInYear);
-        updateIntegerField(bookRow::getLastVolumeInYear, completeWork::setLastVolumeInYear);
+        completeWork.setFirstVolumeInYear(bookRow.getFirstVolumeInYear());
+        completeWork.setLastVolumeInYear(bookRow.getLastVolumeInYear());
 
         return completeWork;
-    }
-
-    private void updateIntegerField(final Supplier<String> supplier, final Consumer<Integer> consumer) {
-        final String volumeInYear = supplier.get();
-        if (StringUtils.isNotBlank(volumeInYear)) {
-            consumer.accept(Integer.valueOf(volumeInYear));
-        }
     }
 }

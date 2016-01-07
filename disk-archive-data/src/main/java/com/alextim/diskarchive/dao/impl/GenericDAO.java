@@ -5,7 +5,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.alextim.diskarchive.dao.IGenericDAO;
-import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.entity.IEntity;
 
 @Repository
 public class GenericDAO implements IGenericDAO {

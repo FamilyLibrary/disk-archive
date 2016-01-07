@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.ICompleteWorkDao;
 import com.alextim.bookshelf.entity.CompleteWork;
-import com.alextim.general.dao.impl.BasicDAO;
+import com.alextim.dao.impl.BasicDAO;
 
 @Repository
 @Transactional

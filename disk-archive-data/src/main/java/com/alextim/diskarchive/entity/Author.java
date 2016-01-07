@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.alextim.general.entity.Person;
+import com.alextim.entity.Person;
 
 @Entity
 @Table(name="AUTHORS")

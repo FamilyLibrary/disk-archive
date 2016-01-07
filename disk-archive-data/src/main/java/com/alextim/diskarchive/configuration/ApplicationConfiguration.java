@@ -17,6 +17,8 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.alextim.entity.interceptor.EntityTimestampInterceptor;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages={"com.alextim"})
@@ -37,6 +39,7 @@ public class ApplicationConfiguration {
         sessionFactoryBean.setPackagesToScan(DISK_ARCHIVE_ANNOTATED_PACKAGES, BOOK_SHELF_ANNOTATED_PACKAGES);
 
         sessionFactoryBean.setHibernateProperties((Properties) hibernateProperties.getObject());
+        sessionFactoryBean.setEntityInterceptor(new EntityTimestampInterceptor());
 
         return sessionFactoryBean;
     }

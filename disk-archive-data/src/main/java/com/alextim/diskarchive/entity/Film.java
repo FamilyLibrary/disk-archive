@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.alextim.entity.IEntity;
+
 @Entity
 @Table(name="FILMS")
 public class Film  implements IEntity{

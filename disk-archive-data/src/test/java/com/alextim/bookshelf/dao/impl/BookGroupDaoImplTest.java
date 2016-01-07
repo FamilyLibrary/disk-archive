@@ -43,7 +43,7 @@ public class BookGroupDaoImplTest {
 
         verify(hibernateTemplate).saveOrUpdate(resultGroup);
 
-        //TODO Uncomment below line and test id value that will be set by override method BookGroupDaoImpl->createGroupEntity
+        //TODO Uncomment below line and test id value that will be set by override BookGroupDaoImpl->createGroupEntity method 
         //assertEquals(ID_VALUE, resultGroup.getId());
         assertEquals(BookGroup.NEW_NAME, resultGroup.getName());
         assertEquals(BookGroup.NEW_DESCRIPTION, resultGroup.getDescription());

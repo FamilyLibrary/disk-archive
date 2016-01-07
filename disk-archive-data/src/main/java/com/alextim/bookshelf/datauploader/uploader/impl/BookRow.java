@@ -3,11 +3,11 @@ package com.alextim.bookshelf.datauploader.uploader.impl;
 final class BookRow {
     private String author;
     private String name;
-    private String volume;
-    private String volumes;
-    private String yearOfPublication;
-    private String firstVolumeInYear;
-    private String lastVolumeInYear;
+    private Integer volume;
+    private Integer volumes;
+    private Integer yearOfPublication;
+    private Integer firstVolumeInYear;
+    private Integer lastVolumeInYear;
 
     public String getAuthor() {
         return author;
@@ -23,38 +23,38 @@ final class BookRow {
         this.name = name;
     }
 
-    public String getVolume() {
+    public Integer getVolume() {
         return volume;
     }
-    public void setVolume(String volume) {
+    public void setVolume(Integer volume) {
         this.volume = volume;
     }
 
-    public String getVolumes() {
+    public Integer getVolumes() {
         return volumes;
     }
-    public void setVolumes(String volumes) {
+    public void setVolumes(Integer volumes) {
         this.volumes = volumes;
     }
 
-    public String getYearOfPublication() {
+    public Integer getYearOfPublication() {
         return yearOfPublication;
     }
-    public void setYearOfPublication(String yearOfPublication) {
+    public void setYearOfPublication(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
     }
 
-    public String getFirstVolumeInYear() {
+    public Integer getFirstVolumeInYear() {
         return firstVolumeInYear;
     }
-    public void setFirstVolumeInYear(String firstVolumeInYear) {
+    public void setFirstVolumeInYear(Integer firstVolumeInYear) {
         this.firstVolumeInYear = firstVolumeInYear;
     }
 
-    public String getLastVolumeInYear() {
+    public Integer getLastVolumeInYear() {
         return lastVolumeInYear;
     }
-    public void setLastVolumeInYear(String lastVolumeInYear) {
+    public void setLastVolumeInYear(Integer lastVolumeInYear) {
         this.lastVolumeInYear = lastVolumeInYear;
     }
 }

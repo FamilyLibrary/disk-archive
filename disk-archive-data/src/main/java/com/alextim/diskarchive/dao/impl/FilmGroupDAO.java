@@ -3,9 +3,9 @@ package com.alextim.diskarchive.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alextim.dao.impl.BasicDAO;
 import com.alextim.diskarchive.dao.IFilmGroupDAO;
 import com.alextim.diskarchive.entity.FilmGroup;
-import com.alextim.general.dao.impl.BasicDAO;
 
 @Repository
 @Transactional

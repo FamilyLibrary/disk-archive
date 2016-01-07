@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.alextim.diskarchive.entity.IEntity;
+import com.alextim.entity.IEntity;
 
 @Entity
 @Table(name="COMPLETE_WORKS")

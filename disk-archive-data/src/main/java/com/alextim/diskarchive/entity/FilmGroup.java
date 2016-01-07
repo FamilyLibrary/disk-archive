@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.alextim.general.entity.Group;
+import com.alextim.entity.Group;
 
 @Entity
 @Table(name="FILM_GROUPS")

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Resource;
@@ -46,8 +47,7 @@ public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements
     }
 
     private Book mapToBook(final Row row) {
-        Function<Integer, Cell> getFunc = row::getCell;
-        return convertToBook(createRow(getFunc));
+        return convertToBook(createRow(row::getCell));
     }
 
     @Override
@@ -77,23 +77,25 @@ public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements
     private BookRow createRow(final Function<Integer, Cell> getFunc) {
         final BookRow bookRow = new BookRow();
 
-        bookRow.setAuthor(readAsString(AUTHOR.apply(getFunc)));
-        bookRow.setName(readAsString(NAME.apply(getFunc)));
-        bookRow.setVolume(readAsString(VOLUME.apply(getFunc)));
-        bookRow.setVolumes(readAsString(VOLUMES.apply(getFunc)));
-        bookRow.setYearOfPublication(readAsString(YEAR_OF_PUBLICATION.apply(getFunc)));
-        bookRow.setFirstVolumeInYear(readAsString(FIRST_VOLUME_IN_YEAR.apply(getFunc)));
-        bookRow.setLastVolumeInYear(readAsString(LAST_VOLUME_IN_YEAR.apply(getFunc)));
+        updateStringField(bookRow::setAuthor, AUTHOR.apply(getFunc));
+        updateStringField(bookRow::setName, NAME.apply(getFunc));
+        updateIntegerField(bookRow::setVolume, VOLUME.apply(getFunc));
+        updateIntegerField(bookRow::setVolumes, VOLUMES.apply(getFunc));
+        updateIntegerField(bookRow::setYearOfPublication, YEAR_OF_PUBLICATION.apply(getFunc));
+        updateIntegerField(bookRow::setFirstVolumeInYear, FIRST_VOLUME_IN_YEAR.apply(getFunc));
+        updateIntegerField(bookRow::setLastVolumeInYear, LAST_VOLUME_IN_YEAR.apply(getFunc));
 
         return bookRow;
     }
-
-    /*TODO: Should be refactored somehow */
-    private String readAsString(Cell cell) {
-        if (cell == null) {
-            return null;
+ 
+    private void updateStringField(final Consumer<String> consumer, Cell cell) {
+        if (cell != null) {
+            consumer.accept(cell.getStringCellValue());
         }
-        cell.setCellType(Cell.CELL_TYPE_STRING);
-        return cell.getStringCellValue();
+    }
+    private void updateIntegerField(final Consumer<Integer> consumer, Cell cell) {
+        if (cell != null) {
+            consumer.accept(Double.valueOf(cell.getNumericCellValue()).intValue());
+        }
     }
 }

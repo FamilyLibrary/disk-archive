@@ -1,4 +1,4 @@
-package com.alextim.general.entity;
+package com.alextim.entity;
 
 import java.util.Calendar;
 
@@ -15,8 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.alextim.diskarchive.entity.IEntity;
-import com.alextim.general.Gender;
+import com.alextim.Gender;
 
 @Entity
 @Table(name="PEOPLE")

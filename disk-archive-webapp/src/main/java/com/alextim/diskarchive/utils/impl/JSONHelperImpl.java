@@ -13,12 +13,11 @@ import net.sf.json.util.CycleDetectionStrategy;
 import net.sf.json.util.PropertyFilter;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.springframework.beans.factory.annotation.Required;
 
+import com.alextim.dao.IBasicDAO;
 import com.alextim.diskarchive.dao.factory.ICoreDAOFactory;
-import com.alextim.diskarchive.entity.IEntity;
 import com.alextim.diskarchive.utils.JSONHelper;
-import com.alextim.general.dao.IBasicDAO;
+import com.alextim.entity.IEntity;
 
 public class JSONHelperImpl implements JSONHelper {
 

@@ -6,9 +6,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alextim.dao.impl.BasicDAO;
 import com.alextim.diskarchive.dao.IFilmDAO;
 import com.alextim.diskarchive.entity.Film;
-import com.alextim.general.dao.impl.BasicDAO;
 
 @Repository
 @Transactional

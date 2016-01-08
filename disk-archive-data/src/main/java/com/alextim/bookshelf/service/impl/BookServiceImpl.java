@@ -26,6 +26,7 @@ import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
 import com.alextim.bookshelf.service.IBookService;
+import com.alextim.entity.TimestampColumns;
 
 @Service
 public class BookServiceImpl implements IBookService {
@@ -68,7 +69,21 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public List<Book> save(final Collection<Book> books) {
+        /*TODO: Hibernate won't save a timestampColumns object that contains updated and created fields 
+         * if the timestampColumns object is null before calling saveOrUpdate function.
+         * Investigate a possibility to create a timestampColumns object during creation of a book object. 
+         */
         return books.stream()
+            .map(book -> {
+                final List<Book> findedBooks = 
+                        bookDao.findBook(book.getYearOfPublication(), book.getVolume());
+                return findedBooks.stream().filter(findedBook -> !book.isUpdatedFromUI() && book.equals(findedBook)).findFirst().orElse(book);
+            })
+            .peek(book -> {
+                if (book.getTimestampColumns() == null) {
+                    book.setTimestampColumns(new TimestampColumns());
+                }
+            })
             .map(book -> bookDao.addBook(book))
             .flatMap(book -> Stream.of(book))
             .collect(Collectors.toList());

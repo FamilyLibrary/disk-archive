@@ -1,7 +1,9 @@
 package com.alextim.bookshelf;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -34,7 +36,8 @@ public class Utilities {
     }
 
     private static String getKeyByAuthorAndYearPublication(final Book book) {
-        final String authorNames = book.getAuthors()
+        final String authorNames = Optional.ofNullable(book.getAuthors())
+            .orElse(Collections.emptySet())
             .stream()
             .map(author -> BY_AUTHOR_LAST_NAME.apply(author))
             .collect(Collectors.joining(SEPARATOR));

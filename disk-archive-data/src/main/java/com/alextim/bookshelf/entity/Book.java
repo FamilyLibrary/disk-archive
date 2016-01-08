@@ -1,13 +1,11 @@
 package com.alextim.bookshelf.entity;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,9 +25,6 @@ import com.alextim.entity.TimestampColumns;
 @Entity
 @Table(name="BOOKS")
 public class Book implements IEntity, IEntityWithTimestampColumns {
-    private static final Function<Book, Optional<Integer>> YEAR_OF_PUBLICATION_FUNCTION = (book) -> Optional.ofNullable(book.getYearOfPublication());
-    private static final Function<Book, Optional<Set<BookAuthor>>> AUTHORS_FUNCTION = (book) ->  Optional.ofNullable(book.getAuthors());
-
     public final static String NEW_NAME = "new name";
     public final static String NEW_DESCRIPTION = "new description";
 
@@ -48,7 +43,7 @@ public class Book implements IEntity, IEntityWithTimestampColumns {
     @Column(name="VOLUME")
     private Integer volume;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @Cascade({CascadeType.ALL})
     @JoinColumn(name="BOOK_ID")
     private Set<BookAuthor> authors;
@@ -67,6 +62,9 @@ public class Book implements IEntity, IEntityWithTimestampColumns {
 
     @Embedded
     private TimestampColumns timestampColumns;
+
+    @Column(name="UPDATED_FROM_UI")
+    private boolean updatedFromUI;
 
     @Override
     public Long getId() {
@@ -134,6 +132,13 @@ public class Book implements IEntity, IEntityWithTimestampColumns {
         this.timestampColumns = timestampColumns;
     }
 
+    public boolean isUpdatedFromUI() {
+        return updatedFromUI;
+    }
+    public void setUpdatedFromUI(boolean updatedFromUI) {
+        this.updatedFromUI = updatedFromUI;
+    }
+
     @Override
     public boolean equals(final Object bookObj) {
         if (!(bookObj instanceof Book)) {
@@ -145,8 +150,8 @@ public class Book implements IEntity, IEntityWithTimestampColumns {
 
         final Book book = (Book)bookObj;
 
-        return (YEAR_OF_PUBLICATION_FUNCTION.apply(book).equals(YEAR_OF_PUBLICATION_FUNCTION.apply(this)) 
-                && AUTHORS_FUNCTION.apply(book).equals(AUTHORS_FUNCTION.apply(this))
+        return (book.yearOfPublication == null ? this.yearOfPublication == null : book.yearOfPublication.equals(this.yearOfPublication)
+                && book.authors == null ? this.authors == null : book.authors.equals(this.authors)
         );
     }
 
@@ -154,8 +159,8 @@ public class Book implements IEntity, IEntityWithTimestampColumns {
     public int hashCode() {
         int result = 17;
 
-        result = 31 * result + (YEAR_OF_PUBLICATION_FUNCTION.apply(this).orElse(0).hashCode());
-        result = 31 * result + (AUTHORS_FUNCTION.apply(this).orElse(Collections.emptySet()).hashCode());
+        result = 31 * result + this.getYearOfPublication().hashCode();
+        result = 31 * result + this.getAuthors().hashCode();
 
         return result;
     }

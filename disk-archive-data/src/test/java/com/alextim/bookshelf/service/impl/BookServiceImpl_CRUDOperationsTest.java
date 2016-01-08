@@ -21,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
+import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.dao.ICompleteWorkDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;

@@ -19,9 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.IAuthorDao;
-import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.dao.ICompleteWorkDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
@@ -34,6 +34,7 @@ import com.alextim.diskarchive.configuration.TestDaoConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class, DataFactoryConfiguration.class, TestDaoConfiguration.class}, 
                       inheritLocations = true)
+@Transactional
 @Rollback(true)
 public class BookServiceImpl_CRUDOperationsTest {
     public static final Logger LOG = Logger.getLogger(BookServiceImpl_CRUDOperationsTest.class);
@@ -44,6 +45,9 @@ public class BookServiceImpl_CRUDOperationsTest {
 
     @Resource
     private IBookService bookService;
+
+    @Resource
+    private IBookService bookDao;
 
     @Resource
     private ICompleteWorkDao completeWorkDao;
@@ -57,6 +61,7 @@ public class BookServiceImpl_CRUDOperationsTest {
     }
 
     @Test
+    @Rollback(false)
     public void shouldInsertBooks() {
         final Collection<Book> books = bookService.uploadBookFile();
         final Collection<Book> savedBooks = bookService.save(books);

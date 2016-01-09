@@ -2,6 +2,7 @@ package com.alextim.entity.interceptor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 

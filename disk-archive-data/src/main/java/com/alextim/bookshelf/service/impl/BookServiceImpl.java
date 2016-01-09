@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
@@ -68,17 +69,13 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
+    @Transactional
     public List<Book> save(final Collection<Book> books) {
         /*TODO: Hibernate won't save a timestampColumns object that contains updated and created fields 
          * if the timestampColumns object is null before calling saveOrUpdate function.
          * Investigate a possibility to create a timestampColumns object during creation of a book object. 
          */
         return books.stream()
-            .map(book -> {
-                final List<Book> findedBooks = 
-                        bookDao.findBook(book.getYearOfPublication(), book.getVolume());
-                return findedBooks.stream().filter(findedBook -> !book.isUpdatedFromUI() && book.equals(findedBook)).findFirst().orElse(book);
-            })
             .peek(book -> {
                 if (book.getTimestampColumns() == null) {
                     book.setTimestampColumns(new TimestampColumns());

@@ -1,13 +1,16 @@
 package com.alextim.bookshelf.datauploader.uploader.impl;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Resource;
+
+import com.alextim.bookshelf.dao.IBookDao;
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
@@ -15,17 +18,23 @@ import com.alextim.bookshelf.entity.CompleteWork;
 public class AbstractUploaderStrategy {
     private static final String AUTHOR_SEPARATOR = "[\"]\\s*|\\s*,\\s*|\\s*[\"]";
 
-    private final Map<Book, CompleteWork> completeWorkMap = new ConcurrentHashMap<>();
+    @Resource
+    private IBookDao bookDao;
 
     protected Book convertToBook(final BookRow bookRow) {
-        final Set<BookAuthor> authors = createBookAuthor(bookRow);
+        final Set<BookAuthor> authors = getBookAuthor(bookRow);
 
-        Book book = new Book();
+        final List<Book> findedBooks =
+                bookDao.findBook(bookRow.getYearOfPublication(), bookRow.getVolume());
+        Book book = findedBooks.stream()
+                .filter(findedBook -> !findedBook.isUpdatedFromUI())
+                .filter(findedBook -> findedBook.getAuthors() != null)
+                .filter(findedBook -> findedBook.getAuthors().equals(authors)).findFirst().orElse(new Book());
 
         createGeneralFields(book, bookRow);
-        book.setAuthors(authors);
+        creatBookAuthors(book, authors);
         if (bookRow.getVolumes() != null) {
-            getOrCreateCompleteWork(book, bookRow);
+            createCompleteWork(book, bookRow);
         }
 
         return book;
@@ -37,14 +46,23 @@ public class AbstractUploaderStrategy {
         book.setYearOfPublication(bookRow.getYearOfPublication());
     }
 
-    private Set<BookAuthor> createBookAuthor(final BookRow bookRow) {
+    private Set<BookAuthor> getBookAuthor(final BookRow bookRow) {
         final String[] authorArray = Optional.ofNullable(bookRow.getAuthor())
                 .orElse("").split(AUTHOR_SEPARATOR, -1);
-        final Set<BookAuthor> authors = Stream.of(authorArray)
+        return Stream.of(authorArray)
                     .filter(authorName -> (authorName != null && !authorName.isEmpty()))
                     .map(authorName -> getOrCreateAuthor(authorName))
                     .collect(Collectors.toCollection(LinkedHashSet::new));
-        return authors;
+    }
+
+    private void creatBookAuthors(final Book book, final Set<BookAuthor> authors) {
+        if (book.getAuthors() == null) {
+            book.setAuthors(new HashSet<>());
+        }
+        if (!book.getAuthors().equals(authors)) {
+            book.getAuthors().clear();
+            book.setAuthors(authors);
+        }
     }
 
     private BookAuthor getOrCreateAuthor(final String authorName) {
@@ -53,18 +71,16 @@ public class AbstractUploaderStrategy {
         return author;
     }
 
-    private void getOrCreateCompleteWork(final Book book, final BookRow bookRow) {
-        CompleteWork completeWork = completeWorkMap.get(book);
+    private void createCompleteWork(final Book book, final BookRow bookRow) {
+        CompleteWork completeWork = book.getCompleteWork();
         if (completeWork == null) {
-            completeWork = initCompleteWork(book, bookRow);
-            completeWorkMap.put(book, completeWork);
+            completeWork = new CompleteWork();
         }
+        completeWork = updateCompleteWork(completeWork, bookRow);
         book.setCompleteWork(completeWork);
     }
 
-    private CompleteWork initCompleteWork(final Book book, final BookRow bookRow) {
-        final CompleteWork completeWork = new CompleteWork();
-
+    private CompleteWork updateCompleteWork(final CompleteWork completeWork, final BookRow bookRow) {
         completeWork.setTotalVolumes(Integer.valueOf(bookRow.getVolumes()));
 
         completeWork.setFirstVolumeInYear(bookRow.getFirstVolumeInYear());

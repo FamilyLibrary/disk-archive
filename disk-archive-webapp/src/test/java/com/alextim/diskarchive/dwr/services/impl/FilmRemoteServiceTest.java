@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.diskarchive.entity.Film;
 import com.alextim.diskarchive.services.IFilmService;
@@ -21,7 +22,7 @@ import com.alextim.diskarchive.services.IFilmService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:hibernate.xml",
         "file:src/main/webapp/WEB-INF/web-application-config.xml" }, inheritLocations = true)
-@Rollback(true)
+@Transactional
 public class FilmRemoteServiceTest {
     public static final Logger LOG = Logger.getLogger(FilmRemoteServiceTest.class);
 
@@ -38,11 +39,12 @@ public class FilmRemoteServiceTest {
     }
 
     @Test
+    @Rollback(true)
     public void testAddFilm() {
         final Film created = filmRemoteService.addFilm();
-        filmId = created.getId();
-
         Assert.assertNotNull(created);
+
+        filmId = created.getId();
 
         List<Film> films = filmRemoteService.getFilms();
         List<Film> filtered = 

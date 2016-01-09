@@ -21,6 +21,7 @@ public class BookDaoImpl extends BasicDAO<Book> implements IBookDao {
         return book;
     }
 
+
     @Override
     public Book addBook() {
         final Book book = createBookEntity();

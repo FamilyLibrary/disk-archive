@@ -6,13 +6,13 @@ import java.util.List;
 import com.alextim.diskarchive.entity.Author;
 
 public class AuthorUtil {
-    public static double compareAuthors(List<Author> names1, List<Author> names2) {
+    public static double compareAuthors(List<Author> firstArray, List<Author> secondArray) {
         List<String> diffAuthorsNamesArrayList = new ArrayList<>();
 
-        for(Author author1 : names1){
+        for(Author author1 : firstArray){
             String firstAuthorLastName = author1.getLastName();
 
-            for(Author author2 : names2){
+            for(Author author2 : secondArray){
                 String secondAuthorLastName = author2.getLastName();
 
                 boolean isEqual = firstAuthorLastName.equals(secondAuthorLastName);
@@ -21,10 +21,9 @@ public class AuthorUtil {
                 }
             }
         }
-        if(names1.size() == 0){
+        if(firstArray.size() == 0){
             return 0;
         }
-        double result =  diffAuthorsNamesArrayList.size() * 100 / names1.size();
-        return result;
+        return diffAuthorsNamesArrayList.size() * 100 / firstArray.size();
     }
 }

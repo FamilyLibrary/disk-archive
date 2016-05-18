@@ -1,18 +1,19 @@
 package com.alextim;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.alextim.diskarchive.entity.Author;
 
 public class AuthorUtil {
-    public static double compareAuthors(ArrayList<Author> names1, ArrayList<Author> names2) {
-        ArrayList<String> diffAuthorsNamesArrayList = new ArrayList<>();
+    public static double compareAuthors(List<Author> names1, List<Author> names2) {
+        List<String> diffAuthorsNamesArrayList = new ArrayList<>();
 
-        for(int firstArrayIndex = 0; firstArrayIndex < names1.size(); firstArrayIndex++ ){
-            String firstAuthorLastName = names1.get(firstArrayIndex).getLastName();
+        for(Author author1 : names1){
+            String firstAuthorLastName = author1.getLastName();
 
-            for(int secondArrayIndex = 0; secondArrayIndex < names2.size(); secondArrayIndex++){
-                String secondAuthorLastName = names2.get(secondArrayIndex).getLastName();
+            for(Author author2 : names2){
+                String secondAuthorLastName = author2.getLastName();
 
                 boolean isEqual = firstAuthorLastName.equals(secondAuthorLastName);
                 if (!isEqual){

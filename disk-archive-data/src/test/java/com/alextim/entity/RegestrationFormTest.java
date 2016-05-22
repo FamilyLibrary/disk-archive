@@ -1,5 +1,10 @@
 package com.alextim.entity;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -36,12 +41,14 @@ public class RegestrationFormTest {
     @Rollback(true)
     public void saveUser() {
         final User user = new User();
+        Calendar birthdayDate = GregorianCalendar.from(ZonedDateTime.now());
 
         user.setFirstName(USER_FIRST_NAME);
         user.setLastName(USER_LAST_NAME);
         user.setGender(USER_GENDER);
         user.setLogin(USER_LOGIN);
         user.setPassword(USER_PASSWORD);
+        user.setBirthdayDate(birthdayDate);
 
         userDao.save(user);
         
@@ -52,5 +59,6 @@ public class RegestrationFormTest {
         Assert.assertEquals(USER_GENDER, savedUser.getGender());
         Assert.assertEquals(USER_LOGIN, savedUser.getLogin());
         Assert.assertEquals(USER_PASSWORD, savedUser.getPassword());
+        Assert.assertEquals(birthdayDate, savedUser.getBirthdayDate());
     }
 }

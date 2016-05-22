@@ -1,0 +1,3 @@
+[alias]
+	sergey = "!f() { git config user.email \"sergey.timofeev.2000@list.ru\"; git config user.name \"Sergey Timofeev\"; }; f"
+        aleksey = "!f() { git config user.email \"alextim@list.ru\"; git config user.name \"Aleksey Timofeev\"; }; f"

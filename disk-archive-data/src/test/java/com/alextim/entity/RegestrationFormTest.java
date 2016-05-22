@@ -2,8 +2,6 @@ package com.alextim.entity;
 
 import javax.annotation.Resource;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -13,10 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.Gender;
 import com.alextim.bookshelf.dao.IUserDao;
-import com.alextim.dao.impl.BasicDAO;
 import com.alextim.diskarchive.configuration.ApplicationConfiguration;
 import com.alextim.diskarchive.configuration.DataFactoryConfiguration;
 import com.alextim.diskarchive.configuration.TestDaoConfiguration;
+
+import junit.framework.Assert;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class, DataFactoryConfiguration.class, TestDaoConfiguration.class}, 

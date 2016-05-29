@@ -39,7 +39,5 @@
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
 
-    <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <bean id="userDetailsService" class="com.alextim.bookshelf.service.impl.UserDetailsServiceImpl"/>
 </beans>

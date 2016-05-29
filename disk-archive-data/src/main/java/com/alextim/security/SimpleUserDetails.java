@@ -1,7 +1,8 @@
 package com.alextim.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +12,7 @@ import com.alextim.entity.User;
 public class SimpleUserDetails implements UserDetails {
 	private static final long serialVersionUID = 1238443405737827293L;
 
-	private User user;
+	private final User user;
 
 	public SimpleUserDetails(final User user) {
 		this.user = user;
@@ -19,7 +20,12 @@ public class SimpleUserDetails implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>();
+		final List<GrantedAuthority> authorities = user.getUserGroups()
+				.stream()
+				.flatMap(
+					group -> group.getPermissions().stream()
+				).collect(Collectors.toList());
+		return authorities;
 	}
 
 	@Override
@@ -39,7 +45,7 @@ public class SimpleUserDetails implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return false;
+		return !user.isEnabled();
 	}
 
 	@Override
@@ -49,7 +55,7 @@ public class SimpleUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return user.isEnabled();
 	}
 
 }

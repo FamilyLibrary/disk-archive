@@ -16,7 +16,9 @@ public class User extends Person {
     @Column(name="PASSWORD")
     private String password;
 
-    @OneToMany
+    private boolean enabled;
+
+	@OneToMany
     private List<UserGroup> userGroups;
     
     public String getLogin() {
@@ -39,4 +41,11 @@ public class User extends Person {
     public void setUserGroups(List<UserGroup> userGroups) {
         this.userGroups = userGroups;
     }
+
+    public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 }

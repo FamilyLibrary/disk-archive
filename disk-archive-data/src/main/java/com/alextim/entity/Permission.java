@@ -7,10 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name="PERMISSIONS")
-public class Permission {
-    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
+public class Permission implements GrantedAuthority {
+	private static final long serialVersionUID = 2818684977158400280L;
+
+	@Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name="NAME")
@@ -39,4 +43,9 @@ public class Permission {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	@Override
+	public String getAuthority() {
+		return Long.toString(id);
+	}
 }

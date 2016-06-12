@@ -12,14 +12,16 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import com.alextim.Gender;
 import com.alextim.bookshelf.entity.BookAuthor;
@@ -34,9 +36,12 @@ public class AuthorDaoImplTest {
             GregorianCalendar.from(ZonedDateTime.of(LocalDateTime.of(2015, 9, 29, 0, 0, 0), ZoneId.of("UTC")));
 
     @Mock
-    private HibernateTemplate hibernateTemplate;
-    @Mock
     private BookAuthor author;
+
+    @Mock
+    private EntityManager entityManager;
+    @Mock
+    private Session session;
 
     @InjectMocks
     private AuthorDaoImpl dao = new AuthorDaoImpl();
@@ -48,13 +53,14 @@ public class AuthorDaoImplTest {
         when(author.getLastName()).thenReturn(AUTHOR_LAST_NAME);
         when(author.getGender()).thenReturn(AUTHOR_GENDER);
         when(author.getBirthdayDate()).thenReturn(AUTHOR_BIRTHDAY_DATE);
+        when(entityManager.unwrap(Session.class)).thenReturn(session);
     }
     
     @Test
     public void shouldAddAuthorWithDefaultValues() {
         final BookAuthor resultAuthor = dao.addAuthor();
 
-        verify(hibernateTemplate).saveOrUpdate(resultAuthor);
+        verify(session).saveOrUpdate(resultAuthor);
 
         assertEquals(resultAuthor.getFirstName(), BookAuthor.NEW_FIRST_NAME);
         assertEquals(resultAuthor.getLastName(), BookAuthor.NEW_LAST_NAME);
@@ -66,7 +72,7 @@ public class AuthorDaoImplTest {
     public void shouldAddAuthorWithPredefinedValues() {
         final BookAuthor resultAuthor = dao.addAuthor(author);
 
-        verify(hibernateTemplate).saveOrUpdate(author);
+        verify(session).saveOrUpdate(author);
 
         assertEquals(resultAuthor.getId(), AUTHOR_ID);
         assertEquals(resultAuthor.getFirstName(), AUTHOR_FIRST_NAME);
@@ -78,7 +84,7 @@ public class AuthorDaoImplTest {
     @Test(expected=HibernateException.class)
     public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
-            .when(hibernateTemplate).saveOrUpdate(null);
+            .when(session).saveOrUpdate(null);
         dao.addAuthor(null);
     }
 }

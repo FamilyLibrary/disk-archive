@@ -2,6 +2,7 @@ package com.alextim.diskarchive.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class FilmDAO extends BasicDAO<Film> implements IFilmDAO {
     public Film findByName(String name) {
         Film result = null;
 
-        List<Film> resultList = getSessionFactory().getCurrentSession().createCriteria(Film.class)
+        List<Film> resultList = entityManager.unwrap(Session.class).createCriteria(Film.class)
             .add(Restrictions.eq("name", name))
             .list();
         

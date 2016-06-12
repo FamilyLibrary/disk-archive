@@ -1,21 +1,22 @@
 package com.alextim.entity;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.annotation.Resource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alextim.Gender;
-import com.alextim.bookshelf.dao.IUserDao;
+import com.alextim.bookshelf.repository.UserRepository;
 import com.alextim.diskarchive.configuration.ApplicationConfiguration;
 import com.alextim.diskarchive.configuration.DataFactoryConfiguration;
 import com.alextim.diskarchive.configuration.TestDaoConfiguration;
@@ -28,8 +29,8 @@ import junit.framework.Assert;
 @Transactional
 @Rollback(false)
 public class RegestrationFormTest {
-    @Resource
-    private IUserDao userDao;
+    @Autowired
+    private UserRepository userRepository;
     
     private final static String USER_FIRST_NAME = "Sergey";
     private final static String USER_LAST_NAME = "Timofeev";
@@ -50,9 +51,9 @@ public class RegestrationFormTest {
         user.setPassword(USER_PASSWORD);
         user.setBirthdayDate(birthdayDate);
 
-        userDao.save(user);
-        
-        final User savedUser = userDao.getById(user.getId());
+        userRepository.save(user);
+
+        final User savedUser = userRepository.findOne(user.getId());
 
         Assert.assertEquals(USER_FIRST_NAME, savedUser.getFirstName());
         Assert.assertEquals(USER_LAST_NAME, savedUser.getLastName());

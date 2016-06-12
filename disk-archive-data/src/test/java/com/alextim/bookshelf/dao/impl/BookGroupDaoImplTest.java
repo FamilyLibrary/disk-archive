@@ -5,7 +5,10 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +26,9 @@ public class BookGroupDaoImplTest {
     private static final String DESCRIPTION_VALUE = "GroupDescriptionValue";
 
     @Mock
-    private HibernateTemplate hibernateTemplate;
+    private EntityManager entityManager;
+    @Mock
+    private Session session;
     @Mock
     private BookGroup bookGroup;
 
@@ -35,13 +40,15 @@ public class BookGroupDaoImplTest {
         when(bookGroup.getId()).thenReturn(ID_VALUE);
         when(bookGroup.getName()).thenReturn(NAME_VALUE);
         when(bookGroup.getDescription()).thenReturn(DESCRIPTION_VALUE);
+
+        when(entityManager.unwrap(Session.class)).thenReturn(session);
     }
 
     @Test
     public void shouldAddBookGroupWithDefaultValues() {
         final BookGroup resultGroup = dao.addGroup();
 
-        verify(hibernateTemplate).saveOrUpdate(resultGroup);
+        verify(session).saveOrUpdate(resultGroup);
 
         //TODO Uncomment below line and test id value that will be set by override BookGroupDaoImpl->createGroupEntity method 
         //assertEquals(ID_VALUE, resultGroup.getId());
@@ -53,7 +60,7 @@ public class BookGroupDaoImplTest {
     public void shouldAddBookGroupWithPredefinedValues() {
         final BookGroup resultGroup = dao.addGroup(bookGroup);
 
-        verify(hibernateTemplate).saveOrUpdate(bookGroup);
+        verify(session).saveOrUpdate(bookGroup);
 
         assertEquals(ID_VALUE, resultGroup.getId());
         assertEquals(NAME_VALUE, resultGroup.getName());
@@ -63,7 +70,7 @@ public class BookGroupDaoImplTest {
     @Test(expected=HibernateException.class)
     public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
-            .when(hibernateTemplate).saveOrUpdate(null);
+            .when(session).saveOrUpdate(null);
         dao.addGroup(null);
     }
 }

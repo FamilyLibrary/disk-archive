@@ -23,7 +23,7 @@ public class BookGroupDaoImpl extends BasicDAO<BookGroup> implements IBookGroupD
 
     @Override
     public BookGroup addGroup(final BookGroup bookGroup) {
-        saveOrUpdate(bookGroup);
+    	saveOrUpdate(bookGroup);
         return bookGroup;
     }
 

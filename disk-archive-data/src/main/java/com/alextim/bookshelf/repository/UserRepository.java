@@ -9,6 +9,8 @@ import com.alextim.entity.User;
 /**
  * Created by админ on 29.05.16.
  */
-public interface UserRepository extends CrudRepository<User, Serializable> {
-	User findByLogin();
+public interface UserRepository extends CrudRepository<User, Long> {
+
+	User findByLogin(String login);
+
 }

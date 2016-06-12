@@ -13,7 +13,7 @@
         Ext.QuickTips.init();   
     });
 </script-->
-
+<jsp:include page="menu.jsp"/>
 <body>
 	<div style="margin-left: 30%; margin-top: 10%;">
 	<table style="width:60%">

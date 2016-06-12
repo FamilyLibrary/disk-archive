@@ -12,7 +12,7 @@ import com.alextim.dao.impl.BasicDAO;
 public class AuthorDaoImpl extends BasicDAO<BookAuthor> implements IAuthorDao {
     @Override
     public BookAuthor addAuthor(final BookAuthor author) {
-        saveOrUpdate(author);
+    	saveOrUpdate(author);
         return author;
     }
 

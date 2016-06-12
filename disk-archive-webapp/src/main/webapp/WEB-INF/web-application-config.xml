@@ -13,6 +13,7 @@
         class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="urlMap">
             <map>
+                <entry key="/books/categories/*" value-ref="bookCategoryController"/>
                 <entry key="/books/*" value-ref="bookController"/>
             </map>
         </property>
@@ -23,8 +24,6 @@
                 <prop key="main.html">mainController</prop>
                 <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
-                <prop key="list.html">bookController</prop>
-                <prop key="detail.html">bookController</prop>
             </props>
         </property>
     </bean>

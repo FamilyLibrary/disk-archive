@@ -10,14 +10,16 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
@@ -32,7 +34,9 @@ public class BookDaoImplTest {
     private static final int BOOK_AUTHOR_SIZE = 1;
 
     @Mock
-    private HibernateTemplate hibernateTemplate;
+    private EntityManager entityManager;
+    @Mock
+    private Session session;
 
     @Mock
     private Book book;
@@ -54,13 +58,14 @@ public class BookDaoImplTest {
         when(book.getAuthors()).thenReturn(
                 new HashSet<BookAuthor>(Arrays.asList(bookAuthor))
         );
+        when(entityManager.unwrap(Session.class)).thenReturn(session);
     }
 
     @Test
     public void shouldAddBookWithDefaultValues() {
         final Book resultBook = dao.addBook();
 
-        verify(hibernateTemplate).saveOrUpdate(resultBook);
+        verify(session).saveOrUpdate(resultBook);
 
         assertEquals(Book.NEW_NAME, resultBook.getName());
         assertEquals(Book.NEW_DESCRIPTION, resultBook.getDescription());
@@ -73,7 +78,7 @@ public class BookDaoImplTest {
     public void shouldAddBookGroupWithPredefinedValues() {
         final Book resultBook = dao.addBook(book);
 
-        verify(hibernateTemplate).saveOrUpdate(book);
+        verify(session).saveOrUpdate(book);
 
         assertEquals(ID_VALUE, resultBook.getId());
         assertEquals(NAME_VALUE, resultBook.getName());
@@ -86,7 +91,7 @@ public class BookDaoImplTest {
     @Test(expected=HibernateException.class)
     public void shouldThrowsHibernateExceptionIfValueIsNull() {
         doThrow(new HibernateException("Test Exception"))
-            .when(hibernateTemplate).saveOrUpdate(null);
+            .when(session).saveOrUpdate(null);
         dao.addBook(null);
     }
 }

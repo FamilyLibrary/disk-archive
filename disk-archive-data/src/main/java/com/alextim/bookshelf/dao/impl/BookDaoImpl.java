@@ -3,6 +3,7 @@ package com.alextim.bookshelf.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class BookDaoImpl extends BasicDAO<Book> implements IBookDao {
 
     @Override
     public List<Book> findBook(final Integer yearOfPublication, final Integer volume) {
-        final Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Book.class)
+        final Criteria criteria = entityManager.unwrap(Session.class).createCriteria(Book.class)
             .add(Restrictions.eq("yearOfPublication", yearOfPublication))
             .add(Restrictions.eqOrIsNull("volume", volume));
         return criteria.list();

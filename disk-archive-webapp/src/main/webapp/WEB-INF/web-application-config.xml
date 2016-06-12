@@ -11,6 +11,11 @@
     <!-- controllers -->
     <bean id="urlMapping"
         class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="urlMap">
+            <map>
+                <entry key="/books/*" value-ref="bookController"/>
+            </map>
+        </property>
         <property name="mappings">
             <props>
                 <prop key="login.html">loginController</prop>
@@ -18,6 +23,8 @@
                 <prop key="main.html">mainController</prop>
                 <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
+                <prop key="list.html">bookController</prop>
+                <prop key="detail.html">bookController</prop>
             </props>
         </property>
     </bean>

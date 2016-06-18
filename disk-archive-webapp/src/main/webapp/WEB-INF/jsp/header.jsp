@@ -2,3 +2,12 @@
 
 <script type="text/javascript" src="/ext/build/ext-all-debug.js"></script>
 <script type="text/javascript" src="/ext/build/classic/theme-neptune/theme-neptune-debug.js"></script>
+
+<script type="text/javascript">
+	Ext.Loader.setConfig({
+	    enabled : true,
+	    paths : {
+	        MyApp : 'js'
+	    }
+	});
+</script>

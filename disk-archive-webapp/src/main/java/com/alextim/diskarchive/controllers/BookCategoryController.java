@@ -21,7 +21,7 @@ public class BookCategoryController {
     public ModelAndView getCategories() {
     	Iterable<BookGroup> groups = bookGroupRepository.findAll();
     	
-        final ModelAndView mv = new ModelAndView();
+        final ModelAndView mv = new ModelAndView("/WEB-INF/jsp/categories/list.jsp");
         mv.addObject("groups", groups);
 
         return mv;

@@ -1,44 +1,28 @@
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
-    'Ext.form.field.*',
+    'Ext.form.field.Number',
+    'Ext.form.field.Date',
     'Ext.tip.QuickTipManager'
 ]);
 
-Ext.define('CategoryModel', {
+Ext.define('Task', {
     extend: 'Ext.data.Model',
-    idProperty: 'categoryId',
+    idProperty: 'taskId',
     fields: [
-        {name: 'name', type: 'string'},
-        {name: 'description', type: 'string'},
+        {name: 'subcategoryId', type: 'int'},
+        {name: 'subcategory', type: 'string'},
+        {name: 'categoryId', type: 'int'},
+        {name: 'category', type: 'string'}
     ]
 });
-
-var data = [
-    {subcategoryId: 100, subcategory: '100', category: 'Ext Forms: Field Anchoring', categoryId: 112, description: 'Integrate 2.0 Forms with 2.0 Layouts'},
-    {subcategoryId: 100, subcategory: '100', category: 'Ext Forms: Field Anchoring', categoryId: 113, description: 'Implement AnchorLayout'},
-    {subcategoryId: 100, subcategory: '100', category: 'Ext Forms: Field Anchoring', categoryId: 114, description: 'Add support for multiple types of anchors'},
-    {subcategoryId: 100, subcategory: '100', category: 'Ext Forms: Field Anchoring', categoryId: 115, description: 'Testing and debugging'},
-    {subcategoryId: 101, subcategory: '101', category: 'Ext Grid: Single-level Grouping', categoryId: 101, description: 'Add required rendering "hooks" to GridView'},
-    {subcategoryId: 101, subcategory: '101', category: 'Ext Grid: Single-level Grouping', categoryId: 102, description: 'Extend GridView and override rendering functions'},
-    {subcategoryId: 101, subcategory: '101', category: 'Ext Grid: Single-level Grouping', categoryId: 103, description: 'Extend Store with grouping functionality'},
-    {subcategoryId: 101, subcategory: '101', category: 'Ext Grid: Single-level Grouping', categoryId: 121, description: 'Default CSS Styling'},
-    {subcategoryId: 101, subcategory: '101', category: 'Ext Grid: Single-level Grouping', categoryId: 104, description: 'Testing and debugging'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 105, description: 'Ext Grid plugin integration'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 106, description: 'Summary creation during rendering phase'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 107, description: 'Dynamic summary updates in editor grids'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 108, description: 'Remote summary integration'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 109, description: 'Summary renderers and calculators'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 110, description: 'Integrate summaries with GroupingView'},
-    {subcategoryId: 102, subcategory: '102', category: 'Ext Grid: Summary Rows', categoryId: 111, description: 'Testing and debugging'}
-];
 
 Ext.onReady(function(){
 
     Ext.tip.QuickTipManager.init();
 
     var store = Ext.create('Ext.data.Store', {
-        model: 'CategoryModel',
+        model: 'Task',
         data: data,
         groupField: 'category'
     });
@@ -55,7 +39,24 @@ Ext.onReady(function(){
         iconCls: 'icon-grid',
         renderTo: document.body,
         store: store,
+        tbar: [{
+            text: 'Add Category',
+            handler : function() {
+
+            }
+        }, {
+            itemId: 'removeCategory',
+            text: 'Remove Category',
+            handler: function() {
+            },
+            disabled: true
+        }],
         plugins: [cellEditing],
+        listeners: {
+            'selectionchange': function(view, records) {
+                grid.down('#removeEmployee').setDisabled(!records.length);
+            }
+        },
         dockedItems: [{
             dock: 'top',
             xtype: 'toolbar',
@@ -77,28 +78,20 @@ Ext.onReady(function(){
             enableGroupingMenu: false
         }],
         columns: [{
-            header: 'Category',
-            width: 180,
-            dataIndex: 'category'
-        }, {
-            header: 'Sub Category',
+            text: 'Subcategory',
             flex: 1,
-            width: 180,
             sortable: true,
             dataIndex: 'subcategory',
             hideable: false,
             summaryType: 'count',
             summaryRenderer: function(value, summaryData, dataIndex) {
-                return ((value === 0 || value > 1) ? '(' + value + ' Sub categories)' : '(1 Sub category)');
+                return ((value === 0 || value > 1) ? '(' + value + ' Subcategories)' : '(1 Subcategory)');
             }
         }, {
             header: 'Description',
             width: 180,
             sortable: true,
-            dataIndex: 'description',
-            field: {
-                xtype: 'textfield'
-            }
+            dataIndex: 'description'
         }]
     });
 });

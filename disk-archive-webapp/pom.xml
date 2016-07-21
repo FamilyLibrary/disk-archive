@@ -19,13 +19,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-
         <finalName>disk-archive-webapp</finalName>
     </build>
 
@@ -47,11 +40,11 @@
             <artifactId>spring-json</artifactId>
             <version>1.1</version>
             <optional>true</optional>
-		    <exclusions>
-				<exclusion>
-				  <groupId>org.springframework</groupId>
-				  <artifactId>spring</artifactId>
-				</exclusion>
+            <exclusions>
+                <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring</artifactId>
+                </exclusion>
             </exclusions> 
         </dependency>
         <!-- Spring Security dependencies -->
@@ -88,6 +81,11 @@
             <groupId>com.alextim.diskarchive</groupId>
             <artifactId>disk-archive-data</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-version}</version>
         </dependency>
     </dependencies>
 </project>

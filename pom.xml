@@ -156,11 +156,11 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring-version}</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>net.sf.sojo</groupId>
             <artifactId>sojo</artifactId>
             <version>1.0.5</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>org.directwebremoting</groupId>
             <artifactId>dwr</artifactId>

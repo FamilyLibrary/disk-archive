@@ -26,7 +26,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             user.setPassword(newPassword);
             userRepository.saveAndFlush(user);
         }else{
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
         }
     }
 

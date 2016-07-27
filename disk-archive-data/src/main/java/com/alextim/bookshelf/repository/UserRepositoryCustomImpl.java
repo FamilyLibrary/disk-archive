@@ -23,7 +23,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Override
     public void changePassword(String login, String password, String newPassword) {
-        if (StringUtils.isEmpty(password)) {
+        if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Old password shouldn't be empty or null");
         }
 
@@ -31,9 +31,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         if(password.equals(user.getPassword())) {
             user.setPassword(newPassword);
             userRepository.saveAndFlush(user);
-        }else if (password.isEmpty()){
-            throw new IllegalArgumentException("Old password shouldn't be empty or null");
-
         }else{
             throw new IllegalStateException ("New and old passwords are different");
         }

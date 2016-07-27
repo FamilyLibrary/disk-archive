@@ -31,6 +31,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         if(password.equals(user.getPassword())) {
             user.setPassword(newPassword);
             userRepository.saveAndFlush(user);
+        }else if (password.isEmpty()){
+            throw new IllegalArgumentException("Old password shouldn't be empty or null");
+
         }else{
             throw new IllegalStateException ("New and old passwords are different");
         }

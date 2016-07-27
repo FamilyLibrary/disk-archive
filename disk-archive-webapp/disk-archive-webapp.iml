@@ -9,7 +9,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <context-artifact name="disk-archive-webapp:war" />
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -76,4 +79,3 @@
     <orderEntry type="library" exported="" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>
 </module>
-

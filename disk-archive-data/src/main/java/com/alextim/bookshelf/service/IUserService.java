@@ -1,11 +1,11 @@
-package com.alextim.bookshelf.service.impl;
+package com.alextim.bookshelf.service;
 
 import com.alextim.entity.User;
 
 /**
  * Created by admin on 26.07.2016.
  */
-public interface UserService {
+public interface IUserService {
 
     User addUser(User user);
     void delete(long id);

@@ -38,12 +38,12 @@ public class UserServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIllegalArgumentExceptionIfPasswordNull(){
+    public void shouldThrowIllegalArgumentExceptionIfPasswordEqualsNull(){
         userService.changePassword(LOGIN, null, null);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldThrowIllegalStateException(){
+    public void shouldThrowIllegalStateExceptionIfPasswordAndPasswordFromRepositoryNotEquals(){
         when(userRepository.findByLogin(LOGIN)).thenReturn(user);
         when(user.getPassword()).thenReturn(PASSWORD);
 

@@ -27,7 +27,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService = new UserServiceImpl();
 
     @Test
-    public void shouldChangUserPassword(){
+    public void shouldChangUserPasswordAndSafeIt(){
         when(userRepository.findByLogin(LOGIN)).thenReturn(user);
         when(user.getPassword()).thenReturn(PASSWORD);
 
@@ -38,12 +38,12 @@ public class UserServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIllegalArgumentExceptionIfPasswordEqualsNull(){
+    public void shouldThrowIllegalArgumentExceptionIfPasswordIsEqualNull(){
         userService.changePassword(LOGIN, null, null);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldThrowIllegalStateExceptionIfPasswordAndPasswordFromRepositoryNotEquals(){
+    public void shouldThrowIllegalStateExceptionIfPasswordsAreDifferent(){
         when(userRepository.findByLogin(LOGIN)).thenReturn(user);
         when(user.getPassword()).thenReturn(PASSWORD);
 

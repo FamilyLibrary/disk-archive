@@ -1,5 +1,6 @@
 package com.alextim.bookshelf.service;
 
+import com.alextim.bookshelf.service.exception.UserCantBeNullException;
 import com.alextim.entity.User;
 
 /**
@@ -11,6 +12,6 @@ public interface IUserService {
     void delete(long id);
     User findByLogin(String login);
     void changeActiveStatus(String login, boolean enabled);
-    void changePassword(String login, String password, String newPassword);
+    void changePassword(String login, String password, String newPassword) throws UserCantBeNullException;
 
 }

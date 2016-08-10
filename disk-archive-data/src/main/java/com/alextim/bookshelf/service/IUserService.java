@@ -9,7 +9,7 @@ import com.alextim.entity.User;
 public interface IUserService {
 
     User addUser(User user);
-    void delete(long id);
+    void delete(Long id);
     User findByLogin(String login);
     void changeActiveStatus(String login, boolean enabled);
     void changePassword(String login, String password, String newPassword) throws UserNotFoundException;

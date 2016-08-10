@@ -1,6 +1,7 @@
 package com.alextim.bookshelf.service.impl;
 
 import com.alextim.bookshelf.repository.UserRepository;
+import com.alextim.bookshelf.service.exception.UserNotFoundException;
 import com.alextim.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService = new UserServiceImpl();
 
     @Test
-    public void shouldChangUserPasswordAndSafeIt(){
+    public void shouldChangUserPasswordAndSafeIt() throws UserNotFoundException {
         when(userRepository.findByLogin(LOGIN)).thenReturn(user);
         when(user.getPassword()).thenReturn(PASSWORD);
 
@@ -38,12 +39,12 @@ public class UserServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIllegalArgumentExceptionIfPasswordIsEqualNull(){
+    public void shouldThrowIllegalArgumentExceptionIfPasswordIsEqualNull() throws UserNotFoundException{
         userService.changePassword(LOGIN, null, null);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldThrowIllegalStateExceptionIfPasswordsAreDifferent(){
+    public void shouldThrowIllegalStateExceptionIfPasswordsAreDifferent() throws UserNotFoundException{
         when(userRepository.findByLogin(LOGIN)).thenReturn(user);
         when(user.getPassword()).thenReturn(PASSWORD);
 

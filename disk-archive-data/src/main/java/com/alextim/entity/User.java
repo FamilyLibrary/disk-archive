@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,7 +19,7 @@ public class User extends Person {
 
     private boolean enabled;
 
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
     private List<UserGroup> userGroups;
     
     public String getLogin() {

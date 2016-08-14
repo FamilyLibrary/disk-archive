@@ -5,7 +5,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +20,7 @@ public class User extends Person {
 
     private boolean enabled;
 
-	@OneToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
     private List<UserGroup> userGroups;
     
     public String getLogin() {
@@ -49,7 +50,4 @@ public class User extends Person {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-
-
-
 }

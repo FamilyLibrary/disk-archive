@@ -46,6 +46,6 @@ public class Permission implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {
-		return Long.toString(id);
+		return getName();
 	}
 }

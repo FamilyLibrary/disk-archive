@@ -40,9 +40,10 @@
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
 
-    <!-- bean id="userDetailsService" class="com.alextim.bookshelf.service.impl.UserDetailsServiceImpl"/-->
-    <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
-        <property name="usersByUsernameQuery" value="select login,password,enabled from users where login = ?" />
-        <property name="authoritiesByUsernameQuery" value="select login,password,enabled from users, user_groups where username = ?" />
+    <bean id="userDetailsService" class="com.alextim.bookshelf.service.impl.UserDetailsServiceImpl">
+        <property name="enableAuthorities" value="false" />
+        <property name="enableGroups" value="true"/>
+
+        <property name="dataSource" ref="dataSource" />
     </bean>
 </beans>

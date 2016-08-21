@@ -9,6 +9,7 @@
         <param-value>
             classpath:hibernate.xml
             WEB-INF/security.xml
+            WEB-INF/jobs.xml
             <!--WEB-INF/dwr-config.xml-->
             WEB-INF/web-application-config.xml
         </param-value>

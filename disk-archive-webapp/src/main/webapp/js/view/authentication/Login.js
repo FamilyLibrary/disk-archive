@@ -40,7 +40,8 @@ Ext.define('MyApp.view.authentication.Login', {
             {
                 xtype: 'textfield',
                 cls: 'auth-textbox',
-                name: 'userid',
+                name: 'login',
+                reference: 'loginTextbox',
                 height: 55,
                 hideLabel: true,
                 allowBlank : false,
@@ -59,6 +60,7 @@ Ext.define('MyApp.view.authentication.Login', {
                 emptyText: 'Password',
                 inputType: 'password',
                 name: 'password',
+                reference: 'passwordTextbox',
                 allowBlank : false,
                 triggers: {
                     glyphed: {
@@ -103,12 +105,7 @@ Ext.define('MyApp.view.authentication.Login', {
                 listeners: {
                     click: 'onNewAccount'
                 }
-            }/*,
-            {
-                xtype:'hidden',
-                id : 'csrfName',
-                name: '_csrf'
-            }*/
+            }
         ]
     }],
 

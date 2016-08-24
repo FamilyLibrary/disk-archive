@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name="USERS")
@@ -21,6 +23,7 @@ public class User extends Person {
     private boolean enabled;
 
 	@ManyToMany(fetch=FetchType.EAGER)
+	@Cascade(value={CascadeType.PERSIST})
     private List<UserGroup> userGroups;
     
     public String getLogin() {

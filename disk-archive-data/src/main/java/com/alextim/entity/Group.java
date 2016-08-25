@@ -1,12 +1,6 @@
 package com.alextim.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="GROUPS")
@@ -15,7 +9,9 @@ public class Group implements IEntity {
 	public final static String NEW_NAME = "new group name";
 	public final static String NEW_DESCRIPTION = "new group description";
 
-	@Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOK_GROUPS_SEQUENCE")
+	@SequenceGenerator(name="BOOK_GROUPS_SEQUENCE", sequenceName="SEQ_BOOK_GROUPS")
 	private Long id;
 	
 	private String name;

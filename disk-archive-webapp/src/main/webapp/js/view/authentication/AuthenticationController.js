@@ -4,6 +4,7 @@ Ext.define('MyApp.view.authentication.AuthenticationController', {
 
     onLoginButton: function() {
     	authdialog.submit({
+    		url   : 'login.html',
             method:'POST',
             success:function(){
             	
@@ -12,6 +13,17 @@ Ext.define('MyApp.view.authentication.AuthenticationController', {
     },
 
     onNewAccount:  function() {
-        this.redirectTo('register.html', true);
+    	Ext.Ajax.request({
+    		url   : 'register.html',
+    		params : {
+    			login    : authdialog.login.value,
+    			password : authdialog.password.value,
+    			_csrf : authdialog._csrf.value
+    		},
+            method: 'POST',
+            success:function(){
+            	
+            }
+        });
     }
 });

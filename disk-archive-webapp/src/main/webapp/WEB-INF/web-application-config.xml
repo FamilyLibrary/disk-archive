@@ -20,7 +20,7 @@
         <property name="mappings">
             <props>
                 <prop key="login.html">loginController</prop>
-                <prop key="register.html">loginController</prop>
+                <prop key="register.html">registerController</prop>
                 <prop key="main.html">mainController</prop>
                 <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>

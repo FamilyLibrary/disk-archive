@@ -12,15 +12,18 @@ import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.UploaderContext;
 import com.alextim.bookshelf.service.IDataService;
 import com.alextim.bookshelf.service.impl.DataServiceImpl;
+import org.springframework.core.io.InputStreamSource;
+
+import javax.annotation.Resource;
 
 @Configuration
 @ImportResource({"classpath:data-factory-context.xml"})
 public class DataFactoryConfiguration {
-    @Autowired
-    private File csvFile;
+    @Resource( name = "csvSource" )
+    private InputStreamSource csvSource;
 
-    @Autowired
-    private File xlsFile;
+    @Resource( name = "xlsSource" )
+    private InputStreamSource xlsSource;
 
     @Bean
     public UploaderContext uploaderContext() {
@@ -30,13 +33,13 @@ public class DataFactoryConfiguration {
     @Bean
     @Lazy
     public IUploaderStrategy csvInstance() {
-        return dataServiceFactory().createCsvInstance(csvFile);
+        return dataServiceFactory().createCsvInstance(csvSource);
     }
 
     @Bean
     @Lazy
     public IUploaderStrategy xlsInstance() {
-        return dataServiceFactory().createXslInstance(xlsFile);
+        return dataServiceFactory().createXslInstance(xlsSource);
     }
 
     @Bean

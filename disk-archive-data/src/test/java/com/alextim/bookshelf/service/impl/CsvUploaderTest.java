@@ -23,6 +23,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -77,9 +79,6 @@ public class CsvUploaderTest {
 
     private static final List<Integer> EMPTY_LIST = Collections.emptyList();
 
-    @Resource
-    private File csvFile;
-
     @Spy
     private CsvBookValidator validator;
     @Spy
@@ -91,6 +90,9 @@ public class CsvUploaderTest {
     @Mock
     private IBookDao bookDao;
 
+    @Resource( name = "csvSource" )
+    private InputStreamSource csvSource;
+
     @Spy
     @InjectMocks
     private BookServiceImpl bookService;
@@ -99,7 +101,7 @@ public class CsvUploaderTest {
 
     @Before
     public void setUp() {
-        uploaderStrategy = Mockito.spy(new CsvFileUploaderStrategy(csvFile));
+        uploaderStrategy = Mockito.spy(new CsvFileUploaderStrategy(csvSource));
         uploaderContext = Mockito.spy(new UploaderContext(uploaderStrategy));
 
         MockitoAnnotations.initMocks(this);

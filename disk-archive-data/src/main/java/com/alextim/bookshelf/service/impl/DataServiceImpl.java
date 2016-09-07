@@ -7,9 +7,14 @@ import com.alextim.bookshelf.datauploader.uploader.impl.CsvFileUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.DummyUploaderStrategy;
 import com.alextim.bookshelf.datauploader.uploader.impl.XlsFileUploaderStrategy;
 import com.alextim.bookshelf.service.IDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
+
+import javax.annotation.Resource;
 
 public class DataServiceImpl implements IDataService {
     private static final IDataService SERVICE = new DataServiceImpl();
+
 
     public static IDataService createService() {
         return SERVICE;
@@ -21,12 +26,14 @@ public class DataServiceImpl implements IDataService {
     }
 
     @Override
-    public IUploaderStrategy createCsvInstance(final File file) {
-        return new CsvFileUploaderStrategy(file);
+    public IUploaderStrategy createCsvInstance(InputStreamSource csvStreamSource) {
+        return new CsvFileUploaderStrategy(csvStreamSource);
     }
 
     @Override
-    public IUploaderStrategy createXslInstance(final File file) {
-        return new XlsFileUploaderStrategy(file);
+    public IUploaderStrategy createXslInstance(InputStreamSource xlsStreamSource) {
+        return new XlsFileUploaderStrategy(xlsStreamSource);
     }
+
+
 }

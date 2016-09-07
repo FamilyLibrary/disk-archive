@@ -11,7 +11,8 @@ Ext.define('MyApp.view.authentication.Login', {
     ],
 
     title: 'Let\'s Log In',
-    defaultFocus: 'authdialog', // Focus the Auth Form to force field focus as well
+    defaultFocus: 'authdialog', // Focus the Auth Form to force field focus as well,
+    formHasErrors : false,
 
     items: [{
         xtype: 'authdialog',
@@ -34,13 +35,19 @@ Ext.define('MyApp.view.authentication.Login', {
 
         items: [
             {
+                id: 'message',
+                xtype: 'box',
+                autoEl: {cn: '<div style="color:red">Login failed, please try again.</div>'},
+                hidden: false
+            },
+            {
                 xtype: 'label',
                 text: 'Sign into your account'
             },
             {
                 xtype: 'textfield',
                 cls: 'auth-textbox',
-                name: 'login',
+                name: 'username',
                 reference: 'loginTextbox',
                 height: 55,
                 hideLabel: true,
@@ -112,6 +119,8 @@ Ext.define('MyApp.view.authentication.Login', {
     constructor: function(config) {
     	this.callParent();
     	this.addCls('user-login-register-container');
+
+        this.formHasErrors = config.hasError;
 
     	var csrfField = this.createCsrfField(config.csrfName, config.csrfValue);
     	var form = this.lookupReference('authdialogForm');

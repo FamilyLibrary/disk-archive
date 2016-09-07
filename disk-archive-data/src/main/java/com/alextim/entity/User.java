@@ -23,7 +23,7 @@ public class User extends Person {
     private boolean enabled;
 
 	@ManyToMany(fetch=FetchType.EAGER)
-	@Cascade(value={CascadeType.PERSIST})
+	@Cascade(value={CascadeType.ALL})
     private List<UserGroup> userGroups;
     
     public String getLogin() {

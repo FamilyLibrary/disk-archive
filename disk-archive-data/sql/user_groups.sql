@@ -6,8 +6,8 @@ DELETE FROM GROUPS WHERE name = 'ROLE_USER';
 DELETE FROM USER_GROUPS WHERE id = 2; 
 DELETE FROM GROUPS WHERE name = 'ROLE_ADMIN';
 
-insert into GROUPS (id, description, name) values (1, 'Role for normal User', 'ROLE_USER');
+insert into GROUPS (id, description, name) values (1, 'Role for regular user', 'ROLE_USER');
 insert into USER_GROUPS (id) values (1);
 
-insert into GROUPS (id, description, name) values (2, 'Role for normal Admin', 'ROLE_ADMIN');
+insert into GROUPS (id, description, name) values (2, 'Role for admin', 'ROLE_ADMIN');
 insert into USER_GROUPS (id) values (2);

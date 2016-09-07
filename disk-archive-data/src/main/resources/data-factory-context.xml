@@ -4,6 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="xlsSource" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg index="0" value="C:/projects/disk-archive/disk-archive-data/xls/Books.xlsx" />
+    </bean>
+    <bean id="csvSource" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg index="0" value="C:/projects/disk-archive/disk-archive-data/xls/Books.csv" />
+    </bean>
+
     <bean name="csvFile" class="java.io.File">
         <constructor-arg value="xls/Books.csv"/>
     </bean>

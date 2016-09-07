@@ -30,21 +30,21 @@ import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.datauploader.validator.IBookValidator;
 import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 import com.alextim.bookshelf.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
 
 public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements IUploaderStrategy {
     private static final Logger LOG = Logger.getLogger(XlsFileUploaderStrategy.class);
 
+
+    private InputStreamSource xlsSource;
+
+    public XlsFileUploaderStrategy(InputStreamSource xlsSource) {
+        this.xlsSource = xlsSource;
+    }
+
     @Resource
     private IBookValidator<Row> validator;
-
-    private final File file;
-
-    public XlsFileUploaderStrategy(final File file) {
-        if (file == null) {
-            throw new IllegalArgumentException("File: Illegal argument. File can not be null value");
-        }
-        this.file = file;
-    }
 
     private Book mapToBook(final Row row) {
         return convertToBook(createRow(row::getCell));
@@ -54,7 +54,7 @@ public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements
     public Collection<Book> load() {
         final Collection<Book> books = new ArrayList<Book>();
 
-        try (final Workbook workbook = WorkbookFactory.create(file)) {
+        try (final Workbook workbook = WorkbookFactory.create(xlsSource.getInputStream())) {
             for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
                 final Sheet sheet = workbook.getSheetAt(sheetIndex);
                 for (int rowIndex = 1; rowIndex < sheet.getPhysicalNumberOfRows(); rowIndex++) {

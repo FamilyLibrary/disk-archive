@@ -6,8 +6,8 @@ Ext.define('MyApp.view.authentication.AuthenticationController', {
     	authdialog.submit({
     		url   : 'login.html',
             method:'POST',
-            success:function(){
-            	
+            success:function(form, action){
+                Ext.Msg.alert('Success', action.result.msg);
             }
         });
     },
@@ -16,13 +16,13 @@ Ext.define('MyApp.view.authentication.AuthenticationController', {
     	Ext.Ajax.request({
     		url   : 'register.html',
     		params : {
-    			login    : authdialog.login.value,
+    			login    : authdialog.username.value,
     			password : authdialog.password.value,
     			_csrf : authdialog._csrf.value
     		},
             method: 'POST',
-            success:function(){
-            	
+            success:function(response, options){
+                Ext.Msg.alert('Success', response);
             }
         });
     }

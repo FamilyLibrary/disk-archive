@@ -6,9 +6,20 @@
 <head>
 	<title>${title}</title>
     <jsp:include page="header.jsp"/>
-    <script type='text/javascript' src='<c:url value="/js/login.js"/>'></script>
+
+	<script type='text/javascript'>
+		Ext.require(['MyApp.view.authentication.Login']);
+
+		Ext.onReady(function() {
+			Ext.create('MyApp.view.authentication.Login', {
+				csrfName  : '${_csrf.parameterName}',
+				csrfValue : '${_csrf.token}',
+				hasError  :
+					<c:if test="${param.error != null}">${param.error}</c:if>
+					<c:if test="${param.error == null}">false</c:if>
+			}).show();
+		});
+	</script>
 </head>
 <body>
-	<input type="hidden" id="csrfParamName" value="${_csrf.parameterName}" />
-	<input type="hidden" id="csrfParamValue" value="${_csrf.token}"/>
 </body>

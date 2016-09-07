@@ -1,18 +1,29 @@
 package com.alextim.bookshelf.service.impl;
 
 import com.alextim.bookshelf.repository.UserRepository;
+import com.alextim.bookshelf.service.IUserGroupService;
 import com.alextim.bookshelf.service.IUserService;
+import com.alextim.bookshelf.service.exception.UserAlreadyExistException;
 import com.alextim.bookshelf.service.exception.UserNotFoundException;
 import com.alextim.entity.User;
+import com.alextim.entity.UserGroup;
+import com.alextim.security.UserRole;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 /**
  * Created by admin on 26.07.2016.
  */
 @Service
+@Transactional
 public class UserServiceImpl implements IUserService {
+
+    @Autowired
+    private IUserGroupService userGroupService;
 
     @Autowired
     private UserRepository userRepository;
@@ -58,5 +69,30 @@ public class UserServiceImpl implements IUserService {
         }else{
             throw new IllegalStateException ("New and old passwords are different");
         }
+    }
+
+    @Override
+    public void register(String login, String password, UserRole userRole) throws UserAlreadyExistException {
+
+        User user = userRepository.findByLogin(login);
+
+        if(user != null){
+            String info = String.format("User with login %s already exists", login);
+            throw new UserAlreadyExistException(info);
+        }
+        user = new User();
+
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setEnabled(true);
+
+        UserGroup userGroup = userGroupService.findUserGroup(userRole);
+
+        if(userGroup == null){
+            userGroup = userGroupService.createUserGroup();
+        }
+        user.setUserGroups(Arrays.asList(userGroup));
+
+        userRepository.saveAndFlush(user);
     }
 }

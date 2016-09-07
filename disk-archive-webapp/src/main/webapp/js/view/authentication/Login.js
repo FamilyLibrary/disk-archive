@@ -35,7 +35,7 @@ Ext.define('MyApp.view.authentication.Login', {
 
         items: [
             {
-                id: 'message',
+            	id: 'errorMessage',
                 xtype: 'box',
                 autoEl: {cn: '<div style="color:red">Login failed, please try again.</div>'},
                 hidden: false
@@ -47,7 +47,7 @@ Ext.define('MyApp.view.authentication.Login', {
             {
                 xtype: 'textfield',
                 cls: 'auth-textbox',
-                name: 'username',
+                name: 'j_username',
                 reference: 'loginTextbox',
                 height: 55,
                 hideLabel: true,
@@ -66,7 +66,7 @@ Ext.define('MyApp.view.authentication.Login', {
                 hideLabel: true,
                 emptyText: 'Password',
                 inputType: 'password',
-                name: 'password',
+                name: 'j_password',
                 reference: 'passwordTextbox',
                 allowBlank : false,
                 triggers: {
@@ -120,10 +120,14 @@ Ext.define('MyApp.view.authentication.Login', {
     	this.callParent();
     	this.addCls('user-login-register-container');
 
-        this.formHasErrors = config.hasError;
+    	var form = this.lookupReference('authdialogForm');
+    	var errorMessage = Ext.getCmp('errorMessage');
+    	errorMessage.hide();
+    	if (config.hasError) {
+    		errorMessage.show();
+    	}
 
     	var csrfField = this.createCsrfField(config.csrfName, config.csrfValue);
-    	var form = this.lookupReference('authdialogForm');
     	form.add(csrfField);
     },
 

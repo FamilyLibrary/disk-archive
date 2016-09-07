@@ -6,7 +6,6 @@
 <head>
 	<title>${title}</title>
     <jsp:include page="header.jsp"/>
-
 	<script type='text/javascript'>
 		Ext.require(['MyApp.view.authentication.Login']);
 

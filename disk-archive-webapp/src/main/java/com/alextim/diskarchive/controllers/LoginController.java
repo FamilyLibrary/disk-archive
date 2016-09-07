@@ -19,5 +19,4 @@ public class LoginController {
         mv.addObject("title", "Login");
         return mv;
     }
-
 }

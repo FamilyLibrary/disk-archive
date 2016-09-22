@@ -7,6 +7,9 @@ import com.alextim.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by admin on 26.08.2016.
  */
@@ -17,12 +20,14 @@ public class UserGroupServiceImpl implements IUserGroupService {
 
 
     @Override
-    public UserGroup findUserGroup(UserRole userRole) {
+    public List<UserGroup> findUserGroup(UserRole userRole) {
+        List<UserGroup> list = new ArrayList<>();
         if(userRole == null){
             throw new IllegalArgumentException("userRole shouldn't be empty or null value");
         }
         final String roleName = userRole.name();
-        return userGroupRepository.findByName(roleName);
+        list.add(userGroupRepository.findByName(roleName));
+        return list;
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by admin on 26.07.2016.
@@ -86,12 +87,12 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(password);
         user.setEnabled(true);
 
-        UserGroup userGroup = userGroupService.findUserGroup(userRole);
+        List<UserGroup> userGroup = userGroupService.findUserGroup(userRole);
 
         if(userGroup == null){
-            userGroup = userGroupService.createUserGroup();
+            userGroup.add(userGroupService.createUserGroup());
         }
-        user.setUserGroups(Arrays.asList(userGroup));
+        user.setUserGroups(userGroup);
 
         userRepository.saveAndFlush(user);
     }

@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -33,14 +36,15 @@ public class UserGroupServiceImplTest {
     @Test
     public void shouldReturnRoleUser(){
 
+        List<UserGroup> list = new ArrayList<>();
 
         UserGroup userGroup = new UserGroup();
         userGroup.setName(ROLE_USER);
         userGroup.setId(1L);
 
         when(userGroupRepository.findByName(ROLE_USER)).thenReturn(userGroup);
-        UserGroup group = userGroupService.findUserGroup(UserRole.ROLE_USER);
-            assertTrue(group.getId() == 1L);
-            assertEquals(group.getName(), ROLE_USER);
+        List<UserGroup> groups = userGroupService.findUserGroup(UserRole.ROLE_USER);
+            assertTrue(groups.get(0).getId() == 1L);
+            assertEquals(groups.get(0).getName(), ROLE_USER);
     }
 }

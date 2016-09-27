@@ -2,6 +2,7 @@ package com.alextim.bookshelf.datauploader.jobs;
 
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.service.IBookService;
+import com.alextim.bookshelf.service.ISettingService;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.InputStreamSource;
 
@@ -16,6 +17,9 @@ public class BookDataUploaderJob {
 
    @Resource(name = "xlsSource")
    private InputStreamSource xlsSource;
+
+   @Resource
+   private ISettingService settingService;
 
    @Resource
    private IBookService bookService;

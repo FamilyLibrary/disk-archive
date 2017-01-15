@@ -63,7 +63,7 @@ public class XlsFileUploaderStrategy extends AbstractUploaderStrategy implements
                         validator.validate(row);
                         books.add(mapToBook(row));
                     } catch (ValidationException e) {
-                        LOG.error(e.getMessage(), e);
+                        LOG.warn(e.getMessage(), e);
                     }
                 }
             }

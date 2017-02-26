@@ -15,14 +15,13 @@
             <map>
                 <entry key="/books/categories/*" value-ref="bookCategoryController"/>
                 <entry key="/books/*" value-ref="bookController"/>
+                <entry key="/main/*" value-ref="mainController"/>
             </map>
         </property>
         <property name="mappings">
             <props>
                 <prop key="login.html">loginController</prop>
                 <prop key="register.html">loginController</prop>
-                <prop key="main.html">mainController</prop>
-                <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
             </props>
         </property>
@@ -32,6 +31,7 @@
         class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver">
         <property name="prefix" value="" />
     </bean>
+
 
     <bean id="filmGroupService" class="com.alextim.diskarchive.services.impl.FilmGroupServiceImpl"/>
 
@@ -43,4 +43,6 @@
     <bean id="jsonHelper" class="com.alextim.diskarchive.utils.impl.JSONHelperImpl"/>
 
     <context:component-scan base-package="com.alextim.diskarchive.configuration"/>
+
+
 </beans>

@@ -4,16 +4,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alextim.bookshelf.entity.BookGroup;
+import com.alextim.bookshelf.repository.BookGroupRepository;
+import com.alextim.diskarchive.treeView.Root;
+import com.alextim.diskarchive.treeView.TreeNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -22,20 +30,39 @@ import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.services.IFilmGroupService;
 import com.alextim.diskarchive.services.IFilmService;
 import com.alextim.diskarchive.services.impl.FilmGroupServiceImpl;
+import sun.reflect.generics.tree.Tree;
 
-@Controller
-@RequestMapping("/main.html")
+@RestController
+@RequestMapping(method=GET, path="/main")
 public class MainController extends MultiActionController {
     private final Logger LOG = Logger.getLogger(MainController.class);
 
     private final String IMAGE_NAME = "/images/nophoto-thumb.gif";
 
     @Resource
+    private BookGroupRepository bookGroupRepository;
+
+    @Resource
     private IFilmService filmService;
     @Resource
     private IFilmGroupService filmGroupService;
 
-    @RequestMapping(value="/renderGeneralImage.html", method=GET)
+    @RequestMapping(value = "treeView.html", produces = "application/json")
+    public @ResponseBody Map treeView(HttpServletRequest request, HttpServletResponse response){
+        Iterable<BookGroup> bookGroups = bookGroupRepository.findAll();
+        List<TreeNode> treeNodes = new ArrayList<>();
+
+        for (BookGroup bookGroup : bookGroups) {
+            treeNodes.add(new TreeNode(bookGroup.getName()));
+        }
+        Root root = new Root("Root",true, treeNodes);
+
+        Map<String, Root> map = new HashMap<>();
+        map.put("root", root);
+        return map;
+    }
+
+    @RequestMapping(value="renderGeneralImage.html", method=GET)
     public ModelAndView renderGeneralImage(HttpServletRequest request,
             HttpServletResponse response) {
         String filmIdParam = request.getParameter("filmId");
@@ -57,11 +84,12 @@ public class MainController extends MultiActionController {
             response.getOutputStream().write(imageArray);
             response.setContentType("application/octet-stream");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
         } finally {
             try {
                 response.getOutputStream().close();
             } catch (IOException e) {
+                LOG.error(e.getMessage(), e);
             }
         }
 

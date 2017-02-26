@@ -4,11 +4,20 @@
 <c:url value="login.html" var="spring_security_check"/>
 
 <head>
-	<title>${title}</title>
+    <title>${title}</title>
     <jsp:include page="header.jsp"/>
-    <script type='text/javascript' src='<c:url value="/js/login.js"/>'></script>
+
+    <script type='text/javascript'>
+        Ext.onReady(function() {
+            Ext.create('AppsPortal.view.authentication.Login', {
+                csrfName  : '${_csrf.parameterName}',
+                csrfValue : '${_csrf.token}',
+                hasError  :
+                    <c:if test="${param.error != null}">${param.error}</c:if>
+                    <c:if test="${param.error == null}">false</c:if>
+            });
+        });
+    </script>
 </head>
 <body>
-	<input type="hidden" id="csrfParamName" value="${_csrf.parameterName}" />
-	<input type="hidden" id="csrfParamValue" value="${_csrf.token}"/>
 </body>

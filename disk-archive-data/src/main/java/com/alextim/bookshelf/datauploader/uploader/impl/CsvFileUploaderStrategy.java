@@ -16,27 +16,29 @@ import org.apache.log4j.Logger;
 import com.alextim.bookshelf.datauploader.uploader.IUploaderStrategy;
 import com.alextim.bookshelf.datauploader.validator.exception.ValidationException;
 import com.alextim.bookshelf.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
+
+import javax.annotation.Resource;
 
 public class CsvFileUploaderStrategy extends AbstractCsvUploaderStrategy implements IUploaderStrategy {
     private static final Logger LOG = Logger.getLogger(CsvFileUploaderStrategy.class);
 
     private static final String FILE_ENCODING = "UTF-8";
 
-    private final File file;
+    /*@Autowired
+    @Resource( name = "csvSource" )*/
+    private InputStreamSource csvSource;
 
-    public CsvFileUploaderStrategy(final File file) {
-        if (file == null) {
-            throw new IllegalArgumentException("File: Illegal argument. File can not be null value");
-        }
-        this.file = file;
+    public CsvFileUploaderStrategy(InputStreamSource csvSource) {
+        this.csvSource = csvSource;
     }
 
     @Override
     public Collection<Book> load() throws IOException {
         final Collection<Book> books = new ArrayList<Book>();
 
-        final Path path = file.toPath();
-        try (final InputStream in = Files.newInputStream(path, StandardOpenOption.READ);
+        try (final InputStream in = csvSource.getInputStream();
              final BufferedReader reader = new BufferedReader(new InputStreamReader(in, FILE_ENCODING))) {
 
             String line = reader.readLine(); //Skip first line

@@ -19,11 +19,4 @@ public class LoginController {
         mv.addObject("title", "Login");
         return mv;
     }
-
-    @RequestMapping(value="/register.html", method=GET)
-    public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
-        final ModelAndView mv = new ModelAndView("WEB-INF/jsp/register.jsp");
-        return mv;
-    }
-
 }

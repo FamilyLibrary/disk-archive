@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,8 +31,8 @@ import com.alextim.bookshelf.entity.Book;
 public class XlsUploaderTest {
     public static final Logger LOG = Logger.getLogger(XlsUploaderTest.class);
 
-    @Resource
-    private File xlsFile;
+    @Resource( name = "xlsSource" )
+    private InputStreamSource xlsSource;
 
     @Spy
     private XlsBookValidator validator;
@@ -51,7 +52,7 @@ public class XlsUploaderTest {
 
     @Before
     public void setUp() {
-        uploaderStrategy = Mockito.spy(new XlsFileUploaderStrategy(xlsFile));
+        uploaderStrategy = Mockito.spy(new XlsFileUploaderStrategy(xlsSource));
         uploaderContext = Mockito.spy(new UploaderContext(uploaderStrategy));
 
         MockitoAnnotations.initMocks(this);
@@ -61,7 +62,7 @@ public class XlsUploaderTest {
 
     @Test
     public void shouldReturnCorrectBookSize() {
-        assertEquals(177, books.size());
+        assertEquals(201, books.size());
     }
 
 }

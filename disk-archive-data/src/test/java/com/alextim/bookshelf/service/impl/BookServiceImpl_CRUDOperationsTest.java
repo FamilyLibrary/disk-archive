@@ -67,7 +67,7 @@ public class BookServiceImpl_CRUDOperationsTest {
         final Collection<Book> savedBooks = bookService.save(books);
 
         assertNotNull(savedBooks);
-        assertEquals(177, savedBooks.size());
+        assertEquals(201, savedBooks.size());
     }
 
     @Test

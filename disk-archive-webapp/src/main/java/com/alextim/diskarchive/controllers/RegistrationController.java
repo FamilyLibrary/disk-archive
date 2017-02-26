@@ -14,11 +14,12 @@ import com.alextim.bookshelf.service.IUserService;
 
 
 @Controller
+@RequestMapping(path="/register")
 public class RegistrationController {
 	@Autowired
 	private IUserService userService;
 
-	@RequestMapping(method=POST)
+	@RequestMapping(path="register.html", method=POST)
 	@ResponseStatus(value=HttpStatus.OK)
     public void register(String login, String password, String _csrf) throws UserAlreadyExistException {
 

@@ -15,13 +15,13 @@
             <map>
                 <entry key="/books/categories/*" value-ref="bookCategoryController"/>
                 <entry key="/books/*" value-ref="bookController"/>
+                <entry key="/main/*" value-ref="mainController"/>
             </map>
         </property>
         <property name="mappings">
             <props>
                 <prop key="login.html">loginController</prop>
                 <prop key="register.html">registrationController</prop>
-                <prop key="main.html">mainController</prop>
                 <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
             </props>

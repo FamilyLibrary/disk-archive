@@ -1,6 +1,7 @@
 package com.alextim.diskarchive.configuration;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -20,12 +25,15 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages={"com.alextim"})
 @EnableJpaRepositories(basePackages={"com.alextim.bookshelf.repository"})
-public class ApplicationConfiguration {
+@EnableWebMvc
+public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     private static final String DISK_ARCHIVE_ANNOTATED_PACKAGES = "com.alextim.diskarchive.entity";
     private static final String BOOK_SHELF_ANNOTATED_PACKAGES = "com.alextim.bookshelf.entity";
     private static final String ENTITY_ANNOTATED_PACKAGES = "com.alextim.entity";
@@ -71,5 +79,12 @@ public class ApplicationConfiguration {
         tm.setEntityManagerFactory(emf);
         //tm.setSessionFactory(sessionFactory);
         return tm;
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
+        Jackson2ObjectMapperBuilder builder = Jackson2ObjectMapperBuilder.json();
+        builder.indentOutput(true);
+        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
     }
 }

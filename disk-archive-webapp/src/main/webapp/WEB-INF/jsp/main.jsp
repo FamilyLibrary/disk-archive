@@ -8,10 +8,16 @@
 <title>${title}</title>
 
 <script type="text/javascript">
+    Ext.require([
+        'AppsPortal.component.treeView.MainTreeView',
+        'AppsPortal.component.treeView.MainTreeViewStore'
+    ]);
+
     Ext.application({
         name: 'AppsPortal',
+
         launch: function() {
-             console.log('launch');
+             Ext.create('AppsPortal.component.treeView.MainTreeView');
         }
     });
 </script>

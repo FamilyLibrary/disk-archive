@@ -1,6 +1,7 @@
 package com.alextim.diskarchive.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +34,7 @@ import com.alextim.diskarchive.services.impl.FilmGroupServiceImpl;
 import sun.reflect.generics.tree.Tree;
 
 @RestController
-@RequestMapping(method=GET, path="/main")
+@RequestMapping(path="/main")
 public class MainController extends MultiActionController {
     private final Logger LOG = Logger.getLogger(MainController.class);
 
@@ -47,19 +48,16 @@ public class MainController extends MultiActionController {
     @Resource
     private IFilmGroupService filmGroupService;
 
-    @RequestMapping(value = "treeView.html", produces = "application/json")
-    public @ResponseBody Map treeView(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(path = "treeView.json", method=GET)
+    @ResponseBody
+    public Root treeView(){
         Iterable<BookGroup> bookGroups = bookGroupRepository.findAll();
         List<TreeNode> treeNodes = new ArrayList<>();
 
         for (BookGroup bookGroup : bookGroups) {
             treeNodes.add(new TreeNode(bookGroup.getName()));
         }
-        Root root = new Root("Root",true, treeNodes);
-
-        Map<String, Root> map = new HashMap<>();
-        map.put("root", root);
-        return map;
+        return new Root("Root",true, treeNodes);
     }
 
     @RequestMapping(value="renderGeneralImage.html", method=GET)

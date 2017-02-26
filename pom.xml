@@ -22,6 +22,9 @@
         <hsqldatabase-version>1.8.0.10</hsqldatabase-version>
         <poi-version>3.13</poi-version>
         <extjs-version>6.2.0</extjs-version>
+        <fastxml-version>2.8.7</fastxml-version>
+        <jackson-databind-version>2.8.7</jackson-databind-version>
+        <jackson-xml-databind-version>0.6.2</jackson-xml-databind-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

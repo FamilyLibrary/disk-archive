@@ -14,11 +14,11 @@ Ext.define('AppsPortal.view.authentication.AuthenticationController', {
 
     	var errorMessage = Ext.getCmp('errorMessage');
     	Ext.Ajax.request({
-    		url   : 'register.html',
+    		url   : 'register/register.html',
     		params : {
     			login    : userName,
-    			password : password,
-    			_csrf : authdialog._csrf.value
+    			password : password/*,
+    			_csrf : authdialog._csrf.value*/
     		},
             method: 'POST',
             success:function(response, options){

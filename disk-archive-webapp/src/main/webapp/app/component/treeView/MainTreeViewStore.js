@@ -1,5 +1,7 @@
-Ext.define('AppsPortal.component.treeView.MainTreeViewStore', {
+Ext.define('app.component.treeView.MainTreeViewStore', {
     extend: 'Ext.data.TreeStore',
+
+    autoLoad: true,
 
     proxy: {
         type: 'ajax',

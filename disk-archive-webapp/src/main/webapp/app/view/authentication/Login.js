@@ -1,9 +1,9 @@
-Ext.define('AppsPortal.view.authentication.Login', {
-    extend: 'AppsPortal.view.authentication.LockingWindow',
+Ext.define('app.view.authentication.Login', {
+    extend: 'app.view.authentication.LockingWindow',
     xtype: 'login',
 
     requires: [
-       'AppsPortal.view.authentication.Dialog',
+       'app.view.authentication.Dialog',
        'Ext.container.Container',
        'Ext.form.field.Text',
        'Ext.form.field.Checkbox',

@@ -3,12 +3,12 @@
  * enables autoComplete support to any child textfield so that browsers or their plugins
  * may restore/persist username, password and other attributes to/from such forms.
  */
-Ext.define('AppsPortal.view.authentication.Dialog', {
+Ext.define('app.view.authentication.Dialog', {
     extend: 'Ext.form.Panel',
     xtype: 'authdialog',
 
     requires: [
-        'AppsPortal.view.authentication.AuthenticationController',
+        'app.view.authentication.AuthenticationController',
         'Ext.form.Panel'
     ],
 

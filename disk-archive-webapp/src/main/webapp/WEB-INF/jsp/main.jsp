@@ -9,15 +9,14 @@
 
 <script type="text/javascript">
     Ext.require([
-        'AppsPortal.component.treeView.MainTreeView',
-        'AppsPortal.component.treeView.MainTreeViewStore'
+        'app.component.treeView.MainTreeView'
     ]);
 
     Ext.application({
-        name: 'AppsPortal',
+        name: 'app',
 
         launch: function() {
-             Ext.create('AppsPortal.component.treeView.MainTreeView');
+             Ext.create('app.component.treeView.MainTreeView');
         }
     });
 </script>

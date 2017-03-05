@@ -35,7 +35,7 @@ import sun.reflect.generics.tree.Tree;
 
 @RestController
 @RequestMapping(path="/main")
-public class MainController extends MultiActionController {
+public class MainController {
     private final Logger LOG = Logger.getLogger(MainController.class);
 
     private final String IMAGE_NAME = "/images/nophoto-thumb.gif";

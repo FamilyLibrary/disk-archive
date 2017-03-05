@@ -3,12 +3,12 @@
  * It's layout is structured to center any Authentication dialog within it's center,
  * and provides a backGround image during such operations.
  */
-Ext.define('AppsPortal.view.authentication.LockingWindow', {
+Ext.define('app.view.authentication.LockingWindow', {
     extend: 'Ext.window.Window',
     xtype: 'lockingwindow',
 
     requires: [
-        'AppsPortal.view.authentication.AuthenticationController',
+        'app.view.authentication.AuthenticationController',
         'Ext.layout.container.VBox'
     ],
 

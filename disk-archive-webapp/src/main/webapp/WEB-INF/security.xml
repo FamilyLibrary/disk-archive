@@ -10,7 +10,7 @@
     <security:http pattern="/webjars/extjs/**" security="none"/>
     <security:http pattern="/images/**" security="none"/>
     <security:http pattern="/css/**" security="none"/>
-    <security:http pattern="/AppsPortal/**" security="none"/>
+    <security:http pattern="/app/**" security="none"/>
 
     <security:http auto-config='true' use-expressions="false">
     <security:intercept-url pattern="/login.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>

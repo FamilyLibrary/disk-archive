@@ -1,4 +1,4 @@
-Ext.define('AppsPortal.view.authentication.AuthenticationController', {
+Ext.define('app.view.authentication.AuthenticationController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.authentication',
 

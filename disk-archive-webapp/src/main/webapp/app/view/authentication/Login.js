@@ -126,17 +126,6 @@ Ext.define('app.view.authentication.Login', {
     	if (config.hasError) {
     		this.showMessage(errorMessage, 'Login failed, please try again.', {color: 'red'});
     	}
-
-    	var csrfField = this.createCsrfField(config.csrfName, config.csrfValue);
-    	form.add(csrfField);
-    },
-
-    createCsrfField: function(name, value) {
-    	return Ext.form.Field({
-            xtype:'hidden',
-            name: name,
-            value: value
-    	});
     },
 
     showMessage: function(element, message, style) {

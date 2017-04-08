@@ -10,8 +10,6 @@
     <script type='text/javascript'>
         Ext.onReady(function() {
             Ext.create('app.view.authentication.Login', {
-                csrfName  : '${_csrf.parameterName}',
-                csrfValue : '${_csrf.token}',
                 hasError  :
                     <c:if test="${param.error != null}">${param.error}</c:if>
                     <c:if test="${param.error == null}">false</c:if>

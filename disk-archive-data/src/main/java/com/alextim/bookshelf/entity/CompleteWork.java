@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.alextim.entity.IEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="COMPLETE_WORKS")
@@ -37,6 +38,7 @@ public class CompleteWork implements IEntity {
 
     @OneToMany(mappedBy="completeWork", fetch=FetchType.EAGER)
     @Cascade(value={CascadeType.ALL})
+    @JsonIgnore
     private List<Book> books;
 
     @Override

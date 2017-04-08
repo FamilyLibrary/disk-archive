@@ -1,11 +1,11 @@
 Ext.define('app.component.treeView.MainTreeViewStore', {
     extend: 'Ext.data.TreeStore',
 
-    autoLoad: true,
+    requires : [
+        'app.component.treeView.MainTreeViewModel'
+    ],
 
-    proxy: {
-        type: 'ajax',
-        url : 'main/treeView.json'
-    }
+    model: 'treeView.MainTreeViewModel',
 
+    autoLoad: false
 });

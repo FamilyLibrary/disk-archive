@@ -17,8 +17,7 @@ Ext.define('app.view.authentication.AuthenticationController', {
     		url   : 'register/register.html',
     		params : {
     			login    : userName,
-    			password : password/*,
-    			_csrf : authdialog._csrf.value*/
+    			password : password
     		},
             method: 'POST',
             success:function(response, options){

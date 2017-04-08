@@ -5,18 +5,18 @@
 <head>
 <jsp:include page="header.jsp"/>
 
-<title>${title}</title>
+<title>Home</title>
 
 <script type="text/javascript">
     Ext.require([
-        'app.component.treeView.MainTreeView'
+        'app.view.main.Main'
     ]);
 
     Ext.application({
         name: 'app',
 
         launch: function() {
-             Ext.create('app.component.treeView.MainTreeView');
+             Ext.create('app.view.main.Main');
         }
     });
 </script>

@@ -1,6 +1,5 @@
 package com.alextim.diskarchive.treeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,8 +8,8 @@ import java.util.List;
 public class Root extends TreeNode{
     private boolean success;
 
-    public Root(String name, boolean success, List<TreeNode> children){
-        super(name, false, children);
+    public Root(String text, boolean success, List<TreeNode> children){
+        super(text, false, children);
         this.success = success;
     }
 

@@ -12,19 +12,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.alextim.bookshelf.service.IUserService;
 
-
 @Controller
-@RequestMapping(path="/register")
+@RequestMapping(path = "/register")
 public class RegistrationController {
-	@Autowired
-	private IUserService userService;
+    @Autowired
+    private IUserService userService;
 
-	@RequestMapping(path="register.html", method=POST)
-	@ResponseStatus(value=HttpStatus.OK)
-    public void register(String login, String password, String _csrf) throws UserAlreadyExistException {
-
-		userService.register(login, password, UserRole.ROLE_USER);
-
-	}
-	
+    @RequestMapping(path = "register.html", method = POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void register(String login, String password) throws UserAlreadyExistException {
+        userService.register(login, password, UserRole.ROLE_USER);
+    }
 }

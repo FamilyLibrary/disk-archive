@@ -9,14 +9,14 @@ import java.util.List;
 public class TreeNode {
     private List<TreeNode> children;
     private boolean leaf;
-    private String name;
+    private String text;
 
-    public TreeNode(String name){
-        this(name, false, new ArrayList<>());
+    public TreeNode(String text){
+        this(text, true, new ArrayList<>());
     }
 
-    protected TreeNode(String name, boolean leaf, List<TreeNode> children){
-        this.name = name;
+    public TreeNode(String text, boolean leaf, List<TreeNode> children){
+        this.text = text;
         this.leaf = leaf;
         this.children = children;
     }
@@ -25,8 +25,8 @@ public class TreeNode {
         return children;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
     public boolean isLeaf() {

@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort.Direction;
+
 import com.alextim.bookshelf.entity.Book;
 import com.alextim.bookshelf.entity.BookAuthor;
 
@@ -20,4 +23,6 @@ public interface IBookService {
 
     Book getById(Long id);
     Collection<Book> findAll();
+
+    Page<Book> findPage(int page, int limit, String sort, Direction dir);
 }

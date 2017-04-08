@@ -21,6 +21,7 @@ import org.hibernate.annotations.CascadeType;
 import com.alextim.entity.IEntity;
 import com.alextim.entity.IEntityWithTimestampColumns;
 import com.alextim.entity.TimestampColumns;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="BOOKS")

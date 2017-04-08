@@ -6,28 +6,33 @@
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                         http://www.springframework.org/schema/security
                         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
-
     <security:http pattern="/webjars/extjs/**" security="none"/>
     <security:http pattern="/images/**" security="none"/>
     <security:http pattern="/css/**" security="none"/>
     <security:http pattern="/app/**" security="none"/>
 
     <security:http auto-config='true' use-expressions="false">
-    <security:intercept-url pattern="/login.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <security:intercept-url pattern="/register**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <security:intercept-url pattern="/books/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:csrf disabled="true"/>
 
-    <security:intercept-url pattern="/**" access="ROLE_USER" />
+        <security:intercept-url pattern="/login.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+         <security:intercept-url pattern="/register/register.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+         <security:intercept-url pattern="/books/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
-    <security:form-login
-        login-processing-url="/login.html"
-        login-page="/login.html"
-        default-target-url="/main.html"
-        always-use-default-target="true"
-        authentication-failure-url="/login.html?error=true"
-        username-parameter="j_username"
-        password-parameter="j_password"/>
+         <security:intercept-url pattern="/**" access="ROLE_USER" />
+
+         <security:form-login
+             login-processing-url="/login.html"
+             login-page="/login.html"
+             default-target-url="/main.html"
+             always-use-default-target="true"
+             authentication-failure-url="/login.html?error=true"
+             authentication-success-handler-ref="authenticationSuccessHandler"
+             username-parameter="j_username"
+             password-parameter="j_password"/>
     </security:http>
+
+    <bean id="authenticationSuccessHandler"
+        class="com.alextim.diskarchive.security.AuthenticationSuccessHandlerCustom" />
 
     <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
         <constructor-arg name="providers">

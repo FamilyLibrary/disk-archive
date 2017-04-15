@@ -1,6 +1,6 @@
-Ext.define('app.component.grid.BooksGridController', {
+Ext.define('app.component.books.BooksGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.grid.BooksGridController',
+    alias: 'controller.books.BooksGridController',
 
     onRender: function() {
         this.getView().getStore().loadPage(1);

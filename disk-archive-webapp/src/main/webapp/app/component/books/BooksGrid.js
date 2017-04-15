@@ -1,15 +1,19 @@
-Ext.define('app.component.grid.BooksGrid', {
+Ext.define('app.component.books.BooksGrid', {
     extend : 'Ext.grid.Panel',
-    alias : 'widget.grid.BooksGrid',
+    alias : 'widget.books.BooksGrid',
 
-    requires : [ 'app.component.grid.BooksGridStore',
-            'app.component.grid.BooksGridController',
-            'Ext.grid.filters.Filters' ],
+    requires : [ 
+        'app.component.books.BooksGridStore',
+        'app.component.books.BooksGridController',
+        'Ext.grid.filters.Filters'
+    ],
+
+    title: 'Books',
 
     plugins : 'gridfilters',
 
-    controller : 'grid.BooksGridController',
-    store : Ext.create('app.component.grid.BooksGridStore'),
+    controller : 'books.BooksGridController',
+    store : Ext.create('app.component.books.BooksGridStore'),
 
     columns : [ {
         text : 'Id',

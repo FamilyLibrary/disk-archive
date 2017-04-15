@@ -15,6 +15,10 @@ public class TreeNode {
         this(text, true, new ArrayList<>());
     }
 
+    public TreeNode(String text, boolean leaf) {
+        this(text, leaf, new ArrayList<>());
+    }
+
     public TreeNode(String text, boolean leaf, List<TreeNode> children){
         this.text = text;
         this.leaf = leaf;

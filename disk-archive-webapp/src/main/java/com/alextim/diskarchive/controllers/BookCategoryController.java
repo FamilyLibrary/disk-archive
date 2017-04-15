@@ -1,16 +1,19 @@
 package com.alextim.diskarchive.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alextim.bookshelf.entity.BookGroup;
 import com.alextim.bookshelf.repository.BookGroupRepository;
+import com.alextim.diskarchive.dto.BookCategoryDto;
+import com.alextim.diskarchive.dto.ResultDto;
 
 @Controller
 @RequestMapping(method = GET, path = "/books/categories")
@@ -19,29 +22,26 @@ public class BookCategoryController {
     @Autowired
     private BookGroupRepository bookGroupRepository;
 
-    @RequestMapping(method = GET)
-    public ModelAndView getCategories() {
+    @RequestMapping(path="categories.json", method=GET)
+    @ResponseBody
+    public ResultDto<BookCategoryDto> getCategories() {
         Iterable<BookGroup> groups = bookGroupRepository.findAll();
 
-        // List<BookGroup> bg = new ArrayList<BookGroup>();
-        JSONArray result = new JSONArray();
+        List<BookCategoryDto> result = new ArrayList<>();
         for (BookGroup group : groups) {
             for (BookGroup subCategory : group.getSubCategories()) {
-                JSONObject jo = new JSONObject();
-                jo.put("subcategoryId", subCategory.getId());
-                jo.put("subcategory", subCategory.getName());
-                jo.put("categoryId", group.getId());
-                jo.put("category", group.getName());
-                jo.put("description", group.getDescription());
-                
-                result.add(jo);
+                BookCategoryDto category = new BookCategoryDto();
+
+                category.setSubcategoryId(subCategory.getId());
+                category.setSubcategory(subCategory.getName());
+                category.setCategoryId(group.getId());
+                category.setCategory(group.getName());
+                category.setDescription(group.getDescription());
+
+                result.add(category);
             }
         }
-
-        final ModelAndView mv = new ModelAndView("/WEB-INF/jsp/categories/list.jsp");
-        mv.addObject("json", result.toString());
-
-        return mv;
+        return new ResultDto<>(result, result.size());
     }
 
 }

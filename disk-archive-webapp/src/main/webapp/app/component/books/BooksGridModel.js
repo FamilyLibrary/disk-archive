@@ -1,4 +1,4 @@
-Ext.define('app.component.grid.BooksGridModel', {
+Ext.define('app.component.books.BooksGridModel', {
     extend: 'Ext.data.Model',
     alternateClassName: 'grid.BooksGridModel',
 
@@ -9,16 +9,5 @@ Ext.define('app.component.grid.BooksGridModel', {
         {name: 'updated', type: 'date'},
         {name: 'name', type: 'string'},
         {name: 'volume', type: 'int'}
-    ],
-
-    proxy: {
-        type: 'ajax',
-        url : '/books/books.json',
-        simpleSortMode: true,
-        reader: {
-            type: 'json',
-            rootProperty: 'entities',
-            totalProperty: 'total'
-        }
-    }
+    ]
 });

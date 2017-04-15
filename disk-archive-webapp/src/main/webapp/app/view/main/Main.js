@@ -4,9 +4,10 @@ Ext.define('app.view.main.Main', {
         'Ext.Button',
         'Ext.list.Tree',
         'Ext.app.ViewController',
+        'app.view.main.Toolbar',
         'app.component.treeView.MainTreeView',
-        'app.component.grid.BooksGrid',
-        'app.view.main.Toolbar'
+        'app.component.books.BooksGrid',
+        'app.component.categories.BookCategoriesGrid'
     ],
     renderTo:Ext.getBody(),
 
@@ -16,7 +17,7 @@ Ext.define('app.view.main.Main', {
         userCls: 'main-toolbar shadow'
     }, {
         xtype: 'panel',
-        scrollable: true,
+        referenceHolder: true,
         layout: {
             type: 'hbox',
             align: 'stretch'
@@ -26,9 +27,9 @@ Ext.define('app.view.main.Main', {
             width: '20%',
             reference: 'navigationTree'
         },{
-            xtype: 'grid.BooksGrid',
+            xtype: 'panel',
             flex: 1,
-            reference: 'booksGrid'
+            reference: 'content'
         }]
     }]
 });

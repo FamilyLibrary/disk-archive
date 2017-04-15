@@ -22,10 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alextim.bookshelf.entity.BookGroup;
 import com.alextim.bookshelf.repository.BookGroupRepository;
 import com.alextim.diskarchive.entity.Film;
-import com.alextim.diskarchive.entity.FilmGroup;
 import com.alextim.diskarchive.services.IFilmGroupService;
 import com.alextim.diskarchive.services.IFilmService;
-import com.alextim.diskarchive.services.impl.FilmGroupServiceImpl;
 import com.alextim.diskarchive.treeView.Root;
 import com.alextim.diskarchive.treeView.TreeNode;
 
@@ -53,10 +51,14 @@ public class MainController {
         for (BookGroup bookGroup : bookGroups) {
             treeNodes.add(new TreeNode(bookGroup.getName()));
         }
+        TreeNode dvdsNode = new TreeNode("DVDs", false);
         TreeNode booksNode = new TreeNode("Books", false, treeNodes);
-        TreeNode settingsNode = new TreeNode("Settings", false, Arrays.asList(new TreeNode[]{}));
+        TreeNode settingsNode = new TreeNode("Settings", false, Arrays.asList(
+                new TreeNode("Book Categories"),
+                new TreeNode("DVD Categories"),
+                new TreeNode("Users")));
 
-        return new Root("Root", true, Arrays.asList(booksNode, settingsNode));
+        return new Root("Root", true, Arrays.asList(dvdsNode, booksNode, settingsNode));
     }
 
     @RequestMapping(value="renderGeneralImage.html", method=GET)

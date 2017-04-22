@@ -30,6 +30,14 @@ Ext.define('app.component.books.BooksGrid', {
         dataIndex : 'volume',
         filter : {type : 'number'}
     }, {
+        text : 'Year',
+        dataIndex : 'yearOfPublication',
+        filter : {type : 'number'}
+    }, {
+        text : 'Authors',
+        dataIndex : 'authors',
+        flex : 2
+    }, {
         text : 'Description',
         dataIndex : 'description',
         filter : {type : 'string'}

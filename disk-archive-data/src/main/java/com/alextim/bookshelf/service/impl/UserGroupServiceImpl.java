@@ -25,17 +25,20 @@ public class UserGroupServiceImpl implements IUserGroupService {
         if(userRole == null){
             throw new IllegalArgumentException("userRole shouldn't be empty or null value");
         }
+
         final String roleName = userRole.name();
-        list.add(userGroupRepository.findByName(roleName));
+        final UserGroup role = userGroupRepository.findByName(roleName);
+
+        if (role != null) {
+            list.add(role);
+        }
         return list;
     }
 
     @Override
     public UserGroup createUserGroup() {
-
         UserGroup userGroup = new UserGroup();
         userGroup.setName(UserRole.ROLE_USER.name());
         return userGroup;
-
     }
 }

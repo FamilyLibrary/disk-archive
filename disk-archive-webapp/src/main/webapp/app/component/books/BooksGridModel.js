@@ -8,6 +8,14 @@ Ext.define('app.component.books.BooksGridModel', {
         {name: 'created', type: 'date'},
         {name: 'updated', type: 'date'},
         {name: 'name', type: 'string'},
-        {name: 'volume', type: 'int'}
+        {name: 'volume', type: 'int'},
+        {name: 'yearOfPublication', type: 'int'},
+        {name: 'authors', 
+            convert: function(value, record) {
+                return value.map(function(val){
+                    return val.lastName;
+                });
+            }
+        }
     ]
 });

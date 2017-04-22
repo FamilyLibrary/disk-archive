@@ -22,7 +22,6 @@
             <props>
                 <prop key="login.html">loginController</prop>
                 <prop key="register.html">registrationController</prop>
-                <prop key="renderGeneralImage.html">mainController</prop>
                 <prop key="filmGroup.html">filmGroupController</prop>
             </props>
         </property>

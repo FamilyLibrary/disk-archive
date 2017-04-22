@@ -23,16 +23,16 @@
          <security:form-login
              login-processing-url="/login.html"
              login-page="/login.html"
-             default-target-url="/main.html"
-             always-use-default-target="true"
              authentication-failure-url="/login.html?error=true"
              authentication-success-handler-ref="authenticationSuccessHandler"
              username-parameter="j_username"
              password-parameter="j_password"/>
     </security:http>
 
-    <bean id="authenticationSuccessHandler"
-        class="com.alextim.diskarchive.security.AuthenticationSuccessHandlerCustom" />
+    <bean id="authenticationSuccessHandler" class="com.alextim.diskarchive.security.AuthenticationSuccessHandlerCustom">
+        <property name="alwaysUseDefaultTargetUrl" value="true"/>
+        <property name="defaultTargetUrl" value="/main.html"/>
+    </bean>
 
     <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
         <constructor-arg name="providers">

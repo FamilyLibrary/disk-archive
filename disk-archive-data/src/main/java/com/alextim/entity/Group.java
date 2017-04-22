@@ -10,8 +10,8 @@ public class Group implements IEntity {
 	public final static String NEW_DESCRIPTION = "new group description";
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOK_GROUPS_SEQUENCE")
-	@SequenceGenerator(name="BOOK_GROUPS_SEQUENCE", sequenceName="SEQ_BOOK_GROUPS")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="GROUPS_SEQUENCE")
+	@SequenceGenerator(name="GROUPS_SEQUENCE", sequenceName="SEQ_GROUPS")
 	private Long id;
 	
 	private String name;

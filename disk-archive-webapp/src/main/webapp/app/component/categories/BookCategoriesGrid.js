@@ -19,8 +19,14 @@ Ext.define('app.component.categories.BookCategoriesGrid', {
     }],
 
     columns: [{
-        text: 'Subcategory',
+        header: 'Category',
+        hidden: true,
         flex: 1,
+        sortable: true,
+        dataIndex: 'category'
+    },{
+        text: 'Subcategory',
+        flex: 2,
         sortable: true,
         dataIndex: 'subcategory',
         hideable: false,
@@ -30,7 +36,7 @@ Ext.define('app.component.categories.BookCategoriesGrid', {
         }
     }, {
         header: 'Description',
-        flex: 2,
+        flex: 3,
         sortable: true,
         dataIndex: 'description'
     }],

@@ -11,9 +11,12 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,14 +64,25 @@ public class MainController {
         return new Root("Root", true, Arrays.asList(dvdsNode, booksNode, settingsNode));
     }
 
+    @RequestMapping(value="currentUser.json", method=GET)
+    public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Object userNameObj = session.getAttribute("username");
+        return userNameObj.toString();
+    }
+
     @RequestMapping(value="renderGeneralImage.html", method=GET)
     public ModelAndView renderGeneralImage(HttpServletRequest request,
             HttpServletResponse response) {
         String filmIdParam = request.getParameter("filmId");
-        Long filmId = Long.parseLong(filmIdParam);
 
-        Film film = filmService.getById(filmId);
-        byte[] imageArray = film.getImage();
+        byte[] imageArray = null;
+        if (StringUtils.isNotEmpty(filmIdParam)) {
+            Long filmId = Long.parseLong(filmIdParam);
+    
+            Film film = filmService.getById(filmId);
+            imageArray = film.getImage();
+        }
 
         try {
             if (ArrayUtils.isEmpty(imageArray)) {
@@ -76,7 +90,7 @@ public class MainController {
                 int size = stream.available();
 
                 imageArray = new byte[size];
-                
+
                 stream.read(imageArray, 0, size);
                 stream.close();
             }

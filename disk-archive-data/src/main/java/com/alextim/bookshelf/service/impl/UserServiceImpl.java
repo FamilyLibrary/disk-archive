@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,7 @@ import com.alextim.bookshelf.service.IUserGroupService;
 import com.alextim.bookshelf.service.IUserService;
 import com.alextim.bookshelf.service.exception.UserAlreadyExistException;
 import com.alextim.bookshelf.service.exception.UserNotFoundException;
+import com.alextim.bookshelf.service.helper.SpringDataUtilHelper;
 import com.alextim.entity.User;
 import com.alextim.entity.UserGroup;
 import com.alextim.security.UserRole;
@@ -22,12 +26,14 @@ import com.alextim.security.UserRole;
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
-
     @Autowired
     private IUserGroupService userGroupService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SpringDataUtilHelper springDataUtilHelper;
 
     @Override
     public User addUser(User user) {
@@ -52,6 +58,11 @@ public class UserServiceImpl implements IUserService {
         userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public Page<User> findPage(int page, int limit, String sort, Direction dir) {
+        Pageable pageable = springDataUtilHelper.createPageable(page - 1, limit, sort, dir);
+        return userRepository.findAll(pageable);
+    }
 
     @Override
     public void changePassword(String login, String password, String newPassword) throws UserNotFoundException {

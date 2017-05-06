@@ -15,6 +15,8 @@ Ext.define('app.component.treeView.MainTreeViewController', {
             grid = Ext.create('app.component.categories.BookCategoriesGrid');
         } else if (record.data.text == 'Books') {
             grid = Ext.create('app.component.books.BooksGrid');
+        } else if (record.data.text == 'Users') {
+            grid = Ext.create('app.component.users.UsersGrid');
         }
         if (grid) {
             content.add(grid);

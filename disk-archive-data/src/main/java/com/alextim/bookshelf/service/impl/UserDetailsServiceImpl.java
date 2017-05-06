@@ -23,22 +23,22 @@ public class UserDetailsServiceImpl extends JdbcDaoImpl {
 
     @Override
     protected List<UserDetails> loadUsersByUsername(String login) {
-    	final User user = findUserByLogin(login);
+        final User user = findUserByLogin(login);
         return Arrays.asList(new SimpleUserDetails(user));
     }
 
     @Override
-	protected List<GrantedAuthority> loadGroupAuthorities(String login) {
-    	final User user = findUserByLogin(login);
-    	List<GrantedAuthority> groups = new ArrayList<>(user.getUserGroups());
-    	return groups;
+    protected List<GrantedAuthority> loadGroupAuthorities(String login) {
+        final User user = findUserByLogin(login);
+        List<GrantedAuthority> groups = new ArrayList<>(user.getUserGroups());
+        return groups;
     }
 
     private User findUserByLogin(String login) {
         final User user = userRepository.findByLogin(login);
         if (user == null) {
-        	throw new UsernameNotFoundException(String.format("Could not find user by login %s",  login));
+            throw new UsernameNotFoundException(String.format("Could not find user by login %s", login));
         }
         return user;
-	}
+    }
 }

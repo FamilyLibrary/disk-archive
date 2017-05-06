@@ -18,12 +18,9 @@ import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +32,7 @@ import com.alextim.bookshelf.entity.BookAuthor;
 import com.alextim.bookshelf.entity.CompleteWork;
 import com.alextim.bookshelf.repository.BookRepository;
 import com.alextim.bookshelf.service.IBookService;
+import com.alextim.bookshelf.service.helper.SpringDataUtilHelper;
 import com.alextim.entity.TimestampColumns;
 
 @Service
@@ -48,6 +46,9 @@ public class BookServiceImpl implements IBookService {
 
     @Resource
     private UploaderContext uploaderContext;
+
+    @Autowired
+    private SpringDataUtilHelper springDataUtilHelper;
 
     @Override
     public <T> Map<T, List<Integer>> getAllAbsentBooks(final Collection<Book> books, final Set<BookAuthor> authors, final Function<Book, T> function) {
@@ -116,7 +117,7 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public Page<Book> findPage(int page, int limit, String sort, Direction dir) {
-        Pageable pageable = createPageable(page, limit, sort, dir);
+        Pageable pageable = springDataUtilHelper.createPageable(page - 1, limit, sort, dir);
         return bookRepository.findAll(pageable);
     }
 
@@ -165,12 +166,5 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Collection<Book> uploadBookFile() {
         return uploaderContext.perform();
-    }
-
-    private Pageable createPageable(int page, int size, String sort, Direction dir) {
-        if (StringUtils.isNotEmpty(sort) && dir != null) {
-            return new PageRequest(page, size, new Sort(dir, sort));
-        }
-        return new PageRequest(page, size);
     }
 }

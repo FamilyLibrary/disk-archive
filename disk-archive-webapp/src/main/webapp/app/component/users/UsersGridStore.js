@@ -1,16 +1,16 @@
-Ext.define('app.component.books.BooksGridStore', {
+Ext.define('app.component.users.UsersGridStore', {
     extend: 'Ext.data.Store',
 
     requires : [
-        'app.component.books.BooksGridModel'
+        'app.component.users.UsersGridModel'
     ],
 
-    model: 'books.BooksGridModel',
-    storeId: 'books.BooksGridStore',
+    model: 'users.UsersGridModel',
+    storeId: 'users.UsersGridStore',
 
     proxy: {
         type: 'ajax',
-        url : '/books/books.json',
+        url : '/user/users.json',
         simpleSortMode: true,
         reader: {
             type: 'json',
@@ -21,4 +21,4 @@ Ext.define('app.component.books.BooksGridStore', {
 
     autoLoad: false,
     remoteSort: true
-});
+})

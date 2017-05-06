@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="USERS")
 public class User extends Person {
@@ -22,8 +24,8 @@ public class User extends Person {
 
     private boolean enabled;
 
-	@ManyToMany(fetch=FetchType.EAGER)
-	@Cascade(value={CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(value = { CascadeType.ALL })
     private List<UserGroup> userGroups;
     
     public String getLogin() {
